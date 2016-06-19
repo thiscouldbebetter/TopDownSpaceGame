@@ -1,7 +1,7 @@
 
-function PortalDefn()
+function PortalDefn(colorName)
 {
-	// do nothing
+	this.colorName = colorName;
 }
 
 {

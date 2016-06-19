@@ -11,7 +11,7 @@ function DrawableDefn(visual)
 	{
 		if (entity.drawable == null)
 		{
-			entity.drawable = new Drawable(entity.defn().drawable.visual.clone());
+			entity.drawable = new Drawable(entity.defn().drawable.visual.cloneShallow());
 			entity.drawable.visual.pos = entity.body.loc.pos;
 		}
 	}

@@ -40,12 +40,16 @@ function ImageHelper()
 			}
 		}
 
-		var returnValue = this.canvasToImage
+		var imageProcessed = this.canvasToImage
 		(
-			image.name + "_" + nameOfColorFunctionToApply, 
+			image.name,
 			canvas
 		);
-		return returnValue;	
+		
+		image.filePath = imageProcessed.filePath;
+		image.systemImage = imageProcessed.systemImage;
+		
+		return image;
 	}
 
 	ImageHelper.prototype.buildImageFromStrings = function(name, stringsForPixels)

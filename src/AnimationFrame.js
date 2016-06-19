@@ -6,6 +6,8 @@ function AnimationFrame(image, ticksToHold)
 }
 
 {
+	// static methods
+	
 	AnimationFrame.buildManyFromImages = function(imagesForFrames)
 	{
 		var returnValues = [];
@@ -21,5 +23,26 @@ function AnimationFrame(image, ticksToHold)
 		}
 
 		return returnValues;
+	}
+	
+	// instance methods
+	
+	AnimationFrame.prototype.clone = function()
+	{
+		var returnValue = new AnimationFrame
+		(
+			this.image.cloneShallow(),
+			this.ticksToHold
+		);
+		
+		return returnValue;
+	}
+	
+	// colorable
+	
+	AnimationFrame.prototype.toColor = function(color)
+	{
+		this.image.toColor(color);
+		return this;
 	}
 }

@@ -11,13 +11,10 @@ function Planet(color)
 	{
 		entity.drawable.visual = new VisualSet
 		(
-			"Planet-Recolored-PlusText",
+			"Planet-PlusText",
 			[
-				new VisualImageRecolored
-				(
-					entity.drawable.visual,
-					this.color
-				)
+				entity.drawable.visual,
+				new VisualText("Planet"),
 			]
 		);
 	}

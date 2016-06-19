@@ -319,6 +319,7 @@ function Demo()
 		var activityDefns = this.universe_ActivityDefns();
 
 		Camera.initializeStatic();
+		var colors = Color.Instances._All;
 
 		var entityDefns = this.universe_EntityDefns();
 
@@ -344,7 +345,8 @@ function Demo()
 				var venuePosNorth = venuePos.clone().addXY(0, -1).wrapToRange(sizeInVenues);
 				var venuePosSouth = venuePos.clone().addXY(0, 1).wrapToRange(sizeInVenues);
 
-				var venueName = "Venue_" + venuePos.toString();
+				var venueNamePrefix = "System_";
+				var venueName = venueNamePrefix + venuePos.toString();
 
 				var venue = new Venue
 				(
@@ -353,17 +355,6 @@ function Demo()
 					venueSizeInPixels,
 					// entities
 					[
-						/*
-						font.buildEntityForText
-						(
-							venueName, 
-							new Coords
-							(
-								venueSizeInPixelsHalf.x,
-								venueSizeInPixelsHalf.y + font.characterSize.y * 4
-							)
-						),
-						*/
 						Entity.fromDefn
 						(
 							"Text" + venueName,
@@ -396,13 +387,14 @@ function Demo()
 						new Entity
 						(
 							"PortalWest", 
-							entityDefns["Portal"].name, 
+							entityDefns["PortalRed"].name, 
 							[
 								new Body(new Location(new Coords(.05 * venueSizeInPixels.x, venueSizeInPixelsHalf.y))),
 								new PortalData
 								(
-									"Venue_" + venuePosWest.toString(),
-									new Coords(.9 * venueSizeInPixels.x, venueSizeInPixelsHalf.y)
+									venueNamePrefix + venuePosWest.toString(),
+									new Coords(.9 * venueSizeInPixels.x, venueSizeInPixelsHalf.y),
+									colors["Red"]
 								),
 							]
 						),
@@ -410,13 +402,14 @@ function Demo()
 						new Entity
 						(
 							"PortalEast", 
-							entityDefns["Portal"].name, 
+							entityDefns["PortalGreen"].name, 
 							[
 								new Body(new Location(new Coords(.95 * venueSizeInPixels.x, venueSizeInPixelsHalf.y))),
 								new PortalData
 								(
-									"Venue_" + venuePosEast.toString(),
-									new Coords(.1 * venueSizeInPixels.x, venueSizeInPixelsHalf.y)
+									venueNamePrefix + venuePosEast.toString(),
+									new Coords(.1 * venueSizeInPixels.x, venueSizeInPixelsHalf.y),
+									colors["Green"]
 								),
 							]
 						),
@@ -424,13 +417,14 @@ function Demo()
 						new Entity
 						(
 							"PortalNorth", 
-							entityDefns["Portal"].name, 
+							entityDefns["PortalBlue"].name, 
 							[
 								new Body(new Location(new Coords(venueSizeInPixelsHalf.x, .05 * venueSizeInPixels.y))),
 								new PortalData
 								(
-									"Venue_" + venuePosNorth.toString(),
-									new Coords(venueSizeInPixelsHalf.x, .9 * venueSizeInPixels.y)
+									venueNamePrefix + venuePosNorth.toString(),
+									new Coords(venueSizeInPixelsHalf.x, .9 * venueSizeInPixels.y),
+									colors["Blue"]
 								),
 							]
 						),
@@ -438,17 +432,17 @@ function Demo()
 						new Entity
 						(
 							"PortalEast", 
-							entityDefns["Portal"].name, 
+							entityDefns["PortalViolet"].name, 
 							[
 								new Body(new Location(new Coords(venueSizeInPixelsHalf.x, .95 * venueSizeInPixels.y))),
 								new PortalData
 								(
-									"Venue_" + venuePosSouth.toString(),
-									new Coords(venueSizeInPixelsHalf.x, .1 * venueSizeInPixels.y)
+									venueNamePrefix + venuePosSouth.toString(),
+									new Coords(venueSizeInPixelsHalf.x, .1 * venueSizeInPixels.y),
+									colors["Violet"]
 								),
 							]
 						),
-
 					]
 				);
 
@@ -508,6 +502,7 @@ function Demo()
 		var universe = new Universe
 		(
 			"UniverseGrid" + sizeInVenues.toString(),
+			colors,
 			font,
 			activityDefns,
 			entityDefns,
@@ -1055,6 +1050,7 @@ function Demo()
 			"Planet",
 			[
 				new BodyDefn(new Coords(16, 16)), // sizeInPixels
+				new CollidableDefn([], function() {}),
 				new DrawableDefn
 				(
 					imagePlanet
@@ -1063,21 +1059,38 @@ function Demo()
 			]
 		);
 
-		var entityDefnPortal = new EntityDefn
-		(
-			"Portal",
-			[
-				new BodyDefn(new Coords(19, 19)), // sizeInPixels
-				new DrawableDefn
-				(
-					new AnimationRun
+		var colorsAll = Color.Instances._All;
+
+		var entityDefnsPortal = [];
+		var portalColorNames = [ "Red", "Green", "Blue", "Violet" ];
+		for (var c = 0; c < portalColorNames.length; c++)
+		{
+			var colorName = portalColorNames[c];
+			var color = colorsAll[colorName];
+			var entityDefnName = "Portal" + colorName;
+			
+			var animationDefnSet = AnimationDefnSet.buildFromImages
+			(
+				entityDefnName, 
+				imagesForPortal
+			)//.toColor(color); // fix - colors
+			
+			var entityDefnPortal = new EntityDefn
+			(
+				entityDefnName,
+				[
+					new BodyDefn(new Coords(19, 19)), // sizeInPixels
+					new CollidableDefn([], function() {}),
+					new DrawableDefn
 					(
-						AnimationDefnSet.buildFromImages("Portal", imagesForPortal)
-					)
-				),
-				new PortalDefn(),
-			]
-		);		
+						animationDefnSet.toAnimationRun()
+					),
+					new PortalDefn(),
+				]
+			);		
+			
+			entityDefnsPortal.push(entityDefnPortal);
+		}
 
 		var entityDefnSun = new EntityDefn
 		(
@@ -1189,7 +1202,6 @@ function Demo()
 			}
 		}
 
-
 		var entityDefnPlayer = new EntityDefn
 		(
 			"Player", 	
@@ -1242,7 +1254,10 @@ function Demo()
 		[
 			Camera.EntityDefn,
 			entityDefnPlanet,
-			entityDefnPortal,
+			entityDefnsPortal[0],
+			entityDefnsPortal[1],
+			entityDefnsPortal[2],
+			entityDefnsPortal[3],
 			entityDefnSun,
 
 			entityDefnProjectile,

@@ -50,7 +50,7 @@ function Image(name, filePath, sizeInPixels, systemImage)
 
 	// drawable
 
-	Image.prototype.clone = function()
+	Image.prototype.cloneShallow = function()
 	{
 		var returnValue = new Image
 		(
@@ -62,10 +62,24 @@ function Image(name, filePath, sizeInPixels, systemImage)
 
 		return returnValue;
 	}
+	
+	Image.prototype.cloneDeep = function()
+	{
+		// todo
+		return this.cloneShallow();
+	}
 
 	Image.prototype.drawAtPos = function(pos)
 	{
 		Globals.Instance.display.drawImageAtPos(this, pos); 
+	}
+	
+	Image.prototype.toColor = function(color)
+	{
+		var imageHelper = new ImageHelper();
+		var returnValue = imageHelper.imageToGray(this);
+		returnValue = imageHelper.imageToColor(returnValue, color);
+		return returnValue;
 	}
 
 	Image.prototype.update = function()

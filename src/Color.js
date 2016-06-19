@@ -137,8 +137,7 @@ function Color(name, symbol, componentsRGBA)
 			this.Yellow,
 		];
 
+		this._All.addLookups("name");
 		this._All.addLookups("symbol");
 	}	
-
-
 }

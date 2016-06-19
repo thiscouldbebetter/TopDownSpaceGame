@@ -4,11 +4,7 @@ function AnimationDefnSet(name, animationDefns)
 	this.name = name;
 	this.animationDefns = animationDefns;
 
-	for (var i = 0; i < this.animationDefns.length; i++)
-	{
-		var animationDefn = this.animationDefns[i];
-		this.animationDefns[animationDefn.name] = animationDefn;
-	}
+	this.animationDefns.addLookups("name");
 }
 
 {
@@ -103,9 +99,28 @@ function AnimationDefnSet(name, animationDefns)
 	}
 
 	// instance methods
+	
+	AnimationDefnSet.prototype.clone = function()
+	{
+		var returnValue = new AnimationDefnSet
+		(
+			this.name,
+			Cloneable.cloneMany(this.animationDefns)
+		);
+		
+		return returnValue;	
+	}
 
 	AnimationDefnSet.prototype.toAnimationRun = function()
 	{
 		return new AnimationRun(this);
+	}
+	
+	// colorable
+	
+	AnimationDefnSet.prototype.toColor = function(color)
+	{
+		Colorable.colorMany(this.animationDefns, color);
+		return this;
 	}
 }

@@ -7,6 +7,8 @@ function AnimationDefn(name, animationDefnNameNext, frames)
 }
 
 {
+	// static methods
+	
 	AnimationDefn.buildManyFromImageSets = function(imageSetsForFrames)
 	{
 		var returnValues = [];
@@ -28,5 +30,27 @@ function AnimationDefn(name, animationDefnNameNext, frames)
 		}
 
 		return returnValues;
+	}
+	
+	// instance methods
+	
+	AnimationDefn.prototype.clone = function()
+	{
+		var returnValue = new AnimationDefn
+		(
+			this.name,
+			this.animationDefnNameNext,
+			Cloneable.cloneMany(this.frames)
+		);
+		
+		return returnValue;
+	}
+	
+	// colorable
+	
+	AnimationDefn.prototype.toColor = function(color)
+	{
+		Colorable.colorMany(this.frames, color);
+		return this;
 	}
 }

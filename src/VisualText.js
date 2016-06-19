@@ -1,11 +1,24 @@
 
 function VisualText(text)
 {
-	this.text = text.toUpperCase();
+	this._text = text.toUpperCase();
 }
 
 {
-	VisualText.prototype.clone = function()
+	VisualText.prototype.text = function()
+	{
+			return this._text;
+	}
+			
+	// visual
+	
+	VisualText.prototype.cloneDeep = function()
+	{
+		// todo
+		return this.cloneShallow();
+	}
+	
+	VisualText.prototype.cloneShallow = function()
 	{
 		return this;
 	}
@@ -16,10 +29,11 @@ function VisualText(text)
 		var characterSize = font.characterSize;
 		var characterPos = pos.clone();
 		var display = Globals.Instance.display;
+		var text = this.text();
 
-		for (var i = 0; i < this.text.length; i++)
+		for (var i = 0; i < text.length; i++)
 		{
-			var character = this.text[i];
+			var character = text[i];
 			var characterIndex = font.charactersAvailable.indexOf
 			(
 				character
