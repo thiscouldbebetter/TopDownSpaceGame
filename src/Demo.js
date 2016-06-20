@@ -315,6 +315,8 @@ function Demo()
 		}
 
 		var font = this.font();
+		
+		var itemDefns = this.universe_ItemDefns();
 
 		var activityDefns = this.universe_ActivityDefns();
 
@@ -477,19 +479,59 @@ function Demo()
 
 				for (var e = 0; e < numberOfEnemies; e++)
 				{
-					var pos = new Coords().randomize().multiply(venueSizeInPixels).round();
-					var entityEnemy = new Entity("Enemy" + e, entityDefns["Enemy"].name, [ new Body(new Location(pos)) ]);
+					var pos = new Coords().randomize().multiply
+					(
+						venueSizeInPixels
+					).round();
+					
+					var entityEnemy = new Entity
+					(
+						"Enemy" + e, 
+						entityDefns["Enemy"].name, 
+						[ new Body(new Location(pos)) ]
+					);
+					
 					venue.entitiesToSpawn.push(entityEnemy);
+				}
+				
+				var numberOfItemCollections = 1;
+				for (var c = 0; c < numberOfItemCollections; c++)
+				{
+					var pos = new Coords().randomize().multiply
+					(
+						venueSizeInPixels
+					).round();
+
+					var entityItemCollection = new Entity
+					(
+						"ItemCollection" + c, 
+						entityDefns["ItemCollection"].name, 
+						[ 
+							new Body(new Location(pos)) 
+						]
+					);
+					
+					venue.entitiesToSpawn.push(entityItemCollection);
 				}
 
 				if (venuePos.x == 0 && venuePos.y == 0)
 				{
-					var entityPlayer = new Entity("Player", entityDefns["Player"].name, [ new Body(new Location(new Coords(100, 100))) ] );
+					var entityPlayer = new Entity
+					(
+						"Player", 
+						entityDefns["Player"].name, 
+						[ new Body(new Location(new Coords(100, 100))) ] 
+					);
 					venue.entitiesToSpawn.push(entityPlayer);
 
 					// friendlies
 
-					var entityFriendly = new Entity("Friendly0", entityDefns["Friendly"].name, [ new Body(new Location(new Coords(350, 50))) ] );
+					var entityFriendly = new Entity
+					(
+						"Friendly0", 
+						entityDefns["Friendly"].name, 
+						[ new Body(new Location(new Coords(350, 50))) ] 
+					);
 					venue.entitiesToSpawn.push(entityFriendly);
 				}
 
@@ -504,6 +546,7 @@ function Demo()
 			"UniverseGrid" + sizeInVenues.toString(),
 			colors,
 			font,
+			itemDefns,
 			activityDefns,
 			entityDefns,
 			venueDefns, 
@@ -511,6 +554,24 @@ function Demo()
 		);
 
 		return universe;
+	}
+	
+	Demo.prototype.universe_ItemDefns = function()
+	{
+			var returnValues = 
+			[
+				new ItemDefn("Ammo"),
+				new ItemDefn("Crew"),
+				new ItemDefn("Fuel"),
+				new ItemDefn("Lifeforms"),
+				new ItemDefn("Luxuries"),
+				new ItemDefn("Materials"),
+				new ItemDefn("Research"),
+			];
+			
+			returnValues.addLookups("name");
+			
+			return returnValues;
 	}
 
 	Demo.prototype.universe_ActivityDefns = function()
@@ -640,6 +701,18 @@ function Demo()
 	Demo.prototype.universe_EntityDefns = function()
 	{
 		var imageHelper = new ImageHelper();
+		
+		var imageItemCollection = imageHelper.buildImageFromStrings
+		(
+			"ItemCollection",
+			[
+				"aaaaa",
+				"a...a",
+				"a...a",
+				"a...a",
+				"aaaaa",
+			]			
+		);		
 
 		var imageMoverProjectile = imageHelper.buildImageFromStrings
 		(
@@ -1009,7 +1082,25 @@ function Demo()
 				".................",
 			],
 		]);
+		
+		var entityDefnItemCollection = new EntityDefn
+		(
+			"ItemCollection",
 
+			// properties
+			[
+				new BodyDefn(new Coords(3, 3)), // sizeInPixels
+				new CollidableDefn
+				(
+					[], // entityDefnNameToCollideWith
+					function() {} // collide
+				),
+				new DrawableDefn(imageItemCollection),
+				new ItemCollectionDefn(), 
+				new KillableDefn(1), // integrityMax
+			]
+		);
+		
 		var entityDefnProjectile = new EntityDefn
 		(
 			"Projectile",
@@ -1062,18 +1153,19 @@ function Demo()
 		var colorsAll = Color.Instances._All;
 
 		var entityDefnsPortal = [];
+		
+		var animationDefnSetPortal = AnimationDefnSet.buildFromImages
+		(
+			entityDefnName, 
+			imagesForPortal
+		);
+		
 		var portalColorNames = [ "Red", "Green", "Blue", "Violet" ];
 		for (var c = 0; c < portalColorNames.length; c++)
 		{
 			var colorName = portalColorNames[c];
 			var color = colorsAll[colorName];
 			var entityDefnName = "Portal" + colorName;
-			
-			var animationDefnSet = AnimationDefnSet.buildFromImages
-			(
-				entityDefnName, 
-				imagesForPortal
-			)//.toColor(color); // fix - colors
 			
 			var entityDefnPortal = new EntityDefn
 			(
@@ -1083,7 +1175,10 @@ function Demo()
 					new CollidableDefn([], function() {}),
 					new DrawableDefn
 					(
-						animationDefnSet.toAnimationRun()
+						animationDefnSetPortal.clone().toColor
+						(
+							color
+						).toAnimationRun()						
 					),
 					new PortalDefn(),
 				]
@@ -1163,12 +1258,24 @@ function Demo()
 
 		var playerCollide = function(entityThis, entityOther)
 		{
+			var player = entityThis;
+			var venue = player.body.loc.venue;
 			var entityOtherProperties = entityOther.defn().properties;
-			if (entityOtherProperties["Enemy"] != null)
+			
+			if (entityOtherProperties["ItemCollection"] != null)
 			{
-				entityThis.killable.integrity = 0;
-
-				var venue = entityThis.body.loc.venue;
+				var itemCollection = entityOther;
+				venue.entitiesToRemove.push(itemCollection);
+				var itemsToTransfer = itemCollection.itemContainer.items;
+				for (var i = 0; i < itemsToTransfer.length; i++)
+				{
+					var itemToTransfer = itemsToTransfer[i];
+					player.itemContainer.items.push(itemToTransfer);
+				}
+			}
+			else if (entityOtherProperties["Enemy"] != null)
+			{
+				player.killable.integrity = 0;
 
 				venue.entitiesToSpawn.push
 				(	
@@ -1187,16 +1294,15 @@ function Demo()
 			else if (entityOtherProperties["Portal"] != null)
 			{
 				var portal = entityOther;
-				var venue = entityThis.body.loc.venue;	
 
-				venue.entitiesToRemove.push(entityThis);
+				venue.entitiesToRemove.push(player);
 
 				var portalData = portal.portal;
 				var destinationVenueName = portalData.destinationVenueName;
 				var universe = Globals.Instance.universe;
 				var destinationVenue = universe.venues[destinationVenueName];
 	
-				destinationVenue.entitiesToSpawn.push(entityThis);
+				destinationVenue.entitiesToSpawn.push(player);
 				entityThis.body.loc.pos.overwriteWith(portalData.destinationPos);
 				Globals.Instance.venueNext = destinationVenue;
 			}
@@ -1210,7 +1316,7 @@ function Demo()
 				new BodyDefn(new Coords(9, 9)), // sizeInPixels	
 				new CollidableDefn
 				(
-					[ "Enemy", "Planet", "Portal" ],
+					[ "ItemCollection", "Enemy", "Planet", "Portal" ],
 					playerCollide
 				),
 				new ControllableDefn
@@ -1244,6 +1350,7 @@ function Demo()
 						"Player", imagesForPlayerClockwise
 					).toAnimationRun()
 				),
+				new ItemContainerDefn(), 
 				new KillableDefn(1), // integrityMax
 				new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
 				new PlayerDefn(),
@@ -1260,6 +1367,7 @@ function Demo()
 			entityDefnsPortal[3],
 			entityDefnSun,
 
+			entityDefnItemCollection,
 			entityDefnProjectile,
 			entityDefnEnemy,
 			entityDefnFriendly,

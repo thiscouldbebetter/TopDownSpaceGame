@@ -76,10 +76,7 @@ function Image(name, filePath, sizeInPixels, systemImage)
 	
 	Image.prototype.toColor = function(color)
 	{
-		var imageHelper = new ImageHelper();
-		var returnValue = imageHelper.imageToGray(this);
-		returnValue = imageHelper.imageToColor(returnValue, color);
-		return returnValue;
+		return new ImageHelper().imageToColor(this, color);
 	}
 
 	Image.prototype.update = function()

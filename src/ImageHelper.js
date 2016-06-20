@@ -195,17 +195,12 @@ function ImageHelper()
 
 	ImageHelper.prototype.imageToColor = function(image, color)
 	{
-		var returnValue = this.applyColorFunctionToImage
+		return this.applyColorFunctionToImage
 		(
-			image, "toGray"
+			this.imageToGray(image),
+			"multiply", 
+			color
 		);
-
-		returnValue = this.applyColorFunctionToImage
-		(
-			image, "multiply", color
-		);
-
-		return returnValue;
 	}
 
 	ImageHelper.prototype.imageToGray = function(image)
