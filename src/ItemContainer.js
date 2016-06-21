@@ -1,5 +1,6 @@
-function ItemContainer()
+function ItemContainer(items)
 {
-	this.items = [];
+	this.items = items;
+	this.items.addLookups("defnName");
 }
 

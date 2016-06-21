@@ -1,13 +1,19 @@
-function ItemContainerDefn()
+function ItemContainerDefn(itemsInitial)
 {
-	// do nothing
+	this.itemsInitial = itemsInitial;
 }
 {
 	ItemContainerDefn.prototype.propertyName = function() { return "ItemContainer"; }
 	
 	ItemContainerDefn.prototype.initializeEntityForVenue = function(entity, venue)
 	{
-			entity.itemContainer = new ItemContainer();
+		if (entity.itemContainer == null)
+		{
+			entity.itemContainer = new ItemContainer
+			(
+				Cloneable.cloneMany(this.itemsInitial)
+			);
+		}
 	}
 }
 

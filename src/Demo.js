@@ -1,6 +1,4 @@
 
-// demo
-
 function Demo()
 {
 	// do nothing
@@ -365,7 +363,13 @@ function Demo()
 								".text",
 								[
 									new BodyDefn(new Coords(0, 0)),
-									new DrawableDefn(new VisualText(venueName)),
+									new DrawableDefn
+									(
+										new VisualText
+										(
+											new DataSourceLiteral(venueName.toUpperCase())
+										)
+									),
 								]
 							),
 							[
@@ -671,7 +675,8 @@ function Demo()
 			{
 				var keyCodesPressed = Globals.Instance.inputHelper.keyCodesPressed;
 				var actionsFromActor = activity.actor.actions;
-				var inputBindings = Globals.Instance.venueCurrent.defn().inputBindingSet.bindings; 
+				var venueCurrent = Globals.Instance.universe.venueCurrent;
+				var inputBindings = venueCurrent.defn().inputBindingSet.bindings; 
 
 				for (var i = 0; i < keyCodesPressed.length; i++)
 				{
@@ -702,16 +707,49 @@ function Demo()
 	{
 		var imageHelper = new ImageHelper();
 		
-		var imageItemCollection = imageHelper.buildImageFromStrings
+		var imagesForItemCollection = imageHelper.buildImagesFromStringArrays
 		(
-			"ItemCollection",
+			"ItemCollection", 
 			[
-				"aaaaa",
-				"a...a",
-				"a...a",
-				"a...a",
-				"aaaaa",
-			]			
+				[
+					"aaaaa..",
+					"a...aa.",
+					"a...a.a",
+					"a...a.a",
+					"aaaaa.a",
+					".a...aa",
+					"..aaaaa",
+				],
+				
+				[
+					"..aaaaa",
+					".aa...a",
+					"a.a...a",
+					"a.a...a",
+					"a.aaaaa",
+					"aa...a.",
+					"aaaaa..",
+				],
+				
+				[				
+					"aaaaa..",
+					"aa...a.",				
+					"a.aaaaa",
+					"a.a...a",
+					"a.a...a",
+					".aa...a",
+					"..aaaaa",
+				],
+				[
+					"..aaaaa",
+					".a...aa",
+					"aaaaa.a",
+					"a...a.a",
+					"a...a.a",
+					"a...aa.",
+					"aaaaa..",
+				],				
+			]	
 		);		
 
 		var imageMoverProjectile = imageHelper.buildImageFromStrings
@@ -1095,8 +1133,17 @@ function Demo()
 					[], // entityDefnNameToCollideWith
 					function() {} // collide
 				),
-				new DrawableDefn(imageItemCollection),
-				new ItemCollectionDefn(), 
+				new DrawableDefn
+				(
+					AnimationDefnSet.fromImages
+					(
+						entityDefnName, 
+						imagesForItemCollection,
+						2 // ticksPerFrame
+					).toAnimationRun()
+				),
+				new ItemCollectionDefn(),
+				new ItemContainerDefn([ new Item("Fuel", 100) ]), // hack
 				new KillableDefn(1), // integrityMax
 			]
 		);
@@ -1115,7 +1162,7 @@ function Demo()
 				(
 					new AnimationRun
 					(
-						AnimationDefnSet.buildFromImage(imageMoverProjectile)
+						AnimationDefnSet.fromImage(imageMoverProjectile)
 					)
 				),
 				new ProjectileDefn(),
@@ -1154,7 +1201,7 @@ function Demo()
 
 		var entityDefnsPortal = [];
 		
-		var animationDefnSetPortal = AnimationDefnSet.buildFromImages
+		var animationDefnSetPortal = AnimationDefnSet.fromImages
 		(
 			entityDefnName, 
 			imagesForPortal
@@ -1175,10 +1222,22 @@ function Demo()
 					new CollidableDefn([], function() {}),
 					new DrawableDefn
 					(
-						animationDefnSetPortal.clone().toColor
+						new VisualSet
 						(
-							color
-						).toAnimationRun()						
+							[
+								animationDefnSetPortal.clone().toColor
+								(
+									color
+								).toAnimationRun(),
+								new VisualText
+								(
+									new DataSourceEntity
+									(										
+										function(entity) { return "Portal to " + entity.portal.destinationVenueName; }
+									)
+								)
+							]	
+						)
 					),
 					new PortalDefn(),
 				]
@@ -1196,7 +1255,7 @@ function Demo()
 				(
 					new AnimationRun
 					(
-						AnimationDefnSet.buildFromImages("Sun", imagesForSun)
+						AnimationDefnSet.fromImages("Sun", imagesForSun)
 					)
 				),
 				new SunDefn(),
@@ -1215,7 +1274,7 @@ function Demo()
 				(
 					new AnimationRun
 					(
-						AnimationDefnSet.buildFromImages
+						AnimationDefnSet.fromImages
 						(
 							"Friendly", imagesFriendly
 						)
@@ -1244,7 +1303,7 @@ function Demo()
 				(
 					new AnimationRun
 					(
-						AnimationDefnSet.buildFromImages
+						AnimationDefnSet.fromImages
 						(
 							"Enemy", imagesEnemy
 						)
@@ -1267,10 +1326,21 @@ function Demo()
 				var itemCollection = entityOther;
 				venue.entitiesToRemove.push(itemCollection);
 				var itemsToTransfer = itemCollection.itemContainer.items;
+				var itemsHeld = player.itemContainer.items;
 				for (var i = 0; i < itemsToTransfer.length; i++)
 				{
 					var itemToTransfer = itemsToTransfer[i];
-					player.itemContainer.items.push(itemToTransfer);
+					var itemHeld = itemsHeld[itemToTransfer.defnName];
+					if (itemHeld == null)
+					{
+							itemHeld = itemToTransfer;
+							itemsHeld.push(itemHeld);
+							itemsHeld[itemHeld.defnName] = itemHeld;
+					}
+					else
+					{
+							itemHeld.quantity += itemToTransfer.quantity;
+					}
 				}
 			}
 			else if (entityOtherProperties["Enemy"] != null)
@@ -1298,13 +1368,23 @@ function Demo()
 				venue.entitiesToRemove.push(player);
 
 				var portalData = portal.portal;
-				var destinationVenueName = portalData.destinationVenueName;
-				var universe = Globals.Instance.universe;
-				var destinationVenue = universe.venues[destinationVenueName];
+				
+				var itemFuel = player.itemContainer.items["Fuel"];
+				var fuelUsedByPortal = 10;
+				if (itemFuel.quantity >= fuelUsedByPortal)
+				{
+					itemFuel.quantity -= fuelUsedByPortal;
+					
+					var destinationVenueName = portalData.destinationVenueName;
+					var universe = Globals.Instance.universe;
+					var destinationVenue = universe.venues[destinationVenueName];
+					
+					destinationVenue.entitiesToSpawn.push(player);
+					entityThis.body.loc.pos.overwriteWith(portalData.destinationPos);
+					universe.venueNext = destinationVenue;					
+				}
 	
-				destinationVenue.entitiesToSpawn.push(player);
-				entityThis.body.loc.pos.overwriteWith(portalData.destinationPos);
-				Globals.Instance.venueNext = destinationVenue;
+
 			}
 		}
 
@@ -1321,22 +1401,77 @@ function Demo()
 				),
 				new ControllableDefn
 				(
-					// buildControlForEntityAndVenue
-					function(entity, venue)
+					// buildControlForEntity
+					function(entity)
 					{
 						var returnValue = new ControlContainer
 						(
 							"containerPlayer",
+							entity,
 							new Coords(64, 64), // size
 							new Coords(8, 8), // pos
 							// children
 							[
 								new ControlText
 								(
-									"textPlayer",
+									"textName",
+									entity,
 									new Coords(8, 8), // pos
-									"[Player]"
+									new DataSourceEntity
+									(
+										function(entity) { return entity.name; }
+									)
 								),
+								
+								new ControlText
+								(
+									"textIntegrity",
+									entity,
+									new Coords(8, 16), // pos
+									new DataSourceEntity
+									(
+										function(entity) 
+										{
+											var returnValue = 
+												"HP: " 
+												+ entity.killable.integrity
+												+ " / "
+												+ entity.defn().killable.integrityMax;
+												
+											return returnValue;
+										}
+									)
+								),
+								
+								new ControlText
+								(
+									"textFuel",
+									entity,
+									new Coords(8, 24), // pos
+									new DataSourceEntity
+									(
+										function(entity) 
+										{
+											var returnValue = 
+												"Fuel: " 
+												+ entity.itemContainer.items["Fuel"].quantity;
+												
+											return returnValue;
+										}
+									)
+								),
+																
+								new ControlText
+								(
+									"textLoc",
+									entity,
+									new Coords(8, 32), // pos
+									new DataSourceEntity
+									(
+										function(entity) { return entity.body.loc.toString(); }
+									)
+								),	
+							
 							]
 						);
 
@@ -1350,7 +1485,7 @@ function Demo()
 						"Player", imagesForPlayerClockwise
 					).toAnimationRun()
 				),
-				new ItemContainerDefn(), 
+				new ItemContainerDefn([ new Item("Fuel", 100) ]), 
 				new KillableDefn(1), // integrityMax
 				new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
 				new PlayerDefn(),

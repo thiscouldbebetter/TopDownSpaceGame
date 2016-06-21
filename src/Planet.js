@@ -11,10 +11,9 @@ function Planet(color)
 	{
 		entity.drawable.visual = new VisualSet
 		(
-			"Planet-PlusText",
 			[
 				entity.drawable.visual,
-				new VisualText("Planet"),
+				new VisualText(new DataSourceLiteral("PLANET")),
 			]
 		);
 	}

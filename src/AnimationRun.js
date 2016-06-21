@@ -6,6 +6,7 @@ function AnimationRun(animationDefnSet)
 	this.animationDefnNameCurrent = this.animationDefnSet.animationDefns[0].name;
 	this.animationDefnNameNext = null;
 	this.frameIndexCurrent = 0;
+	this.ticksOnFrameCurrentSoFar = 0;
 }
 
 {
@@ -36,6 +37,7 @@ function AnimationRun(animationDefnSet)
 		returnValue.animationDefnNameCurrent = this.animationDefnNameCurrent;
 		returnValue.animationDefnNameNext = this.animationDefnNameNext;
 		returnValue.frameIndexCurrent = this.frameIndexCurrent;
+		returnValue.ticksOnFrameCurrentSoFar = this.ticksOnFrameCurrentSoFar;
 		return returnValue;
 	}
 	
@@ -45,6 +47,7 @@ function AnimationRun(animationDefnSet)
 		returnValue.animationDefnNameCurrent = this.animationDefnNameCurrent;
 		returnValue.animationDefnNameNext = this.animationDefnNameNext;
 		returnValue.frameIndexCurrent = this.frameIndexCurrent;
+		returnValue.ticksOnFrameCurrentSoFar = this.ticksOnFrameCurrentSoFar;
 		return returnValue;
 	}
 
@@ -53,7 +56,12 @@ function AnimationRun(animationDefnSet)
 	AnimationRun.prototype.drawAtPos = function(pos)
 	{
 		var frameCurrent = this.frameCurrent();
-		frameCurrent.image.drawAtPos(pos);//this.pos);
+		frameCurrent.image.drawAtPos(pos);
+	}
+	
+	AnimationRun.prototype.drawForEntity = function(entity)
+	{
+		this.drawAtPos(entity.body.loc.pos);
 	}
 
 	AnimationRun.prototype.update = function()
@@ -66,9 +74,15 @@ function AnimationRun(animationDefnSet)
 		}
 		else
 		{
-			this.frameIndexCurrent++;
+			this.ticksOnFrameCurrentSoFar++;
 		}
 
+		if (this.ticksOnFrameCurrentSoFar >= this.frameCurrent().ticksToHold)
+		{
+				this.frameIndexCurrent++;
+				this.ticksOnFrameCurrentSoFar = 0;
+		}
+		
 		var animationDefnCurrent = this.animationDefnCurrent();
 		if (this.frameIndexCurrent >= animationDefnCurrent.frames.length)
 		{

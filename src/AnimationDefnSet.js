@@ -10,7 +10,7 @@ function AnimationDefnSet(name, animationDefns)
 {
 	// static methods
 
-	AnimationDefnSet.buildFromImage = function(image)
+	AnimationDefnSet.fromImage = function(image)
 	{
 		var imageAsImageSets = 
 		[
@@ -31,8 +31,10 @@ function AnimationDefnSet(name, animationDefns)
 		return returnValue;
 	}
 
-	AnimationDefnSet.buildFromImages = function(animationDefnSetName, images)
+	AnimationDefnSet.fromImages = function(animationDefnSetName, images, ticksPerFrame)
 	{
+		if (ticksPerFrame == null) { ticksPerFrame = 1; }
+		
 		var returnValue = new AnimationDefnSet
 		(
 			animationDefnSetName,
@@ -41,7 +43,7 @@ function AnimationDefnSet(name, animationDefns)
 				(
 					"",
 					"",
-					AnimationFrame.buildManyFromImages(images)
+					AnimationFrame.buildManyFromImages(images, ticksPerFrame)
 				),
 			]
 		);
@@ -49,7 +51,7 @@ function AnimationDefnSet(name, animationDefns)
 		return returnValue;
 	}
 
-	AnimationDefnSet.buildFromImageForHeadings = function(image, numberOfHeadings)
+	AnimationDefnSet.fromImageForHeadings = function(image, numberOfHeadings)
 	{
 		var imageAsImageSet = [];
 		imageAsImageSet.push(image);

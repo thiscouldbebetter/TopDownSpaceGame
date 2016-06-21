@@ -1,9 +1,10 @@
 
-function ControlText(name, pos, text)
+function ControlText(name, entity, pos, dataSourceText)
 {
 	this.name = name;
+	this.entity = entity;
 	this.pos = pos;
-	this.text = text;
+	this.dataSourceText = dataSourceText;
 }
 
 {
@@ -11,6 +12,11 @@ function ControlText(name, pos, text)
 	{
 		var display = Globals.Instance.display;
 
-		display.drawText(this.text, this.pos, "White");
+		display.drawText
+		(
+			this.dataSourceText.evaluate(this.entity), 
+			this.pos, 
+			"White" // hack
+		);
 	}
 }

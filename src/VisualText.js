@@ -1,13 +1,12 @@
 
-function VisualText(text)
+function VisualText(dataSource)
 {
-	this._text = text.toUpperCase();
+	this.dataSource = dataSource;
 }
-
 {
-	VisualText.prototype.text = function()
+	VisualText.prototype.textForEntity = function(entity)
 	{
-			return this._text;
+		return this.dataSource.evaluate(entity);
 	}
 			
 	// visual
@@ -25,11 +24,17 @@ function VisualText(text)
 
 	VisualText.prototype.drawAtPos = function(pos)
 	{
+			this.drawTextAtPos(null, pos);
+	}
+
+	VisualText.prototype.drawForEntityAtPos = function(entity, pos)
+	{		
+		var text = this.textForEntity(entity).toUpperCase();
+		
 		var font = Globals.Instance.universe.font;
 		var characterSize = font.characterSize;
 		var characterPos = pos.clone();
 		var display = Globals.Instance.display;
-		var text = this.text();
 
 		for (var i = 0; i < text.length; i++)
 		{
@@ -51,6 +56,11 @@ function VisualText(text)
 				display.drawImageAtPos(characterImage, characterPos)
 			}
 		}
+	}
+	
+	VisualText.prototype.drawForEntity = function(entity)
+	{
+		this.drawForEntityAtPos(entity, entity.body.loc.pos);
 	}
 
 	VisualText.prototype.update = function()

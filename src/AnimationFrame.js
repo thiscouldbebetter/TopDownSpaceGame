@@ -8,8 +8,10 @@ function AnimationFrame(image, ticksToHold)
 {
 	// static methods
 	
-	AnimationFrame.buildManyFromImages = function(imagesForFrames)
+	AnimationFrame.buildManyFromImages = function(imagesForFrames, ticksPerFrame)
 	{
+		if (ticksPerFrame == null) { ticksPerFrame = 1; }
+		
 		var returnValues = [];
 
 		var numberOfImages = imagesForFrames.length;
@@ -17,7 +19,7 @@ function AnimationFrame(image, ticksToHold)
 		for (var i = 0; i < numberOfImages; i++)
 		{
 			var imageForFrame = imagesForFrames[i];
-			var frame = new AnimationFrame(imageForFrame, 1);
+			var frame = new AnimationFrame(imageForFrame, ticksPerFrame);
 
 			returnValues.push(frame);
 		}

@@ -1,7 +1,8 @@
 
-function ControlContainer(name, size, pos, children)
+function ControlContainer(name, entity, size, pos, children)
 {
 	this.name = name;
+	this.entity = entity;
 	this.size = size;
 	this.pos = pos;
 	this.children = children;

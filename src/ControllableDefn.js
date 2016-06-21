@@ -1,7 +1,7 @@
 
-function ControllableDefn(buildControlForEntityAndVenue)
+function ControllableDefn(buildControlForEntity)
 {
-	this.buildControlForEntityAndVenue = buildControlForEntityAndVenue;
+	this.buildControlForEntity = buildControlForEntity;
 }
 
 {
@@ -9,12 +9,12 @@ function ControllableDefn(buildControlForEntityAndVenue)
 
 	ControllableDefn.prototype.initializeEntityForVenue = function(entity, venue)
 	{
-		var control = this.buildControlForEntityAndVenue(entity, venue);
+		var control = this.buildControlForEntity(entity);
 		entity.controllable = new Controllable(control);
 	}
 
 	ControllableDefn.prototype.updateEntityForVenue = function(entity, venue)
 	{
-		entity.controllable.control.draw();
+		entity.controllable.control.draw(entity);
 	}
 }

@@ -20,8 +20,7 @@ function Globals()
 		this.display.initialize();
 
 		this.universe = universe;
-
-		this.venueNext = this.universe.venues[0];
+		this.universe.initialize();
 
 		this.timer = setInterval
 		(
@@ -34,17 +33,8 @@ function Globals()
 	}
 
 	Globals.prototype.handleEventTimerTick = function()
-	{
-		if (this.venueNext != null)
-		{
-			this.venueNext.initialize();
-
-			this.venueCurrent = this.venueNext;
-
-			this.venueNext = null;
-		}
-
-		this.venueCurrent.update();
+	{		
+		this.universe.updateForTimerTick();
 	}
 }
 
