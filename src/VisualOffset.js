@@ -7,24 +7,25 @@ function VisualOffset(visual, offset)
 	this.posAbsolute = new Coords();
 }
 
-{	
-	VisualOffset.prototype.drawAtPos = function(pos)
+{
+	VisualOffset.prototype.cloneShallow = function()
 	{
-		this.visual.drawAtPos
+			return this;
+	}
+		
+	VisualOffset.prototype.drawForEntityAtOffset = function(entity, offset)
+	{
+		this.visual.drawForEntityAtOffset
 		(
+			entity, 
 			this.posAbsolute.overwriteWith
 			(
 				this.offset
 			).add
 			(
-				pos
+				offset
 			)
 		);
-	}
-	
-	VisualOffset.prototype.drawForEntity = function(entity)
-	{
-		this.drawAtPos(entity.body.loc.pos);
 	}
 	
 	VisualOffset.prototype.update = function()

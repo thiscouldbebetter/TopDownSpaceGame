@@ -6,4 +6,9 @@ function PortalData(destinationVenueName, destinationPos, color)
 }
 {
 	PortalData.prototype.propertyName = function() { return "Portal"; }
+	
+	PortalData.prototype.destinationVenue = function()
+	{
+		return Globals.Instance.universe.venues[this.destinationVenueName];
+	}
 }

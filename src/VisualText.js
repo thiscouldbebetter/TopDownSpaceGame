@@ -2,6 +2,10 @@
 function VisualText(dataSource)
 {
 	this.dataSource = dataSource;
+	
+	// working variables
+	this.characterPos = new Coords();
+	this.textSizeInPixelsHalf = new Coords();
 }
 {
 	VisualText.prototype.textForEntity = function(entity)
@@ -21,22 +25,35 @@ function VisualText(dataSource)
 	{
 		return this;
 	}
-
-	VisualText.prototype.drawAtPos = function(pos)
-	{
-			this.drawTextAtPos(null, pos);
-	}
-
-	VisualText.prototype.drawForEntityAtPos = function(entity, pos)
+	
+	VisualText.prototype.drawForEntityAtOffset = function(entity, offset)
 	{		
 		var text = this.textForEntity(entity).toUpperCase();
 		
 		var font = Globals.Instance.universe.font;
 		var characterSize = font.characterSize;
-		var characterPos = pos.clone();
 		var display = Globals.Instance.display;
+		var numberOfCharacters = text.length;
+		
+		this.textSizeInPixelsHalf.overwriteWith
+		(
+			characterSize
+		);
+		this.textSizeInPixelsHalf.x *= numberOfCharacters;
+		this.textSizeInPixelsHalf.divideScalar(2);
+		
+		this.characterPos.overwriteWith
+		(
+			entity.body.loc.pos
+		).subtract
+		(
+			this.textSizeInPixelsHalf
+		).add
+		(
+			offset
+		);
 
-		for (var i = 0; i < text.length; i++)
+		for (var i = 0; i < numberOfCharacters; i++)
 		{
 			var character = text[i];
 			var characterIndex = font.charactersAvailable.indexOf
@@ -51,16 +68,11 @@ function VisualText(dataSource)
 					characterIndex
 				];
 
-				characterPos.x = pos.x + i * characterSize.x;
+				this.characterPos.x += characterSize.x;
 
-				display.drawImageAtPos(characterImage, characterPos)
+				display.drawImageAtPos(characterImage, this.characterPos)
 			}
 		}
-	}
-	
-	VisualText.prototype.drawForEntity = function(entity)
-	{
-		this.drawForEntityAtPos(entity, entity.body.loc.pos);
 	}
 
 	VisualText.prototype.update = function()

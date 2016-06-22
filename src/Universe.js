@@ -28,6 +28,14 @@ function Universe
 		this.venueNext = this.venues[0];
 	}
 	
+	Universe.prototype.secondsSoFar = function()
+	{
+		return Math.round
+		(
+			this.timerTicksSoFar / Globals.Instance.timerTicksPerSecond
+		);
+	}
+	
 	Universe.prototype.updateForTimerTick = function()
 	{
 		if (this.venueNext != null)

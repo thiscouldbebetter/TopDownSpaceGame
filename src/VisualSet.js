@@ -9,22 +9,13 @@ function VisualSet(visuals)
 	{
 		return new VisualSet(this.visuals);
 	}
-
-	VisualSet.prototype.drawAtPos = function(pos)
-	{
-		for (var i = 0; i < this.visuals.length; i++)
-		{
-			var visual = this.visuals[i];
-			visual.drawAtPos(pos);
-		}
-	}
 	
-	VisualSet.prototype.drawForEntity = function(entity)
+	VisualSet.prototype.drawForEntityAtOffset = function(entity, offset)
 	{
 		for (var i = 0; i < this.visuals.length; i++)
 		{
 			var visual = this.visuals[i];
-			visual.drawForEntity(entity);
+			visual.drawForEntityAtOffset(entity, offset);
 		}
 	}
 

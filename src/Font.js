@@ -30,7 +30,11 @@ function Font(name, characterSize, charactersAvailable, characterImages)
 
 			new DrawableDefn
 			(
-				new VisualText(new DataSourceLiteral(text))
+				new VisualOffset
+				(
+					new VisualText(new DataSourceLiteral(text)),
+					new Coords(0, 20)
+				)
 			),
 		];
 

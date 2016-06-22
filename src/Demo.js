@@ -8,7 +8,7 @@ function Demo()
 	Demo.prototype.font = function()
 	{
 		var characterSize = new Coords(5, 5);
-		var charactersAvailable = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !>";		
+		var charactersAvailable = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !>/";		
 		var characterImages = new ImageHelper().buildImagesFromStringArrays
 		("Font", [
 			[
@@ -292,6 +292,13 @@ function Demo()
 				"..rr.",
 				".rr..",
 			],
+			[
+				"....r",
+				"...r.",
+				"..r..",
+				".r...",
+				"r....",
+			],			
 		]);
 
 		var font = new Font
@@ -313,6 +320,7 @@ function Demo()
 		}
 
 		var font = this.font();
+		var nameGenerator = new NameGenerator();
 		
 		var itemDefns = this.universe_ItemDefns();
 
@@ -355,36 +363,18 @@ function Demo()
 					venueSizeInPixels,
 					// entities
 					[
-						Entity.fromDefn
-						(
-							"Text" + venueName,
-							new EntityDefn
-							(
-								".text",
-								[
-									new BodyDefn(new Coords(0, 0)),
-									new DrawableDefn
-									(
-										new VisualText
-										(
-											new DataSourceLiteral(venueName.toUpperCase())
-										)
-									),
-								]
-							),
-							[
-								new Body(new Location(venueSizeInPixelsHalf.clone())),
-							] // properties
-						),
-
 						// sun
-
 						new Entity
 						(
 							"Sun", 
 							entityDefns["Sun"].name, 
 							[ 
-								new Body(new Location(venueSizeInPixelsHalf.clone())) 
+								new Body(new Location(venueSizeInPixelsHalf.clone())),
+								new Star
+								(
+									new NameGenerator().generateNameWithSyllables(3), 
+									null // color
+								),
 							]
 						),
 
@@ -468,7 +458,11 @@ function Demo()
 						entityDefns["Planet"].name, 
 						[ 
 							new Body(new Location(pos)),
-							new Planet(Color.Instances.Orange)
+							new Planet
+							(
+								nameGenerator.generateNameWithSyllables(2),
+								Color.Instances.Orange
+							)
 						]
 					);
 					venue.entitiesToSpawn.push(entityPlanet);
@@ -564,13 +558,14 @@ function Demo()
 	{
 			var returnValues = 
 			[
-				new ItemDefn("Ammo"),
-				new ItemDefn("Crew"),
-				new ItemDefn("Fuel"),
-				new ItemDefn("Lifeforms"),
-				new ItemDefn("Luxuries"),
-				new ItemDefn("Materials"),
-				new ItemDefn("Research"),
+				new ItemDefn("Ammo", "A"),
+				new ItemDefn("Bioforms", "B"),
+				new ItemDefn("Fuel", "F"),
+				new ItemDefn("Luxuries", "L"),
+				new ItemDefn("Materials", "M"),
+				new ItemDefn("Nutrients", "N"),
+				new ItemDefn("Research", "R"),
+				new ItemDefn("Sentients", "S"),
 			];
 			
 			returnValues.addLookups("name");
@@ -1229,13 +1224,23 @@ function Demo()
 								(
 									color
 								).toAnimationRun(),
-								new VisualText
+								new VisualOffset
 								(
-									new DataSourceEntity
-									(										
-										function(entity) { return "Portal to " + entity.portal.destinationVenueName; }
-									)
-								)
+									new VisualText
+									(
+										new DataSourceEntity
+										(										
+											function(entity) 
+											{ 												
+												var returnValue = 
+													"To " + entity.portal.destinationVenueName; 
+													
+												return returnValue;
+											}
+										)
+									),
+									new Coords(0, 20) // offset
+								),
 							]	
 						)
 					),
@@ -1258,7 +1263,7 @@ function Demo()
 						AnimationDefnSet.fromImages("Sun", imagesForSun)
 					)
 				),
-				new SunDefn(),
+				new StarDefn(),
 			]
 		);
 
@@ -1326,22 +1331,7 @@ function Demo()
 				var itemCollection = entityOther;
 				venue.entitiesToRemove.push(itemCollection);
 				var itemsToTransfer = itemCollection.itemContainer.items;
-				var itemsHeld = player.itemContainer.items;
-				for (var i = 0; i < itemsToTransfer.length; i++)
-				{
-					var itemToTransfer = itemsToTransfer[i];
-					var itemHeld = itemsHeld[itemToTransfer.defnName];
-					if (itemHeld == null)
-					{
-							itemHeld = itemToTransfer;
-							itemsHeld.push(itemHeld);
-							itemsHeld[itemHeld.defnName] = itemHeld;
-					}
-					else
-					{
-							itemHeld.quantity += itemToTransfer.quantity;
-					}
-				}
+				player.itemContainer.itemsAdd(itemsToTransfer);
 			}
 			else if (entityOtherProperties["Enemy"] != null)
 			{
@@ -1359,7 +1349,12 @@ function Demo()
 			}
 			else if (entityOtherProperties["Planet"] != null)
 			{
-				// todo
+				var planet = entityOther;
+				var itemTradeOffer = planet.planet.itemTradeOffer;
+				if (itemTradeOffer != null)
+				{
+					itemTradeOffer.trade(player, planet);
+				}
 			}
 			else if (entityOtherProperties["Portal"] != null)
 			{

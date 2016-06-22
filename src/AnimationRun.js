@@ -52,16 +52,11 @@ function AnimationRun(animationDefnSet)
 	}
 
 	// visual
-
-	AnimationRun.prototype.drawAtPos = function(pos)
+	
+	AnimationRun.prototype.drawForEntityAtOffset = function(entity, offset)
 	{
 		var frameCurrent = this.frameCurrent();
-		frameCurrent.image.drawAtPos(pos);
-	}
-	
-	AnimationRun.prototype.drawForEntity = function(entity)
-	{
-		this.drawAtPos(entity.body.loc.pos);
+		frameCurrent.image.drawForEntityAtOffset(entity, offset);
 	}
 
 	AnimationRun.prototype.update = function()

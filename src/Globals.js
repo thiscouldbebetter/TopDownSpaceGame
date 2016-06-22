@@ -7,25 +7,30 @@ function Globals()
 {
 	Globals.prototype.initialize = function
 	(
-		realWorldMillisecondsPerTick, 
+		timerTicksPerSecond,
 		viewSizeInPixels, 
 		universe
 	)	
 	{
 		this.collisionHelper = new CollisionHelper();
 
-		this.realWorldMillisecondsPerTick = realWorldMillisecondsPerTick;
+		this.timerTicksPerSecond = timerTicksPerSecond;
 
 		this.display = new Display(viewSizeInPixels);
 		this.display.initialize();
 
 		this.universe = universe;
 		this.universe.initialize();
+	
+		var millisecondsPerTimerTick = Math.round
+		(
+			1000 / this.timerTicksPerSecond
+		);
 
 		this.timer = setInterval
 		(
 			this.handleEventTimerTick.bind(this), 
-			this.realWorldMillisecondsPerTick
+			millisecondsPerTimerTick
 		);
 
 		this.inputHelper = new InputHelper();

@@ -69,14 +69,13 @@ function Image(name, filePath, sizeInPixels, systemImage)
 		return this.cloneShallow();
 	}
 	
-	Image.prototype.drawAtPos = function(pos)
+	Image.prototype.drawForEntityAtOffset = function(entity, offset)
 	{
-		Globals.Instance.display.drawImageAtPos(this, pos); 
-	}
-	
-	Image.prototype.drawForEntity = function(entity)
-	{
-		this.drawAtPos(entity.body.loc.pos);
+		Globals.Instance.display.drawImageAtPos
+		(
+			this, 
+			entity.body.loc.pos
+		); 
 	}	
 	
 	Image.prototype.toColor = function(color)
