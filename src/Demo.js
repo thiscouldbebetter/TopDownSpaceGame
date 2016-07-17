@@ -326,14 +326,15 @@ function Demo()
 
 		var activityDefns = this.universe_ActivityDefns();
 
-		Camera.initializeStatic();
 		var colors = Color.Instances._All;
+		
+		var constraintDefns = this.universe_ConstraintDefns();
 
 		var entityDefns = this.universe_EntityDefns();
 
 		var venueDefns = this.universe_VenueDefns();
 
-		var venueSizeInPixels = new Coords(600, 600);
+		var venueSizeInPixels = new Coords(1200, 1200);
 		var venueSizeInPixelsHalf = venueSizeInPixels.clone().divideScalar(2);
 		var venues = [];
 
@@ -518,7 +519,10 @@ function Demo()
 					(
 						"Player", 
 						entityDefns["Player"].name, 
-						[ new Body(new Location(new Coords(100, 100))) ] 
+						[ 
+							new Body(new Location(new Coords(100, 100))),
+							new Constrainable([]),
+						] 
 					);
 					venue.entitiesToSpawn.push(entityPlayer);
 
@@ -546,6 +550,7 @@ function Demo()
 			font,
 			itemDefns,
 			activityDefns,
+			constraintDefns,
 			entityDefns,
 			venueDefns, 
 			venues
@@ -696,6 +701,46 @@ function Demo()
 		_all.addLookups("name");
 
 		return _all;
+	}
+	
+	Demo.prototype.universe_ConstraintDefns = function()
+	{
+		var conformToBounds = new ConstraintDefn
+		(
+			"ConformToBounds",
+			// applyConstraintToEntity
+			function(constraint, entityConstrained)
+			{
+				var entityConstrainedLoc = entityConstrained.body.loc;
+				var boundsToConformTo = constraint.variables[0]
+				entityConstrainedLoc.pos.trimToBounds(boundsToConformTo);
+			}
+		);		
+		
+		var followEntityByName = new ConstraintDefn
+		(
+			"FollowEntityByName",
+			// applyConstraintToEntity
+			function(constraint, entityConstrained)
+			{
+				var venue = entityConstrained.body.loc.venue;
+				var nameOfEntityToFollow = constraint.variables[0];
+				var entityToFollow = venue.entities[nameOfEntityToFollow];
+				entityConstrained.body.loc.pos.overwriteWith
+				(
+					entityToFollow.body.loc.pos
+				);
+			}
+		);
+		
+		var _all = 
+		[
+			conformToBounds,
+			followEntityByName,
+		];
+		
+		return _all;
+
 	}
 
 	Demo.prototype.universe_EntityDefns = function()
@@ -1116,6 +1161,16 @@ function Demo()
 			],
 		]);
 		
+		var entityDefnCamera = new EntityDefn
+		(
+			"Camera",
+			// properties
+			[
+				new CameraDefn(),
+				new ConstrainableDefn(),
+			]
+		);
+		
 		var entityDefnItemCollection = new EntityDefn
 		(
 			"ItemCollection",
@@ -1365,7 +1420,7 @@ function Demo()
 				var portalData = portal.portal;
 				
 				var itemFuel = player.itemContainer.items["Fuel"];
-				var fuelUsedByPortal = 10;
+				var fuelUsedByPortal = 1000;
 				if (itemFuel.quantity >= fuelUsedByPortal)
 				{
 					itemFuel.quantity -= fuelUsedByPortal;
@@ -1394,6 +1449,7 @@ function Demo()
 					[ "ItemCollection", "Enemy", "Planet", "Portal" ],
 					playerCollide
 				),
+				new ConstrainableDefn(),
 				new ControllableDefn
 				(
 					// buildControlForEntity
@@ -1480,7 +1536,7 @@ function Demo()
 						"Player", imagesForPlayerClockwise
 					).toAnimationRun()
 				),
-				new ItemContainerDefn([ new Item("Fuel", 100) ]), 
+				new ItemContainerDefn([ new Item("Fuel", 100000) ]), 
 				new KillableDefn(1), // integrityMax
 				new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
 				new PlayerDefn(),
@@ -1489,7 +1545,7 @@ function Demo()
 
 		var entityDefns =
 		[
-			Camera.EntityDefn,
+			entityDefnCamera,
 			entityDefnPlanet,
 			entityDefnsPortal[0],
 			entityDefnsPortal[1],

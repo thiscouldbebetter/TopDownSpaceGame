@@ -1,6 +1,17 @@
 
-function Constraint(defn, entityConstrained)
+function Constraint(defnName, variables)
 {
-	this.defn = defn;
-	this.entityConstrained = entityConstrained;
+	this.defnName = defnName;
+	this.variables = variables;
+}
+{
+	Constraint.prototype.constrainEntity = function(entityToConstrain)
+	{
+		this.defn().applyConstraintToEntity(this, entityToConstrain);
+	}
+	
+	Constraint.prototype.defn = function()
+	{
+		return Globals.Instance.universe.constraintDefns[this.defnName];
+	}
 }

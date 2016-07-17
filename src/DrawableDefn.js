@@ -20,6 +20,6 @@ function DrawableDefn(visual)
 	{
 		var visual = entity.drawable.visual;
 		visual.update();
-		visual.drawForEntityAtOffset(entity, new Coords(0, 0));
+		visual.drawForEntityAtOffset(entity, Coords.Instances.Zeroes);
 	}
 }

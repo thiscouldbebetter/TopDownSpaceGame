@@ -203,7 +203,33 @@ function Coords(x, y)
 	{
 		return this.x + "x" + this.y;
 	}
+	
+	Coords.prototype.trimToBounds = function(boundsToTrimTo)
+	{
+		var min = boundsToTrimTo.min;
+		var max = boundsToTrimTo.max;
+		
+		if (this.x < min.x)
+		{
+			this.x = min.x;
+		}
+		else if (this.x > max.x)
+		{
+			this.x = max.x;
+		}
 
+		if (this.y < min.y)
+		{
+			this.y = min.y;
+		}
+		else if (this.y > max.y)
+		{
+			this.y = max.y;
+		}
+
+		return this;
+	}
+	
 	Coords.prototype.trimToRange = function(rangeToTrimTo)
 	{
 		if (this.x < 0)

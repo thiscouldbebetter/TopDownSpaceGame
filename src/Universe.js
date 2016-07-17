@@ -1,7 +1,15 @@
 
 function Universe
 (
-	name, colors, font, itemDefns, activityDefns, entityDefns, venueDefns, venues
+	name, 
+	colors, 
+	font, 
+	itemDefns, 
+	activityDefns, 
+	constraintDefns, 
+	entityDefns, 
+	venueDefns, 
+	venues
 )
 {
 	this.name = name;
@@ -9,6 +17,7 @@ function Universe
 	this.font = font;
 	this.itemDefns = itemDefns;
 	this.activityDefns = activityDefns;
+	this.constraintDefns = constraintDefns;
 	this.entityDefns = entityDefns;
 	this.venueDefns = venueDefns;
 	this.venues = venues;
@@ -18,6 +27,7 @@ function Universe
 	this.colors.addLookups("name");
 	this.itemDefns.addLookups("name");
 	this.activityDefns.addLookups("name");
+	this.constraintDefns.addLookups("name");
 	this.entityDefns.addLookups("name");
 	this.venueDefns.addLookups("name");
 	this.venues.addLookups("name");

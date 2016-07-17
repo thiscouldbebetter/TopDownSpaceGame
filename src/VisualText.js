@@ -7,7 +7,9 @@ function VisualText(dataSource)
 	this.characterPos = new Coords();
 	this.textSizeInPixelsHalf = new Coords();
 }
-{
+{	
+	// instance methods
+	
 	VisualText.prototype.textForEntity = function(entity)
 	{
 		return this.dataSource.evaluate(entity);
@@ -42,6 +44,9 @@ function VisualText(dataSource)
 		this.textSizeInPixelsHalf.x *= numberOfCharacters;
 		this.textSizeInPixelsHalf.divideScalar(2);
 		
+		var venue = entity.body.loc.venue;
+		var camera = venue.camera;
+		
 		this.characterPos.overwriteWith
 		(
 			entity.body.loc.pos
@@ -51,6 +56,12 @@ function VisualText(dataSource)
 		).add
 		(
 			offset
+		).subtract
+		(
+			camera.body.loc.pos
+		).add
+		(
+			camera.camera.viewSizeInPixelsHalf
 		);
 
 		for (var i = 0; i < numberOfCharacters; i++)

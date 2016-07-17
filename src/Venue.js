@@ -40,16 +40,43 @@ function Venue(name, defnName, sizeInPixels, entities)
 				}
 			}
 		}
+		
+		var cameraViewSizeInPixels = Globals.Instance.display.sizeInPixels.clone();
+		var cameraViewSizeInPixelsHalf = cameraViewSizeInPixels.clone().divideScalar(2);
 	
-		this.camera = new Camera
+		this.camera = new Entity
 		(
 			"Camera",
-			Camera.ViewSizeStandard
+			"Camera", // entityDefnName
+			[
+				new Body(new Location(new Coords(0, 0))),
+				new Camera(cameraViewSizeInPixels),
+				new Constrainable
+				(
+					[
+						new Constraint("FollowEntityByName", [ "Player" ]),
+						new Constraint
+						(
+							"ConformToBounds", 
+							[ 
+								new Bounds
+								(
+									cameraViewSizeInPixelsHalf, 
+									this.sizeInPixels.clone().subtract
+									(
+										cameraViewSizeInPixelsHalf
+									)
+								)
+							]
+						),
+					]
+				),
+			]
 		);
 	
-		this.camera.entity.body.loc.venue = this;
+		this.camera.body.loc.venue = this;
 	
-		this.entitiesToSpawn.push(this.camera.entity);
+		this.entitiesToSpawn.push(this.camera);
 
 		for (var b = 0; b < this.entities.length; b++)
 		{
@@ -88,9 +115,10 @@ function Venue(name, defnName, sizeInPixels, entities)
 		var propertyNames = 
 		[
 			"Actor",
-			"Mover",
+			"Mover",			
 			"Collidable",
 			"Controllable",
+			"Constrainable",
 			"Killable",
 			"Ephemeral",
 			"Drawable",
@@ -124,8 +152,6 @@ function Venue(name, defnName, sizeInPixels, entities)
 			}
 		}
 
-		//this.update_Collidables();
-
 		this.update_EntitiesToRemove();
 	}
 
@@ -136,6 +162,7 @@ function Venue(name, defnName, sizeInPixels, entities)
 			var entityToRemove = this.entitiesToRemove[i];
 
 			this.entities.remove(entityToRemove);
+			delete this.entities[entityToRemove.name];
 
 			var entityProperties = entityToRemove.defn().properties;
 			for (var c = 0; c < entityProperties.length; c++)
@@ -157,6 +184,7 @@ function Venue(name, defnName, sizeInPixels, entities)
 			var entityToSpawn = this.entitiesToSpawn[i];
 
 			this.entities.push(entityToSpawn);		
+			this.entities[entityToSpawn.name] = entityToSpawn;
 
 			var entityToSpawnDefn = entityToSpawn.defn();
 
@@ -178,7 +206,7 @@ function Venue(name, defnName, sizeInPixels, entities)
 	}
 
 	Venue.prototype.update_EntitiesToSpawn_Spawn = function(entity, entityProperty)
-	{
+	{	
 		var entityPropertyName = entityProperty.propertyName();
 		var entitiesForPropertyName = this.entitiesByPropertyName[entityPropertyName];
 		if (entitiesForPropertyName.contains(entity) == false)

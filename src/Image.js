@@ -8,8 +8,10 @@ function Image(name, filePath, sizeInPixels, systemImage)
 
 	this.sizeInPixelsHalf = this.sizeInPixels.clone().divideScalar(2);
 }
-
 {
+	// static variables
+	Image.DrawPos = new Coords();
+	
 	// static methods
 
 	Image.fromFilePath = function(filePath)
@@ -71,10 +73,25 @@ function Image(name, filePath, sizeInPixels, systemImage)
 	
 	Image.prototype.drawForEntityAtOffset = function(entity, offset)
 	{
+		var drawPos = Image.DrawPos;
+		var loc = entity.body.loc;
+		var camera = loc.venue.camera;
+		
+		drawPos.overwriteWith
+		(
+			loc.pos
+		).subtract
+		(
+			camera.body.loc.pos
+		).add
+		(
+			camera.camera.viewSizeInPixelsHalf
+		);
+		
 		Globals.Instance.display.drawImageAtPos
 		(
 			this, 
-			entity.body.loc.pos
+			drawPos
 		); 
 	}	
 	

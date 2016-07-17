@@ -10,7 +10,7 @@ function Simulation()
 		Globals.Instance.initialize
 		(
 			10, // timerTicksPerSecond
-			new Coords(600, 600), // viewSizeInPixels, 
+			new Coords(480, 480), // viewSizeInPixels, 
 			universe
 		);
 	}

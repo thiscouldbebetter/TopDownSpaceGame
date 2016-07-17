@@ -45,7 +45,13 @@ function Display(sizeInPixels)
 
 	Display.prototype.drawVenue = function(venue)
 	{
-		this.drawRectangle(Coords.Instances.Zeroes, venue.sizeInPixels, "Black", "Gray")
+		this.drawRectangle
+		(
+			Coords.Instances.Zeroes, 
+			venue.sizeInPixels, 
+			"Black", 
+			"Gray"
+		);
 	}
 
 	Display.prototype.initialize = function()
