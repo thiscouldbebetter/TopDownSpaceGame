@@ -12,9 +12,11 @@ function ControlText(name, entity, pos, dataSourceText)
 	{
 		var display = Globals.Instance.display;
 
+		var textToDraw = this.dataSourceText.evaluate(this.entity);
+
 		display.drawText
 		(
-			this.dataSourceText.evaluate(this.entity), 
+			textToDraw,
 			this.pos, 
 			"White" // hack
 		);

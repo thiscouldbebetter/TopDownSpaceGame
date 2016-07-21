@@ -16,6 +16,6 @@ function Item(defnName, quantity)
 	
 	Item.prototype.toString = function()
 	{
-		return this.quantity + this.defn().codeChar;
+		return this.quantity + this.defn().name;
 	}
 }

@@ -12,261 +12,260 @@ function Demo()
 		var characterImages = new ImageHelper().buildImagesFromStringArrays
 		("Font", [
 			[
-				".rrr.",
-				"r...r",
-				"rrrrr",
-				"r...r",
-				"r...r",
+				".aaa.",
+				"a...a",
+				"aaaaa",
+				"a...a",
+				"a...a",
+			],
+			[
+				"aaaa.",
+				"a...a",
+				"aaaa.",
+				"a...a",
+				"aaaa.",
+			],
+			[
+				".aaaa",
+				"a....",
+				"a....",
+				"a....",
+				".aaaa",
+			],
+			[
+				"aaaa.",
+				"a...a",
+				"a...a",
+				"a...a",
+				"aaaa.",
+			],
+			[
+				"aaaaa",
+				"a....",
+				"aaaa.",
+				"a....",
+				"aaaaa",
+			],
+			[
+				"aaaaa",
+				"a....",
+				"aaaa.",
+				"a....",
+				"a....",
+			],
+			[
+				".aaaa",
+				"a....",
+				"a..aa",
+				"a...a",
+				".aaaa",
+			],
+			[
+				"a...a",
+				"a...a",
+				"aaaaa",
+				"a...a",
+				"a...a",
+			],
+			[
+				"aaaaa",
+				"..a..",
+				"..a..",
+				"..a..",
+				"aaaaa",
+			],
+			[
+				".aaaaa",
+				"....a.",
+				"....a.",
+				".a..a.",
+				"..aa..",
+			],
+			[
+				"a...a",
+				"a..a.",
+				"aaa..",
+				"a..a.",
+				"a...a",
+			],
+			[
+				"a....",
+				"a....",
+				"a....",
+				"a....",
+				"aaaaa",
+			],
+			[
+				"a...a",
+				"aa.aa",
+				"a.a.a",
+				"a...a",
+				"a...a",
+			],
+			[
+				"a...a",
+				"aa..a",
+				"a.a.a",
+				"a..aa",
+				"a...a",
+			],
+			[
+				".aaa.",
+				"a...a",
+				"a...a",
+				"a...a",
+				".aaa.",
+			],
+			[
+				"aaaa.",
+				"a...a",
+				"aaaa.",
+				"a....",
+				"a.....",
+			],
+			[
+				".aaa.",
+				"a...a",
+				"a...a",
+				".aaa.",
+				"..a..",
+			],
+			[
+				"aaaa.",
+				"a...a",
+				"aaaa.",
+				"a..a.",
+				"a...a",
+			],
+			[
+				".aaaa",
+				"a....",
+				".aaa.",
+				"....a",
+				"aaaa.",
+			],
+			[
+				"aaaaa",
+				"..a..",
+				"..a..",
+				"..a..",
+				"..a..",
+			],
+			[
+				"a...a",
+				"a...a",
+				"a...a",
+				"a...a",
+				".aaa.",
+			],
+			[
+				"a...a",
+				"a...a",
+				".a.a.",
+				".a.a.",
+				"..a..",
+			],
+			[
+				"a...a",
+				"a...a",
+				"a.a.a",
+				"aa.aa",
+				"a...a",
+			],
+			[
+				"a...a",
+				".a.a.",
+				"..a..",
+				".a.a.",
+				"a...a",
+			],
+			[
+				"a...a",
+				".a.a.",
+				"..a..",
+				"..a..",
+				"..a..",
+			],
+			[
+				"aaaaa",
+				"...a.",
+				"..a..",
+				".a...",
+				"aaaaa",
+			],
+
+			// numeaals
+
+			[
+				".aaa.",
+				"a...a",
+				"a...a",
+				"a...a",
+				".aaa.",
+			],
+			[
+				"..a..",
+				".aa..",
+				"..a..",
+				"..a..",
+				"aaaaa",
+			],
+			[
+				".aaa.",
+				"a...a",
+				"...a.",
+				"..a..",
+				"aaaaa",
+			],
+			[
+				".aaa.",
+				"a...a",
+				"...a.",
+				"a...a",
+				".aaa.",
+			],
+			[
+				"a...a",
+				"a...a",
+				"aaaaa",
+				"....a",
+				"....a",
+			],
+			[
+				"aaaaa",
+				"a....",
+				".aaa.",
+				"....a",
+				"aaaa.",
 			],
 
 			[
-				"rrrr.",
-				"r...r",
-				"rrrr.",
-				"r...r",
-				"rrrr.",
+				".aaa.",
+				"a....",
+				"aaaa.",
+				"a...a",
+				".aaa.",
 			],
 			[
-				".rrrr",
-				"r....",
-				"r....",
-				"r....",
-				".rrrr",
+				"aaaaa",
+				"...a.",
+				"..aa.",
+				".a...",
+				"a....",
 			],
 			[
-				"rrrr.",
-				"r...r",
-				"r...r",
-				"r...r",
-				"rrrr.",
+				".aaa.",
+				"a...a",
+				".aaa.",
+				"a...a",
+				".aaa.",
 			],
 			[
-				"rrrrr",
-				"r....",
-				"rrrr.",
-				"r....",
-				"rrrrr",
-			],
-			[
-				"rrrrr",
-				"r....",
-				"rrrr.",
-				"r....",
-				"r....",
-			],
-			[
-				".rrrr",
-				"r....",
-				"r..rr",
-				"r...r",
-				".rrrr",
-			],
-			[
-				"r...r",
-				"r...r",
-				"rrrrr",
-				"r...r",
-				"r...r",
-			],
-			[
-				"rrrrr",
-				"..r..",
-				"..r..",
-				"..r..",
-				"rrrrr",
-			],
-			[
-				".rrrrr",
-				"....r.",
-				"....r.",
-				".r..r.",
-				"..rr..",
-			],
-			[
-				"r...r",
-				"r..r.",
-				"rrr..",
-				"r..r.",
-				"r...r",
-			],
-			[
-				"r....",
-				"r....",
-				"r....",
-				"r....",
-				"rrrrr",
-			],
-			[
-				"r...r",
-				"rr.rr",
-				"r.r.r",
-				"r...r",
-				"r...r",
-			],
-			[
-				"r...r",
-				"rr..r",
-				"r.r.r",
-				"r..rr",
-				"r...r",
-			],
-			[
-				".rrr.",
-				"r...r",
-				"r...r",
-				"r...r",
-				".rrr.",
-			],
-			[
-				"rrrr.",
-				"r...r",
-				"rrrr.",
-				"r....",
-				"r.....",
-			],
-			[
-				".rrr.",
-				"r...r",
-				"r...r",
-				".rrr.",
-				"..r..",
-			],
-			[
-				"rrrr.",
-				"r...r",
-				"rrrr.",
-				"r..r.",
-				"r...r",
-			],
-			[
-				".rrrr",
-				"r....",
-				".rrr.",
-				"....r",
-				"rrrr.",
-			],
-			[
-				"rrrrr",
-				"..r..",
-				"..r..",
-				"..r..",
-				"..r..",
-			],
-			[
-				"r...r",
-				"r...r",
-				"r...r",
-				"r...r",
-				".rrr.",
-			],
-			[
-				"r...r",
-				"r...r",
-				".r.r.",
-				".r.r.",
-				"..r..",
-			],
-			[
-				"r...r",
-				"r...r",
-				"r.r.r",
-				"rr.rr",
-				"r...r",
-			],
-			[
-				"r...r",
-				".r.r.",
-				"..r..",
-				".r.r.",
-				"r...r",
-			],
-			[
-				"r...r",
-				".r.r.",
-				"..r..",
-				"..r..",
-				"..r..",
-			],
-			[
-				"rrrrr",
-				"...r.",
-				"..r..",
-				".r...",
-				"rrrrr",
-			],
-
-			// numerals
-
-			[
-				".rrr.",
-				"r...r",
-				"r...r",
-				"r...r",
-				".rrr.",
-			],
-			[
-				"..r..",
-				".rr..",
-				"..r..",
-				"..r..",
-				"rrrrr",
-			],
-			[
-				".rrr.",
-				"r...r",
-				"...r.",
-				"..r..",
-				"rrrrr",
-			],
-			[
-				".rrr.",
-				"r...r",
-				"...r.",
-				"r...r",
-				".rrr.",
-			],
-			[
-				"r...r",
-				"r...r",
-				"rrrrr",
-				"....r",
-				"....r",
-			],
-			[
-				"rrrrr",
-				"r....",
-				".rrr.",
-				"....r",
-				"rrrr.",
-			],
-
-			[
-				".rrr.",
-				"r....",
-				"rrrr.",
-				"r...r",
-				".rrr.",
-			],
-			[
-				"rrrrr",
-				"...r.",
-				"..rr.",
-				".r...",
-				"r....",
-			],
-			[
-				".rrr.",
-				"r...r",
-				".rrr.",
-				"r...r",
-				".rrr.",
-			],
-			[
-				".rrr.",
-				"r...r",
-				".rrrr",
-				"....r",
-				".rrr.",
+				".aaa.",
+				"a...a",
+				".aaaa",
+				"....a",
+				".aaa.",
 			],
 
 			// punctuation
@@ -279,25 +278,25 @@ function Demo()
 				".....",
 			],
 			[
-				"..r..",
-				"..r..",
-				"..r..",
+				"..a..",
+				"..a..",
+				"..a..",
 				".....",
-				"..r..",
+				"..a..",
 			],
 			[
-				".rr..",
-				"..rr.",
-				"...rr",
-				"..rr.",
-				".rr..",
+				".aa..",
+				"..aa.",
+				"...aa",
+				"..aa.",
+				".aa..",
 			],
 			[
-				"....r",
-				"...r.",
-				"..r..",
-				".r...",
-				"r....",
+				"....a",
+				"...a.",
+				"..a..",
+				".a...",
+				"a....",
 			],			
 		]);
 
@@ -565,12 +564,12 @@ function Demo()
 			[
 				new ItemDefn("Ammo", "A"),
 				new ItemDefn("Bioforms", "B"),
+				new ItemDefn("Crew", "C"),
 				new ItemDefn("Fuel", "F"),
+				new ItemDefn("Food", "N"),
 				new ItemDefn("Luxuries", "L"),
-				new ItemDefn("Materials", "M"),
-				new ItemDefn("Nutrients", "N"),
-				new ItemDefn("Research", "R"),
-				new ItemDefn("Sentients", "S"),
+				new ItemDefn("Materials", "M"),				
+				new ItemDefn("Science", "S"),				
 			];
 			
 			returnValues.addLookups("name");
@@ -1437,6 +1436,8 @@ function Demo()
 
 			}
 		}
+		
+		var gridSpacing = 8;
 
 		var entityDefnPlayer = new EntityDefn
 		(
@@ -1450,85 +1451,6 @@ function Demo()
 					playerCollide
 				),
 				new ConstrainableDefn(),
-				new ControllableDefn
-				(
-					// buildControlForEntity
-					function(entity)
-					{
-						var returnValue = new ControlContainer
-						(
-							"containerPlayer",
-							entity,
-							new Coords(64, 64), // size
-							new Coords(8, 8), // pos
-							// children
-							[
-								new ControlText
-								(
-									"textName",
-									entity,
-									new Coords(8, 8), // pos
-									new DataSourceEntity
-									(
-										function(entity) { return entity.name; }
-									)
-								),
-								
-								new ControlText
-								(
-									"textIntegrity",
-									entity,
-									new Coords(8, 16), // pos
-									new DataSourceEntity
-									(
-										function(entity) 
-										{
-											var returnValue = 
-												"HP: " 
-												+ entity.killable.integrity
-												+ " / "
-												+ entity.defn().killable.integrityMax;
-												
-											return returnValue;
-										}
-									)
-								),
-								
-								new ControlText
-								(
-									"textFuel",
-									entity,
-									new Coords(8, 24), // pos
-									new DataSourceEntity
-									(
-										function(entity) 
-										{
-											var returnValue = 
-												"Fuel: " 
-												+ entity.itemContainer.items["Fuel"].quantity;
-												
-											return returnValue;
-										}
-									)
-								),
-																
-								new ControlText
-								(
-									"textLoc",
-									entity,
-									new Coords(8, 32), // pos
-									new DataSourceEntity
-									(
-										function(entity) { return entity.body.loc.toString(); }
-									)
-								),	
-							
-							]
-						);
-
-						return returnValue;
-					}
-				),
 				new DrawableDefn
 				(
 					AnimationDefnSet.fromImagesForHeadings
@@ -1536,10 +1458,112 @@ function Demo()
 						"Player", imagesForPlayerClockwise
 					).toAnimationRun()
 				),
-				new ItemContainerDefn([ new Item("Fuel", 100000) ]), 
+				new ItemContainerDefn
+				([ 
+					new Item("Crew", 3),					
+					new Item("Food", 100000),
+					new Item("Fuel", 100000), 
+				]),				 
 				new KillableDefn(1), // integrityMax
 				new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
 				new PlayerDefn(),
+				
+				new ControllableDefn
+				(
+					// buildControlForEntity
+					function(entity)
+					{
+						var children =
+						[
+							new ControlText
+							(
+								"textName",
+								entity,
+								new Coords(1, 1).multiplyScalar(gridSpacing), // pos
+								new DataSourceEntity
+								(
+									function(entity) { return entity.name; }
+								)
+							),
+							
+							new ControlText
+							(
+								"textIntegrity",
+								entity,
+								new Coords(1, 2).multiplyScalar(gridSpacing), // pos
+								new DataSourceEntity
+								(
+									function(entity) 
+									{
+										var returnValue = 
+											"HP: " 
+											+ entity.killable.integrity
+											+ " / "
+											+ entity.defn().killable.integrityMax;
+											
+										return returnValue;
+									}
+								)
+							),
+																							
+							new ControlText
+							(
+								"textLoc",
+								entity,
+								new Coords(1, 3).multiplyScalar(gridSpacing), // pos
+								new DataSourceEntity
+								(
+									function(entity) { return entity.body.loc.toString(); }
+								)
+							),								
+						];
+												
+						var items = entity.itemContainer.items;
+						
+						for (var i = 0; i < items.length; i++)
+						{
+							var item = items[i];									
+						
+							var controlForItem = new ControlText
+							(
+								"textItem" + item.defnName,
+								item,
+								new Coords(1, 4 + i).multiplyScalar
+								(
+									gridSpacing
+								), // pos
+								new DataSourceEntity
+								(
+									function(item) 
+									{
+										var returnValue = 
+											item.defnName + ": " 
+											+ item.quantity;
+										
+										return returnValue;
+									}
+								)
+							);						
+
+							children.push
+							(
+								controlForItem
+							);
+						}
+						
+						var returnValue = new ControlContainer
+						(
+							"containerPlayer",
+							entity,
+							new Coords(8, 8).multiplyScalar(gridSpacing), // size
+							new Coords(1, 1).multiplyScalar(gridSpacing), // pos
+							children
+						);
+						
+
+						return returnValue;
+					}
+				),				
 			]
 		);
 

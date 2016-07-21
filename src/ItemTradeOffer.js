@@ -15,7 +15,7 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 		var returnValue = new ItemTradeOffer
 		(
 			new Item("Fuel", 1),
-			new Item("Nutrients", 1),
+			new Item("Food", 1),
 			10 // secondsToRecharge
 		);
 		
@@ -42,21 +42,24 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 		if (customerItemContainer.hasItem(this.itemTaken) == true)
 		{
 			customerItemContainer.itemSubtract(this.itemTaken);
-			customerItemContainer.itemAdd(this.itemGiven);
+			customerItemContainer.itemAdd(this.itemGiven.clone());
 			this.secondLastUsed = Globals.Instance.universe.secondsSoFar();
 		}
 	}
 	
 	ItemTradeOffer.prototype.toString = function()
 	{
-		var returnValue = 
-			this.itemTaken.toString() 
-			+ " > " 
-			+ this.itemGiven.toString()
-			+ " / "
-			+ this.secondsToRecharge + "s";
-			
-		if (this.isCharged() == false)
+		var returnValue;
+		
+		if (this.isCharged() == true)
+		{ 
+			returnValue = this.itemTaken.toString() 
+				+ " > " 
+				+ this.itemGiven.toString()
+				+ " / "
+				+ this.secondsToRecharge + "s";
+		}	
+		else
 		{
 			returnValue = 
 				this.secondsSinceLastUsed() 
