@@ -52,6 +52,89 @@ function Display(sizeInPixels)
 			"Black", 
 			"Gray"
 		);
+		
+		this.drawVenue_Map(venue);
+	}
+	
+	Display.prototype.drawVenue_Map = function(venue)
+	{
+		var scaleFactor = 16;
+		var mapSizeInPixels = venue.sizeInPixels.clone().divideScalar
+		(
+			scaleFactor
+		);
+		var mapPosInPixels = new Coords
+		(
+			this.sizeInPixels.x - mapSizeInPixels.x - 10,
+			10 // hack
+		);
+		
+		this.drawRectangle
+		(
+			mapPosInPixels,
+			mapSizeInPixels,
+			"DarkBlue",
+			"Gray"
+		);
+	
+		var stars = venue.stars();
+		for (var i = 0; i < stars.length; i++)
+		{
+				var star = stars[i];
+				this.drawVenue_Map_Blip(star.body.loc.pos, scaleFactor, mapPosInPixels, "Yellow");
+		}
+		
+		var planets = venue.planets();
+		for (var i = 0; i < planets.length; i++)
+		{
+			var planet = planets[i];
+			this.drawVenue_Map_Blip(planet.body.loc.pos, scaleFactor, mapPosInPixels, "Cyan");
+		}
+				
+		var portals = venue.portals();
+		for (var i = 0; i < portals.length; i++)
+		{
+			var portal = portals[i];
+			this.drawVenue_Map_Blip(portal.body.loc.pos, scaleFactor, mapPosInPixels, "Violet");
+		}
+		
+		var enemies = venue.enemies();
+		for (var i = 0; i < enemies.length; i++)
+		{
+			var enemy = enemies[i];
+			this.drawVenue_Map_Blip(enemy.body.loc.pos, scaleFactor, mapPosInPixels, "Red");
+		}
+		
+		var player = venue.players()[0];
+		if (player != null)
+		{
+			this.drawVenue_Map_Blip(player.body.loc.pos, scaleFactor, mapPosInPixels, "Orange");
+		}		
+	}
+	
+	Display.prototype.drawVenue_Map_Blip = function(entityPos, scaleFactor, mapPosInPixels, color)
+	{
+		var drawPos = this.drawPos;
+		
+		drawPos.overwriteWith
+		(
+			entityPos
+		).divideScalar
+		(
+			scaleFactor
+		).add
+		(
+			mapPosInPixels
+		);
+		
+		this.drawRectangle
+		(
+			drawPos,
+			Coords.Instances.Ones,
+			color,
+			color
+		);
+		
 	}
 
 	Display.prototype.initialize = function()

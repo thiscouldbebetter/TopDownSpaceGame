@@ -219,4 +219,31 @@ function Venue(name, defnName, sizeInPixels, entities)
 			entityProperty.initializeEntityForVenue(entity, this);
 		}
 	}
+	
+	// helpers
+	
+	Venue.prototype.enemies = function()
+	{
+		return this.entitiesByPropertyName["Enemy"];
+	}
+
+	Venue.prototype.planets = function()
+	{
+		return this.entitiesByPropertyName["Planet"];
+	}
+	
+	Venue.prototype.players = function()
+	{
+		return this.entitiesByPropertyName["Player"];
+	}
+	
+	Venue.prototype.portals = function()
+	{
+		return this.entitiesByPropertyName["Portal"];
+	}
+	
+	Venue.prototype.stars = function()
+	{
+		return this.entitiesByPropertyName["Star"];
+	}
 }
