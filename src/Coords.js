@@ -121,6 +121,20 @@ function Coords(x, y)
 		this.y = Math.floor(this.y);
 		return this;
 	}
+	
+	Coords.prototype.isInRangeMinMax = function(min, max)
+	{
+		var returnValue = 
+		(
+			this.x >= min.x
+			&& this.x <= max.x
+			&& this.y >= min.y
+			&& this.y <= max.y
+		);
+
+		return returnValue;
+	}
+
 
 	Coords.prototype.magnitude = function()
 	{
@@ -166,7 +180,7 @@ function Coords(x, y)
 		return this;
 	}
 
-	Coords.prototype.overwriteWithDimensions = function(x, y)
+	Coords.prototype.overwriteWithXY = function(x, y)
 	{
 		this.x = x;
 		this.y = y;

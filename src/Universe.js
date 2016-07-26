@@ -35,7 +35,19 @@ function Universe
 {
 	Universe.prototype.initialize = function()
 	{
-		this.venueNext = this.venues[0];
+		//this.venueNext = this.venues[0];
+		
+		var venueControlsTitle = new VenueControls
+		(
+			ControlBuilder.title()
+		);
+
+		venueControlsTitle = new VenueFader
+		(
+			venueControlsTitle, venueControlsTitle
+		);
+
+		this.venueNext = venueControlsTitle;		
 	}
 	
 	Universe.prototype.secondsSoFar = function()
@@ -57,7 +69,7 @@ function Universe
 			this.venueNext = null;
 		}
 
-		this.venueCurrent.update();
+		this.venueCurrent.updateForTimerTick();
 				
 		this.timerTicksSoFar++;
 	}

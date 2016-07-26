@@ -106,7 +106,7 @@ function Venue(name, defnName, sizeInPixels, entities)
 		}
 	}
 
-	Venue.prototype.update = function()
+	Venue.prototype.updateForTimerTick = function()
 	{
 		Globals.Instance.display.drawVenue(this);
 

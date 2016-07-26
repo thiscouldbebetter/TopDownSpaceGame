@@ -1551,7 +1551,8 @@ function Demo()
 							);
 						}
 						
-						var returnValue = new ControlContainer
+						/*
+						var controlContainer = new ControlContainer
 						(
 							"containerPlayer",
 							entity,
@@ -1559,6 +1560,11 @@ function Demo()
 							new Coords(1, 1).multiplyScalar(gridSpacing), // pos
 							children
 						);
+						var returnValue = controlContainer;
+						*/
+						
+						// hack
+						var returnValue = children[0];
 						
 
 						return returnValue;
