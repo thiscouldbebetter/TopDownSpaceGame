@@ -46,14 +46,11 @@ function Entity(name, defnName, properties)
 	{
 		if (this._bounds == null)
 		{
-			this._bounds = new Bounds(new Coords(), new Coords());
+			this._bounds = new Bounds
+			(
+				this.body.loc.pos, this.defn().body.sizeInPixels
+			);
 		}
-
-		var pos = this.body.loc.pos;
-		var sizeHalf = this.defn().body.sizeInPixelsHalf;
-
-		this._bounds.min.overwriteWith(pos).subtract(sizeHalf);
-		this._bounds.max.overwriteWith(pos).add(sizeHalf);
 
 		return this._bounds;
 	}

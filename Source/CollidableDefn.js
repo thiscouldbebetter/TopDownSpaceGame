@@ -13,6 +13,7 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 		var collisionHelper = Globals.Instance.collisionHelper;
 
 		var collidableThis = entity;
+		var colliderThis = collidableThis.bounds();
 
 		for (var i = 0; i < this.propertyNamesCollidedWith.length; i++)
 		{
@@ -24,16 +25,22 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 				var collidableOther = entitiesToCollideWith[j];
 				if (collidableOther != collidableThis)	
 				{
-					var doEntitiesCollide = collisionHelper.doEntitiesCollide
+					var colliderOther = collidableOther.bounds();
+
+					var doEntitiesCollide = collisionHelper.doCollidersCollide
 					(
-						collidableThis, collidableOther
+						colliderThis, colliderOther
 					);
 
 					if (doEntitiesCollide == true)
 					{	
-						collisionHelper.collideEntities
+						collidableThis.defn().collidable.collide
 						(
-							null, collidableThis, collidableOther
+							collidableThis, collidableOther
+						);
+						collidableOther.defn().collidable.collide
+						(
+							collidableOther, collidableThis
 						);
 					}
 				}	

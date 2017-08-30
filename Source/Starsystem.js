@@ -43,15 +43,16 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			}
 		}
 		
+		var cameraPos = new Coords(0, 0, 0);
 		var cameraViewSizeInPixels = Globals.Instance.display.sizeInPixels.clone();
 		var cameraViewSizeInPixelsHalf = cameraViewSizeInPixels.clone().divideScalar(2);
-	
+
 		this.camera = new Entity
 		(
 			"Camera",
 			"Camera", // entityDefnName
 			[
-				new Body(new Location(new Coords(0, 0))),
+				new Body(new Location(cameraPos)),
 				new Camera(cameraViewSizeInPixels),
 				new Constrainable
 				(
@@ -63,11 +64,8 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 							[ 
 								new Bounds
 								(
-									cameraViewSizeInPixelsHalf, 
-									this.sizeInPixels.clone().subtract
-									(
-										cameraViewSizeInPixelsHalf
-									)
+									cameraPos,
+									cameraViewSizeInPixels
 								)
 							]
 						),

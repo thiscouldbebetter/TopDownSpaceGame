@@ -356,10 +356,10 @@ function Demo()
 			{
 				starsystemPos.x = x;
 
-				var starsystemPosWest = starsystemPos.clone().addXY(-1, 0).wrapToRangeMax(sizeInStarsystems);
-				var starsystemPosEast = starsystemPos.clone().addXY(1, 0).wrapToRangeMax(sizeInStarsystems);
-				var starsystemPosNorth = starsystemPos.clone().addXY(0, -1).wrapToRangeMax(sizeInStarsystems);
-				var starsystemPosSouth = starsystemPos.clone().addXY(0, 1).wrapToRangeMax(sizeInStarsystems);
+				var starsystemPosWest = starsystemPos.clone().addDimensions(-1, 0).wrapToRangeMax(sizeInStarsystems);
+				var starsystemPosEast = starsystemPos.clone().addDimensions(1, 0).wrapToRangeMax(sizeInStarsystems);
+				var starsystemPosNorth = starsystemPos.clone().addDimensions(0, -1).wrapToRangeMax(sizeInStarsystems);
+				var starsystemPosSouth = starsystemPos.clone().addDimensions(0, 1).wrapToRangeMax(sizeInStarsystems);
 
 				var starsystemNamePrefix = "System_";
 				var starsystemName = starsystemNamePrefix + starsystemPos.toString();
@@ -724,8 +724,8 @@ function Demo()
 				var boundsToConformTo = constraint.variables[0];
 				entityConstrainedLoc.pos.trimToRangeMinMax
 				(
-					boundsToConformTo.min,
-					boundsToConformTo.max
+					boundsToConformTo.min(),
+					boundsToConformTo.max()
 				);
 			}
 		);		
@@ -1207,7 +1207,7 @@ function Demo()
 
 			// properties
 			[
-				new BodyDefn(new Coords(3, 3)), // sizeInPixels
+				new BodyDefn(new Coords(3, 3, 1)), // sizeInPixels
 				new CollidableDefn
 				(
 					[], // entityDefnNameToCollideWith
@@ -1239,7 +1239,7 @@ function Demo()
 			[
 				new KillableDefn(1), // integrityMax
 				new EphemeralDefn(16), // ticksToLive
-				new BodyDefn(new Coords(3, 3)), // sizeInPixels
+				new BodyDefn(new Coords(3, 3, 1)), // sizeInPixels
 				new MoverDefn(1, 1, 16), // mass, force, speedMax
 				new DrawableDefn
 				(
@@ -1268,7 +1268,7 @@ function Demo()
 		(	
 			"Planet",
 			[
-				new BodyDefn(new Coords(16, 16)), // sizeInPixels
+				new BodyDefn(new Coords(16, 16, 1)), // sizeInPixels
 				new CollidableDefn([], function() {}),
 				new DrawableDefn
 				(
@@ -1299,7 +1299,7 @@ function Demo()
 			(
 				entityDefnName,
 				[
-					new BodyDefn(new Coords(19, 19)), // sizeInPixels
+					new BodyDefn(new Coords(19, 19, 1)), // sizeInPixels
 					new CollidableDefn([], function() {}),
 					new DrawableDefn
 					(
@@ -1344,7 +1344,7 @@ function Demo()
 		(
 			"Sun",
 			[
-				new BodyDefn(new Coords(20, 20)), // sizeInPixels
+				new BodyDefn(new Coords(20, 20, 1)), // sizeInPixels
 				new DrawableDefn
 				(
 					//new AnimationRun(AnimationDefnSet.fromImages("Sun", imagesForSun))
@@ -1359,7 +1359,7 @@ function Demo()
 			"Friendly", 
 			[
 				new KillableDefn(1), // integrityMax
-				new BodyDefn(new Coords(16, 9)), // sizeInPixels
+				new BodyDefn(new Coords(16, 9, 1)), // sizeInPixels
 				new MoverDefn(1, 1, 4), // mass, forcePerTick, speedMax
 				new ActorDefn("DoNothing"),
 				new DrawableDefn
@@ -1376,7 +1376,7 @@ function Demo()
 			"Enemy", 	
 			[
 				new ActorDefn("MoveRandomly"),
-				new BodyDefn(new Coords(16, 9)), // sizeInPixels
+				new BodyDefn(new Coords(16, 9, 1)), // sizeInPixels
 				new CollidableDefn
 				(
 					[ "Player" ],
@@ -1468,7 +1468,7 @@ function Demo()
 			"Player", 	
 			[
 				new ActorDefn("UserInputAccept"),
-				new BodyDefn(new Coords(9, 9)), // sizeInPixels	
+				new BodyDefn(new Coords(9, 9, 1)), // sizeInPixels	
 				new CollidableDefn
 				(
 					[ "ItemCollection", "Enemy", "Planet", "Portal" ],
@@ -1485,6 +1485,7 @@ function Demo()
 					*/
 					new VisualDirectional
 					(
+						new VisualNone(),
 						VisualImage.manyFromImages(imagesForPlayerClockwise)
 					)
 				),

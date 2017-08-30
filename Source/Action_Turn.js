@@ -13,15 +13,15 @@ function Action_Turn(directionToTurn)
 
 		var turnRate = .25;
 
-		actorLoc.orientation = new Orientation
+		actorOrientation.forwardSet
 		(
-			actorOrientation.forward.clone().add
+			actorOrientation.right.clone().multiplyScalar
 			(
-				actorOrientation.right.multiplyScalar
-				(
-					turnRate
-					* this.directionToTurn
-				)
+				turnRate
+				* this.directionToTurn
+			).add
+			(
+				actorOrientation.forward
 			)
 		);
 
