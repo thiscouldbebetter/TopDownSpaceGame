@@ -7,11 +7,12 @@ function Simulation()
 	{
 		//localStorage.clear(); 
 
-		var displaySizeInPixels = new Coords(400, 300);
+		var displaySizeInPixels = new Coords(400, 300, 1);
 	
 		var display = new Display
 		(
-			displaySizeInPixels, 
+			[ displaySizeInPixels ],
+			"Font",
 			10, // fontHeightInPixels
 			"Gray", "White" // colorFore, colorBack
 		);
@@ -30,17 +31,22 @@ function Simulation()
 			// videos
 			[
 				new Video("Movie", "Framework/Media/Movie.webm"),
+			],
+			// fonts
+			[
+				new Font("Font", "Framework/Media/Font.ttf"),
 			]
 		);
 
 		var universe0 = Universe.new(null);
 
-		Globals.prototype.initialize
+		Globals.Instance.initialize
 		(
 			"TopDownSpaceGame",
 			20, // timerTicksPerSecond
 			display,
-			mediaLibrary,		
+			mediaLibrary,
+			new ControlBuilder([ControlStyle.Instances.Default]),
 			universe0
 		);
 	}
