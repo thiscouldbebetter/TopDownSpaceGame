@@ -32,7 +32,7 @@ function DrawableDefn(visual)
 			camera.body.loc.pos
 		).add
 		(
-			camera.camera.viewSizeInPixelsHalf
+			camera.camera.viewSizeHalf
 		);
 		visual.drawToDisplayForDrawableAndLoc
 		(

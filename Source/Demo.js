@@ -318,7 +318,6 @@ function Demo()
 			sizeInStarsystems = new Coords(10, 10, 1);
 		}
 
-		//var font = this.font();
 		var nameGenerator = new NameGenerator();
 		
 		var itemDefns = this.world_ItemDefns();
