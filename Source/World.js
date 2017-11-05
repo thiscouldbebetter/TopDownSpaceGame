@@ -3,7 +3,6 @@ function World
 (
 	name, 
 	colors, 
-	font, 
 	itemDefns, 
 	actions,
 	activityDefns, 
@@ -15,7 +14,6 @@ function World
 {
 	this.name = name;
 	this.colors = colors.addLookups("name");
-	this.font = font;
 	this.itemDefns = itemDefns.addLookups("name");
 	this.actions = actions.addLookups("name");
 	this.activityDefns = activityDefns.addLookups("name");

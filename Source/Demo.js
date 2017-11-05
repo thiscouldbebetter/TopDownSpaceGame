@@ -315,10 +315,10 @@ function Demo()
 	{
 		if (sizeInStarsystems == null)
 		{
-			sizeInStarsystems = new Coords(10, 10);
+			sizeInStarsystems = new Coords(10, 10, 1);
 		}
 
-		var font = this.font();
+		//var font = this.font();
 		var nameGenerator = new NameGenerator();
 		
 		var itemDefns = this.world_ItemDefns();
@@ -356,10 +356,10 @@ function Demo()
 			{
 				starsystemPos.x = x;
 
-				var starsystemPosWest = starsystemPos.clone().addDimensions(-1, 0).wrapToRangeMax(sizeInStarsystems);
-				var starsystemPosEast = starsystemPos.clone().addDimensions(1, 0).wrapToRangeMax(sizeInStarsystems);
-				var starsystemPosNorth = starsystemPos.clone().addDimensions(0, -1).wrapToRangeMax(sizeInStarsystems);
-				var starsystemPosSouth = starsystemPos.clone().addDimensions(0, 1).wrapToRangeMax(sizeInStarsystems);
+				var starsystemPosWest = starsystemPos.clone().addDimensions(-1, 0, 0).wrapToRangeMax(sizeInStarsystems);
+				var starsystemPosEast = starsystemPos.clone().addDimensions(1, 0, 0).wrapToRangeMax(sizeInStarsystems);
+				var starsystemPosNorth = starsystemPos.clone().addDimensions(0, -1, 0).wrapToRangeMax(sizeInStarsystems);
+				var starsystemPosSouth = starsystemPos.clone().addDimensions(0, 1, 0).wrapToRangeMax(sizeInStarsystems);
 
 				var starsystemNamePrefix = "System_";
 				var starsystemName = starsystemNamePrefix + starsystemPos.toString();
@@ -554,7 +554,6 @@ function Demo()
 		(
 			"WorldGrid" + sizeInStarsystems.toString(),
 			colors,
-			font,
 			itemDefns,
 			actions,
 			activityDefns,
@@ -739,10 +738,13 @@ function Demo()
 				var starsystem = entityConstrained.body.loc.venue;
 				var nameOfEntityToFollow = constraint.variables[0];
 				var entityToFollow = starsystem.entities[nameOfEntityToFollow];
-				entityConstrained.body.loc.pos.overwriteWith
-				(
-					entityToFollow.body.loc.pos
-				);
+				if (entityToFollow != null) // hack
+				{
+					entityConstrained.body.loc.pos.overwriteWith
+					(
+						entityToFollow.body.loc.pos
+					);
+				}
 			}
 		);
 		
