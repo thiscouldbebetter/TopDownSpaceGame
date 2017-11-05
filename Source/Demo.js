@@ -539,12 +539,11 @@ function Demo()
 		var conformToBounds = new ConstraintDefn
 		(
 			"ConformToBounds",
-			// applyConstraintToEntity
-			function(constraint, entityConstrained)
+			function constrain(universe, world, place, entity, target)
 			{
-				var entityConstrainedLoc = entityConstrained.body.loc;
-				var boundsToConformTo = constraint.variables[0];
-				entityConstrainedLoc.pos.trimToRangeMinMax
+				var entityLoc = entity.body.loc;
+				var boundsToConformTo = target;
+				entityLoc.pos.trimToRangeMinMax
 				(
 					boundsToConformTo.min(),
 					boundsToConformTo.max()
@@ -555,15 +554,14 @@ function Demo()
 		var followEntityByName = new ConstraintDefn
 		(
 			"FollowEntityByName",
-			// applyConstraintToEntity
-			function(constraint, entityConstrained)
+			function constrain(universe, world, place, entity, target)
 			{
-				var starsystem = entityConstrained.body.loc.venue;
-				var nameOfEntityToFollow = constraint.variables[0];
+				var starsystem = entity.body.loc.venue;
+				var nameOfEntityToFollow = target;
 				var entityToFollow = starsystem.entities[nameOfEntityToFollow];
 				if (entityToFollow != null) // hack
 				{
-					entityConstrained.body.loc.pos.overwriteWith
+					entity.body.loc.pos.overwriteWith
 					(
 						entityToFollow.body.loc.pos
 					);

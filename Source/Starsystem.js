@@ -57,17 +57,15 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 				new Constrainable
 				(
 					[
-						new Constraint("FollowEntityByName", [ "Player" ]),
+						new Constraint("FollowEntityByName", "Player"),
 						new Constraint
 						(
-							"ConformToBounds", 
-							[ 
-								new Bounds
-								(
-									cameraPos,
-									cameraViewSizeInPixels
-								)
-							]
+							"ConformToBounds", 						
+							new Bounds
+							(
+								cameraPos,
+								cameraViewSizeInPixels
+							)
 						),
 					]
 				),
