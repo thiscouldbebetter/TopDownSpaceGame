@@ -5,311 +5,141 @@ function Demo()
 }
 
 {
-	Demo.prototype.font = function()
+	Demo.prototype.actions = function()
 	{
-		var characterSize = new Coords(5, 5);
-		var charactersAvailable = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !>/";		
-		var characterImages = new ImageHelper().buildImagesFromStringArrays
-		("Font", [
-			[
-				".aaa.",
-				"a...a",
-				"aaaaa",
-				"a...a",
-				"a...a",
-			],
-			[
-				"aaaa.",
-				"a...a",
-				"aaaa.",
-				"a...a",
-				"aaaa.",
-			],
-			[
-				".aaaa",
-				"a....",
-				"a....",
-				"a....",
-				".aaaa",
-			],
-			[
-				"aaaa.",
-				"a...a",
-				"a...a",
-				"a...a",
-				"aaaa.",
-			],
-			[
-				"aaaaa",
-				"a....",
-				"aaaa.",
-				"a....",
-				"aaaaa",
-			],
-			[
-				"aaaaa",
-				"a....",
-				"aaaa.",
-				"a....",
-				"a....",
-			],
-			[
-				".aaaa",
-				"a....",
-				"a..aa",
-				"a...a",
-				".aaaa",
-			],
-			[
-				"a...a",
-				"a...a",
-				"aaaaa",
-				"a...a",
-				"a...a",
-			],
-			[
-				"aaaaa",
-				"..a..",
-				"..a..",
-				"..a..",
-				"aaaaa",
-			],
-			[
-				".aaaaa",
-				"....a.",
-				"....a.",
-				".a..a.",
-				"..aa..",
-			],
-			[
-				"a...a",
-				"a..a.",
-				"aaa..",
-				"a..a.",
-				"a...a",
-			],
-			[
-				"a....",
-				"a....",
-				"a....",
-				"a....",
-				"aaaaa",
-			],
-			[
-				"a...a",
-				"aa.aa",
-				"a.a.a",
-				"a...a",
-				"a...a",
-			],
-			[
-				"a...a",
-				"aa..a",
-				"a.a.a",
-				"a..aa",
-				"a...a",
-			],
-			[
-				".aaa.",
-				"a...a",
-				"a...a",
-				"a...a",
-				".aaa.",
-			],
-			[
-				"aaaa.",
-				"a...a",
-				"aaaa.",
-				"a....",
-				"a.....",
-			],
-			[
-				".aaa.",
-				"a...a",
-				"a...a",
-				".aaa.",
-				"..a..",
-			],
-			[
-				"aaaa.",
-				"a...a",
-				"aaaa.",
-				"a..a.",
-				"a...a",
-			],
-			[
-				".aaaa",
-				"a....",
-				".aaa.",
-				"....a",
-				"aaaa.",
-			],
-			[
-				"aaaaa",
-				"..a..",
-				"..a..",
-				"..a..",
-				"..a..",
-			],
-			[
-				"a...a",
-				"a...a",
-				"a...a",
-				"a...a",
-				".aaa.",
-			],
-			[
-				"a...a",
-				"a...a",
-				".a.a.",
-				".a.a.",
-				"..a..",
-			],
-			[
-				"a...a",
-				"a...a",
-				"a.a.a",
-				"aa.aa",
-				"a...a",
-			],
-			[
-				"a...a",
-				".a.a.",
-				"..a..",
-				".a.a.",
-				"a...a",
-			],
-			[
-				"a...a",
-				".a.a.",
-				"..a..",
-				"..a..",
-				"..a..",
-			],
-			[
-				"aaaaa",
-				"...a.",
-				"..a..",
-				".a...",
-				"aaaaa",
-			],
-
-			// numeaals
-
-			[
-				".aaa.",
-				"a...a",
-				"a...a",
-				"a...a",
-				".aaa.",
-			],
-			[
-				"..a..",
-				".aa..",
-				"..a..",
-				"..a..",
-				"aaaaa",
-			],
-			[
-				".aaa.",
-				"a...a",
-				"...a.",
-				"..a..",
-				"aaaaa",
-			],
-			[
-				".aaa.",
-				"a...a",
-				"...a.",
-				"a...a",
-				".aaa.",
-			],
-			[
-				"a...a",
-				"a...a",
-				"aaaaa",
-				"....a",
-				"....a",
-			],
-			[
-				"aaaaa",
-				"a....",
-				".aaa.",
-				"....a",
-				"aaaa.",
-			],
-
-			[
-				".aaa.",
-				"a....",
-				"aaaa.",
-				"a...a",
-				".aaa.",
-			],
-			[
-				"aaaaa",
-				"...a.",
-				"..aa.",
-				".a...",
-				"a....",
-			],
-			[
-				".aaa.",
-				"a...a",
-				".aaa.",
-				"a...a",
-				".aaa.",
-			],
-			[
-				".aaa.",
-				"a...a",
-				".aaaa",
-				"....a",
-				".aaa.",
-			],
-
-			// punctuation
-
-			[
-				".....",
-				".....",
-				".....",
-				".....",
-				".....",
-			],
-			[
-				"..a..",
-				"..a..",
-				"..a..",
-				".....",
-				"..a..",
-			],
-			[
-				".aa..",
-				"..aa.",
-				"...aa",
-				"..aa.",
-				".aa..",
-			],
-			[
-				"....a",
-				"...a.",
-				"..a..",
-				".a...",
-				"a....",
-			],			
-		]);
-
-		var font = new Font
+		var accelerate = new Action
 		(
-			"Font",
-			characterSize,
-			charactersAvailable,
-			characterImages
+			"Accelerate", 
+			function(actor)
+			{		
+				var fuelUsedByAcceleration = 1;
+				var itemFuel = actor.itemContainer.items["Fuel"];
+				
+				if (itemFuel.quantity >= fuelUsedByAcceleration)
+				{
+					itemFuel.quantity -= fuelUsedByAcceleration;
+					
+					var actorLoc = actor.body.loc;
+					var actorOrientation = actorLoc.orientation;
+
+					actorLoc.accel.add
+					(
+						new Coords().overwriteWith
+						(
+							actorOrientation.forward
+						).multiplyScalar
+						(
+							.3 // accelerationPerTick
+						)
+					);			
+				}	
+			}
 		);
 
-		return font;
+		var fire = new Action
+		(
+			"Fire",
+			function perform(actor)
+			{	
+				var itemFuel = actor.itemContainer.items["Fuel"];
+				var fuelConsumed = 10;
+				if (itemFuel.quantity >= fuelConsumed)
+				{
+					itemFuel.quantity -= fuelConsumed;
+					
+					var venue = actor.body.loc.venue;
+					var world = Globals.Instance.universe.world;
+					var entityDefnProjectile = world.entityDefns["Projectile"];
+
+					var entityToSpawn = new Entity
+					(
+						"[projectile]", 
+						entityDefnProjectile.name,
+						[
+							new Body(actor.body.loc.clone())
+						]
+					);
+
+					var forward = actor.body.loc.orientation.forward;
+					entityToSpawn.body.loc.vel = forward.clone().normalize().multiplyScalar
+					(
+						entityDefnProjectile.mover.speedMax
+					);
+
+					venue.entitiesToSpawn.push(entityToSpawn);			
+				}
+			}
+		);
+
+		var turnLeft = new Action
+		(
+			"TurnLeft",
+			function perform(actor)
+			{
+				var actorLoc = actor.body.loc;
+				var actorOrientation = actorLoc.orientation;
+
+				var turnRate = .25;
+
+				actorOrientation.forwardSet
+				(
+					actorOrientation.right.clone().multiplyScalar
+					(
+						0 - turnRate
+					).add
+					(
+						actorOrientation.forward
+					)
+				);
+
+				var actorHeading = Math.floor(
+					actorLoc.orientation.headingInTurns() * 8 // hack
+				);
+
+				actor.drawable.visual.animationDefnNameNext = "" + actorHeading;
+			}
+		);
+
+		var turnRight = new Action
+		(
+			"TurnRight",
+			function perform(actor)
+			{
+				var actorLoc = actor.body.loc;
+				var actorOrientation = actorLoc.orientation;
+
+				var turnRate = .25;
+
+				actorOrientation.forwardSet
+				(
+					actorOrientation.right.clone().multiplyScalar
+					(
+						turnRate
+					).add
+					(
+						actorOrientation.forward
+					)
+				);
+
+				var actorHeading = Math.floor(
+					actorLoc.orientation.headingInTurns() * 8 // hack
+				);
+
+				actor.drawable.visual.animationDefnNameNext = "" + actorHeading;
+			}
+		);
+
+		var actions = 
+		[
+			accelerate, 
+			fire,
+			turnLeft,
+			turnRight,
+		];
+
+		return actions;
 	}
+
 
 	Demo.prototype.worldGrid = function(sizeInStarsystems)
 	{
@@ -322,13 +152,7 @@ function Demo()
 		
 		var itemDefns = this.world_ItemDefns();
 		
-		var actions = 
-		[
-			new Action_Accelerate(), 
-			new Action_Fire(),
-			new Action_Turn(1),
-			new Action_Turn(-1),	
-		];
+		var actions = this.actions();
 
 		var activityDefns = this.world_ActivityDefns();
 
@@ -1415,6 +1239,7 @@ function Demo()
 			{
 				player.killable.integrity = 0;
 
+				/*
 				starsystem.entitiesToSpawn.push
 				(		
 					Globals.Instance.universe.world.font.buildEntityForText
@@ -1424,6 +1249,9 @@ function Demo()
 						true // isFloater
 					)
 				);
+				*/
+				// hack
+				alert("You lose!");
 			}
 			else if (entityOtherProperties["Planet"] != null)
 			{
