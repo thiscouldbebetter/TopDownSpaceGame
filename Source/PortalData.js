@@ -7,9 +7,8 @@ function PortalData(destinationStarsystemName, destinationPos, color)
 {
 	PortalData.prototype.propertyName = function() { return "Portal"; }
 	
-	PortalData.prototype.destinationStarsystem = function()
+	PortalData.prototype.destinationStarsystem = function(world)
 	{
-		var world = Globals.Instance.universe.world;
 		return world.starsystems[this.destinationStarsystemName];
 	}
 }

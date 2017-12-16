@@ -5,8 +5,6 @@ function Simulation()
 {
 	Simulation.prototype.main = function()
 	{
-		//localStorage.clear(); 
-
 		var displaySizeInPixels = new Coords(400, 300, 1);
 	
 		var display = new Display
@@ -38,16 +36,11 @@ function Simulation()
 			]
 		);
 
-		var universe0 = Universe.new(null);
-
-		Globals.Instance.initialize
+		var universe = Universe.new
 		(
-			"TopDownSpaceGame",
-			20, // timerTicksPerSecond
-			display,
-			mediaLibrary,
-			new ControlBuilder([ControlStyle.Instances.Default]),
-			universe0
+			"TopDownSpaceGame", new TimerHelper(20), display, mediaLibrary, null
 		);
+		universe.initialize();
+
 	}
 }

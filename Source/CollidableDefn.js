@@ -8,12 +8,13 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 {
 	CollidableDefn.prototype.propertyName = function() { return "Collidable"; }
 
-	CollidableDefn.prototype.updateEntityForVenue = function(entity, venue)
+	CollidableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
 	{
-		var collisionHelper = Globals.Instance.collisionHelper;
+		var world = universe.world;
+		var collisionHelper = universe.collisionHelper;
 
 		var collidableThis = entity;
-		var colliderThis = collidableThis.bounds();
+		var colliderThis = collidableThis.bounds(world);
 
 		for (var i = 0; i < this.propertyNamesCollidedWith.length; i++)
 		{
@@ -25,7 +26,7 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 				var collidableOther = entitiesToCollideWith[j];
 				if (collidableOther != collidableThis)	
 				{
-					var colliderOther = collidableOther.bounds();
+					var colliderOther = collidableOther.bounds(world);
 
 					var doEntitiesCollide = collisionHelper.doCollidersCollide
 					(
@@ -34,13 +35,13 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 
 					if (doEntitiesCollide == true)
 					{	
-						collidableThis.defn().collidable.collide
+						collidableThis.defn(world).collidable.collide
 						(
-							collidableThis, collidableOther
+							world, collidableThis, collidableOther
 						);
-						collidableOther.defn().collidable.collide
+						collidableOther.defn(world).collidable.collide
 						(
-							collidableOther, collidableThis
+							world, collidableOther, collidableThis
 						);
 					}
 				}	

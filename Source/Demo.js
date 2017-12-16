@@ -10,7 +10,7 @@ function Demo()
 		var accelerate = new Action
 		(
 			"Accelerate", 
-			function(actor)
+			function perform(world, actor)
 			{		
 				var fuelUsedByAcceleration = 1;
 				var itemFuel = actor.itemContainer.items["Fuel"];
@@ -39,7 +39,7 @@ function Demo()
 		var fire = new Action
 		(
 			"Fire",
-			function perform(actor)
+			function perform(world, actor)
 			{	
 				var itemFuel = actor.itemContainer.items["Fuel"];
 				var fuelConsumed = 10;
@@ -48,7 +48,6 @@ function Demo()
 					itemFuel.quantity -= fuelConsumed;
 					
 					var venue = actor.body.loc.venue;
-					var world = Globals.Instance.universe.world;
 					var entityDefnProjectile = world.entityDefns["Projectile"];
 
 					var entityToSpawn = new Entity
@@ -74,7 +73,7 @@ function Demo()
 		var turnLeft = new Action
 		(
 			"TurnLeft",
-			function perform(actor)
+			function perform(world, actor)
 			{
 				var actorLoc = actor.body.loc;
 				var actorOrientation = actorLoc.orientation;
@@ -103,7 +102,7 @@ function Demo()
 		var turnRight = new Action
 		(
 			"TurnRight",
-			function perform(actor)
+			function perform(world, actor)
 			{
 				var actorLoc = actor.body.loc;
 				var actorOrientation = actorLoc.orientation;
@@ -141,7 +140,7 @@ function Demo()
 	}
 
 
-	Demo.prototype.worldGrid = function(sizeInStarsystems)
+	Demo.prototype.worldGrid = function(universe, sizeInStarsystems)
 	{
 		if (sizeInStarsystems == null)
 		{
@@ -160,7 +159,7 @@ function Demo()
 		
 		var constraintDefns = this.world_ConstraintDefns();
 
-		var entityDefns = this.world_EntityDefns();
+		var entityDefns = this.world_EntityDefns(universe);
 
 		var starsystemDefns = this.world_StarsystemDefns();
 
@@ -414,12 +413,12 @@ function Demo()
 		(
 			"DoNothing",
 			// initialize
-			function(activity) 
+			function(universe, activity) 
 			{
 				// do nothing
 			},
 			// perform 
-			function(activity)
+			function(universe, activity)
 			{
 				// do nothing
 			}
@@ -430,10 +429,10 @@ function Demo()
 			"MoveRandomly",
 
 			// initialize
-			function(activity) {},
+			function(universe, activity) {},
 
 			// perform 
-			function(activity)
+			function(universe, activity)
 			{
 				var actor = activity.actor;
 				var actorLoc = actor.body.loc;
@@ -465,7 +464,7 @@ function Demo()
 					var timeToTarget = 
 						distanceToTarget / speedCurrent;
 
-					var moverDefn = actor.defn().mover;
+					var moverDefn = actor.defn(universe.world).mover;
 
 					var accelerationCurrent = 
 						moverDefn.force / moverDefn.mass;
@@ -485,7 +484,7 @@ function Demo()
 				{
 					var forceToApplyTowardTarget = directionToAccelerate.clone().multiplyScalar
 					(
-						actor.defn().mover.force
+						actor.defn(universe.world).mover.force
 					);
 					actorLoc.force.add(forceToApplyTowardTarget);
 				}
@@ -497,17 +496,19 @@ function Demo()
 			"UserInputAccept",
 
 			// initialize 
-			function(activity) 
+			function(universe, activity) 
 			{},
 
 			// perform 
-			function(activity)
+			function(universe, activity)
 			{
-				var inputsActive = Globals.Instance.inputHelper.inputsActive;
+				var inputHelper = universe.inputHelper
+				var inputsActive = inputHelper.inputsActive;
 				var actionsFromActor = activity.actor.actions;
-				var world = Globals.Instance.universe.world;
+				var world = universe.world;
 				var starsystemCurrent = world.starsystemCurrent;
-				var inputToActionMappings = starsystemCurrent.defn().inputToActionMappings; 
+				var starsystemDefn = starsystemCurrent.defn(world);
+				var inputToActionMappings = starsystemDefn.inputToActionMappings; 
 
 				for (var i = 0; i < inputsActive.length; i++)
 				{
@@ -515,7 +516,7 @@ function Demo()
 					var mapping = inputToActionMappings[inputActive];
 					if (mapping != null)
 					{
-						var action = mapping.action();
+						var action = mapping.action(universe);
 						actionsFromActor.push(action);
 					}
 				}	
@@ -579,7 +580,7 @@ function Demo()
 
 	}
 
-	Demo.prototype.world_EntityDefns = function()
+	Demo.prototype.world_EntityDefns = function(universe)
 	{
 		var imageHelper = new ImageHelper();
 		
@@ -628,7 +629,7 @@ function Demo()
 			]	
 		);		
 
-		var mediaLibrary = Globals.Instance.mediaLibrary;
+		var mediaLibrary = universe.mediaLibrary;
 		mediaLibrary.imagesAdd(imagesForItemCollection);
 
 		var imageMoverProjectile = imageHelper.buildImageFromStrings
@@ -727,7 +728,7 @@ function Demo()
 				"......ccccc.....",
 			]
 		)
-		//imagePlanet = imageHelper.imageToColor(imagePlanet, Color.Instances.Green);
+		imagePlanet = imageHelper.imageToColor(imagePlanet, Color.Instances.Green);
 		
 		mediaLibrary.imagesAdd([imagePlanet]);	
 
@@ -1074,12 +1075,12 @@ function Demo()
 				(
 					[ "Enemy" ],
 					// collide
-					function(entityThis, entityOther)
+					function(world, entityThis, entityOther)
 					{
 						var entityOtherProperties = entityOther.defn().properties;
 						if (entityOtherProperties["Enemy"] != null)
 						{
-							entityOther.killable.integrity -= entityThis.defn().projectile.damage;
+							entityOther.killable.integrity -= entityThis.defn(world).projectile.damage;
 							entityThis.killable.integrity = 0;
 						}
 					}
@@ -1220,11 +1221,11 @@ function Demo()
 			]
 		);
 
-		var playerCollide = function(entityThis, entityOther)
+		var playerCollide = function(world, entityThis, entityOther)
 		{
 			var player = entityThis;
 			var starsystem = player.body.loc.venue;
-			var entityOtherProperties = entityOther.defn().properties;
+			var entityOtherProperties = entityOther.defn(world).properties;
 			
 			if (entityOtherProperties["ItemCollection"] != null)
 			{
@@ -1257,7 +1258,7 @@ function Demo()
 				var itemTradeOffer = planet.planet.itemTradeOffer;
 				if (itemTradeOffer != null)
 				{
-					itemTradeOffer.trade(player, planet);
+					itemTradeOffer.trade(world, player, planet);
 				}
 			}
 			else if (entityOtherProperties["Portal"] != null)
@@ -1275,16 +1276,13 @@ function Demo()
 					itemFuel.quantity -= fuelUsedByPortal;
 					
 					var destinationStarsystemName = portalData.destinationStarsystemName;
-					var universe = Globals.Instance.universe;
-					var starsystems = universe.world.starsystems;
+					var starsystems = world.starsystems;
 					var destinationStarsystem = starsystems[destinationStarsystemName];
 					
 					destinationStarsystem.entitiesToSpawn.push(player);
 					entityThis.body.loc.pos.overwriteWith(portalData.destinationPos);
 					universe.world.starsystemNext = destinationStarsystem;					
 				}
-	
-
 			}
 		}
 		
@@ -1461,10 +1459,10 @@ function Demo()
 			(
 				"StarsystemDefn0",
 				[
-					new InputToActionMapping("w", "Accelerate", false),
-					new InputToActionMapping("a", "TurnLeft", false),
-					new InputToActionMapping("d", "TurnRight", false),
-					new InputToActionMapping("f", "Fire", true),
+					new InputToActionMapping("_w", "Accelerate", false),
+					new InputToActionMapping("_a", "TurnLeft", false),
+					new InputToActionMapping("_d", "TurnRight", false),
+					new InputToActionMapping("_f", "Fire", true),
 				]
 			),
 		];

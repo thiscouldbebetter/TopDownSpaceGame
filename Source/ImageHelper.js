@@ -16,7 +16,7 @@ function ImageHelper()
 		var canvas = canvasAndGraphics[0];
 		var graphics = canvasAndGraphics[1];
 
-		var imageSizeInPixels = image.sizeInPixels();
+		var imageSizeInPixels = image.sizeInPixels;
 		var pixelPos = new Coords();
 		var pixelColor = new Color("Color", "x", [.1, .2, .3, 1]);
 
@@ -179,7 +179,7 @@ function ImageHelper()
 	ImageHelper.prototype.imageToCanvasAndGraphicsContext = function(image)
 	{
 		var canvas = document.createElement("canvas");
-		var imageSizeInPixels = image.sizeInPixels();
+		var imageSizeInPixels = image.sizeInPixels;
 		canvas.width = imageSizeInPixels.x;
 		canvas.height = imageSizeInPixels.y;
 
@@ -187,7 +187,7 @@ function ImageHelper()
 
 		graphics.drawImage
 		(
-			image.systemImage(), 
+			image.systemImage, 
 			0, 0
 		);
 

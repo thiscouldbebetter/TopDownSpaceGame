@@ -7,12 +7,12 @@ function EphemeralDefn(ticksToLive)
 {
 	EphemeralDefn.prototype.propertyName = function() { return "Ephemeral"; }
 
-	EphemeralDefn.prototype.initializeEntityForVenue = function(entity, venue) 
+	EphemeralDefn.prototype.initializeEntityForVenue = function(universe, entity, venue) 
 	{ 
-		entity.ticksToLive = entity.defn().ephemeral.ticksToLive; 
+		entity.ticksToLive = entity.defn(universe.world).ephemeral.ticksToLive; 
 	}
 	
-	EphemeralDefn.prototype.updateEntityForVenue = function(entity, venue) 
+	EphemeralDefn.prototype.updateEntityForVenue = function(universe, entity, venue) 
 	{ 
 		entity.ticksToLive--; 
 		if (entity.ticksToLive <= 0)

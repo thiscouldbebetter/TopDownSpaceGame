@@ -9,9 +9,9 @@ function Item(defnName, quantity)
 		return new Item(this.defnName, this.quantity);
 	}
 	
-	Item.prototype.defn = function()
+	Item.prototype.defn = function(world)
 	{
-		return Globals.Instance.universe.world.itemDefns[this.defnName];
+		return world.itemDefns[this.defnName];
 	}
 	
 	Item.prototype.toString = function()

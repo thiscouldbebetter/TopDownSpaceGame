@@ -9,20 +9,20 @@ function Activity(actor, defnName, target)
 {
 	// instance methods
 
-	Activity.prototype.defn = function()
+	Activity.prototype.defn = function(universe)
 	{
-		return Globals.Instance.universe.world.activityDefns[this.defnName];
+		return universe.world.activityDefns[this.defnName];
 	}
 
-	Activity.prototype.initialize = function()
+	Activity.prototype.initialize = function(universe)
 	{
 		this.vars = new Activity_Variables();
-		this.defn().initialize(this);
+		this.defn(universe).initialize(this);
 	}
 
-	Activity.prototype.perform = function()
+	Activity.prototype.perform = function(universe)
 	{
-		this.defn().perform(this);
+		this.defn(universe).perform(universe, this);
 	}
 
 	// inner classes

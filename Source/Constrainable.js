@@ -5,8 +5,8 @@ function Constrainable(constraints)
 {
 	Constrainable.prototype.propertyName = function() { return "Constrainable"; }
 	
-	Constrainable.prototype.updateEntityForVenue = function(entity, venue)
+	Constrainable.prototype.updateEntityForVenue = function(universe, entity, venue)
 	{
-		entity.defn().constrainable.updateEntityForVenue(entity, venue);
+		entity.defn().constrainable.updateEntityForVenue(universe, entity, venue);
 	}
 }

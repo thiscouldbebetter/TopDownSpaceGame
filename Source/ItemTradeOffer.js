@@ -24,36 +24,34 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 
 	// instance methods
 	
-	ItemTradeOffer.prototype.isCharged = function()
+	ItemTradeOffer.prototype.isCharged = function(world)
 	{
 		var returnValue = 
-			(this.secondLastUsed == null ? true : (this.secondsSinceLastUsed() >= this.secondsToRecharge));
+			(this.secondLastUsed == null ? true : (this.secondsSinceLastUsed(world) >= this.secondsToRecharge));
 		return returnValue;
 	}
 		
-	ItemTradeOffer.prototype.secondsSinceLastUsed = function()
+	ItemTradeOffer.prototype.secondsSinceLastUsed = function(world)
 	{
-		var world = Globals.Instance.universe.world;
 		return world.secondsSoFar() - this.secondLastUsed;
 	}
 	
-	ItemTradeOffer.prototype.trade = function(entityCustomer, entityVendor)
+	ItemTradeOffer.prototype.trade = function(world, entityCustomer, entityVendor)
 	{
 		var customerItemContainer = entityCustomer.itemContainer;
 		if (customerItemContainer.hasItem(this.itemTaken) == true)
 		{
 			customerItemContainer.itemSubtract(this.itemTaken);
 			customerItemContainer.itemAdd(this.itemGiven.clone());
-			var world = Globals.Instance.universe.world;
 			this.secondLastUsed = world.secondsSoFar();
 		}
 	}
 	
-	ItemTradeOffer.prototype.toString = function()
+	ItemTradeOffer.prototype.toString = function(world)
 	{
 		var returnValue;
 		
-		if (this.isCharged() == true)
+		if (this.isCharged(world) == true)
 		{ 
 			returnValue = this.itemTaken.toString() 
 				+ " > " 
@@ -64,7 +62,7 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 		else
 		{
 			returnValue = 
-				this.secondsSinceLastUsed() 
+				this.secondsSinceLastUsed(world) 
 				+ " / "
 				+ this.secondsToRecharge + "s";
 		}

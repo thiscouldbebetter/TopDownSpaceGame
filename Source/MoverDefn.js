@@ -9,7 +9,7 @@ function MoverDefn(massBase, force, speedMax)
 {
 	MoverDefn.prototype.propertyName = function() { return "Mover"; }
 
-	MoverDefn.prototype.updateEntityForVenue = function(entity, venue)
+	MoverDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
 	{
 		var mover = entity;
 
@@ -20,7 +20,7 @@ function MoverDefn(massBase, force, speedMax)
 		moverLoc.accel.add(accelToAdd);
 
 		moverLoc.vel.add(moverLoc.accel);
-		var moverSpeedMax = mover.defn().mover.speedMax;
+		var moverSpeedMax = mover.defn(universe.world).mover.speedMax;
 		if (moverLoc.vel.magnitude() > moverSpeedMax)
 		{
 			moverLoc.vel.normalize().multiplyScalar(moverSpeedMax);

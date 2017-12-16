@@ -5,9 +5,8 @@ function ConstrainableDefn()
 {	
 	ConstrainableDefn.prototype.propertyName = function() { return "Constrainable"; }	
 
-	ConstrainableDefn.prototype.updateEntityForVenue = function(entity, venue)
+	ConstrainableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
 	{
-		var universe = Globals.Instance.universe;
 		var world = universe.world;
 		var place = venue;
 

@@ -5,7 +5,7 @@ function ItemContainerDefn(itemsInitial)
 {
 	ItemContainerDefn.prototype.propertyName = function() { return "ItemContainer"; }
 	
-	ItemContainerDefn.prototype.initializeEntityForVenue = function(entity, venue)
+	ItemContainerDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
 	{
 		if (entity.itemContainer == null)
 		{

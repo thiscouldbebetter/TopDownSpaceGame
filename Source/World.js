@@ -30,9 +30,9 @@ function World
 {
 	// static methods
 	
-	World.new = function()
+	World.new = function(universe)
 	{
-		return new Demo().worldGrid(null);
+		return new Demo().worldGrid(universe, null);
 	}
 	
 	// instance methods
@@ -42,31 +42,31 @@ function World
 		// todo
 	}
 
-	World.prototype.initialize = function()
+	World.prototype.initialize = function(universe)
 	{
 		this.starsystemNext = this.starsystems[0];		
 	}
 	
-	World.prototype.secondsSoFar = function()
+	World.prototype.secondsSoFar = function(universe)
 	{
 		return Math.round
 		(
-			this.timerTicksSoFar / Globals.Instance.timerTicksPerSecond
+			this.timerTicksSoFar / universe.timerHelper.timerTicksPerSecond
 		);
 	}
 	
-	World.prototype.updateForTimerTick = function()
+	World.prototype.updateForTimerTick = function(universe)
 	{
 		if (this.starsystemNext != null)
 		{
-			this.starsystemNext.initialize();
+			this.starsystemNext.initialize(universe, this);
 
 			this.starsystemCurrent = this.starsystemNext;
 
 			this.starsystemNext = null;
 		}
 
-		this.starsystemCurrent.updateForTimerTick();
+		this.starsystemCurrent.updateForTimerTick(universe, this);
 				
 		this.timerTicksSoFar++;
 	}

@@ -8,10 +8,8 @@ function ControlText(name, entity, pos, dataSourceText)
 }
 
 {
-	ControlText.prototype.draw = function()
+	ControlText.prototype.draw = function(display)
 	{
-		var display = Globals.Instance.display;
-
 		var textToDraw = this.dataSourceText.evaluate(this.entity);
 
 		display.drawText

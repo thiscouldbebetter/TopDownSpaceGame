@@ -9,7 +9,7 @@ function Planet(name, color)
 {
 	Planet.prototype.propertyName = function() { return "Planet"; }
 
-	Planet.prototype.initializeEntityForVenue = function(entity, venue)
+	Planet.prototype.initializeEntityForVenue = function(universe, entity, venue)
 	{
 		// todo - Move this to PlanetDefn.
 		

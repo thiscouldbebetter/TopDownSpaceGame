@@ -7,19 +7,19 @@ function DrawableDefn(visual)
 {
 	DrawableDefn.prototype.propertyName = function() { return "Drawable"; }
 
-	DrawableDefn.prototype.initializeEntityForVenue = function(entity, venue)
+	DrawableDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
 	{
 		if (entity.drawable == null)
 		{
-			var visual = entity.defn().drawable.visual;
+			var visual = entity.defn(universe.world).drawable.visual;
 			entity.drawable = new Drawable(visual);//.cloneShallow());
 			//entity.drawable.visual.pos = entity.body.loc.pos;
 		}
 	}
 
-	DrawableDefn.prototype.updateEntityForVenue = function(entity, venue)
+	DrawableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
 	{
-		var display = Globals.Instance.display;
+		var display = universe.display;
 		var visual = entity.drawable.visual;
 		var camera = venue.camera;
 		var drawLoc = display.drawLoc.overwriteWith
@@ -34,9 +34,9 @@ function DrawableDefn(visual)
 		(
 			camera.camera.viewSizeHalf
 		);
-		visual.drawToDisplayForDrawableAndLoc
+		visual.draw
 		(
-			display, entity, drawLoc
+			universe, display, entity, drawLoc
 		);
 	}
 }

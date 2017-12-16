@@ -31,37 +31,36 @@ function Entity(name, defnName, properties)
 
 	// instance methods
 
-	Entity.prototype.activity = function(value) 
+	Entity.prototype.activity = function(universe, value) 
 	{ 
 		if (value != null)
 		{
 			this._activity = value;
-			this._activity.initialize(); 
+			this._activity.initialize(universe); 
 		} 
 
 		return this._activity;
 	}
 
-	Entity.prototype.bounds = function()
+	Entity.prototype.bounds = function(world)
 	{
 		if (this._bounds == null)
 		{
 			this._bounds = new Bounds
 			(
-				this.body.loc.pos, this.defn().body.sizeInPixels
+				this.body.loc.pos, this.defn(world).body.sizeInPixels
 			);
 		}
 
 		return this._bounds;
 	}
 
-	Entity.prototype.defn = function()
+	Entity.prototype.defn = function(world)
 	{
 		var returnValue;
 
 		if (this.defnName != null)
 		{
-			var world = Globals.Instance.universe.world;
 			var entityDefns = world.entityDefns;
 			returnValue = entityDefns[this.defnName];
 		}
