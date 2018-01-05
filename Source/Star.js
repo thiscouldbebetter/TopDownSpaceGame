@@ -14,7 +14,7 @@ function Star(name, color)
 				entity.drawable.visual,
 				new VisualOffset
 				(
-					new VisualText(new DataSourceLiteral(this.name)),
+					new VisualText(this.name, "White", "Black"),
 					new Coords(0, 20)
 				),
 			]

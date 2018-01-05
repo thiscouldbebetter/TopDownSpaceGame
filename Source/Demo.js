@@ -94,8 +94,6 @@ function Demo()
 				var actorHeading = Math.floor(
 					actorLoc.orientation.headingInTurns() * 8 // hack
 				);
-
-				actor.drawable.visual.animationDefnNameNext = "" + actorHeading;
 			}
 		);
 
@@ -123,8 +121,6 @@ function Demo()
 				var actorHeading = Math.floor(
 					actorLoc.orientation.headingInTurns() * 8 // hack
 				);
-
-				actor.drawable.visual.animationDefnNameNext = "" + actorHeading;
 			}
 		);
 
@@ -1014,6 +1010,8 @@ function Demo()
 
 		mediaLibrary.imagesAdd(imagesForPlayerClockwise);
 
+		var ticksPerAnimationFrame = 2;
+
 		var entityDefnCamera = new EntityDefn
 		(
 			"Camera",
@@ -1038,15 +1036,7 @@ function Demo()
 				),
 				new DrawableDefn
 				(
-					/*
-					AnimationDefnSet.fromImages
-					(
-						entityDefnName, 
-						imagesForItemCollection,
-						2 // ticksPerFrame
-					).toAnimationRun()
-					*/
-					new VisualImage(imagesForItemCollection[0].name),
+					new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesForItemCollection)),
 				),
 				new ItemCollectionDefn(),
 				new ItemContainerDefn([ new Item("Fuel", 100) ]), // hack
@@ -1066,7 +1056,6 @@ function Demo()
 				new MoverDefn(1, 1, 16), // mass, force, speedMax
 				new DrawableDefn
 				(
-					//new AnimationRun(AnimationDefnSet.fromImage(imageMoverProjectile))
 					new VisualImage(imageMoverProjectile.name),
 				),
 				new ProjectileDefn(),
@@ -1105,12 +1094,6 @@ function Demo()
 
 		var entityDefnsPortal = [];
 
-		var animationDefnSetPortal = AnimationDefnSet.fromImages
-		(
-			entityDefnName, 
-			imagesForPortal
-		);
-
 		var portalColorNames = [ "Red", "Green", "Blue", "Violet" ];
 		for (var c = 0; c < portalColorNames.length; c++)
 		{
@@ -1126,29 +1109,7 @@ function Demo()
 					new CollidableDefn([], function() {}),
 					new DrawableDefn
 					(
-						new VisualGroup
-						(
-							[
-								new VisualImage(imagesForPortal[0].name),
-								new VisualOffset
-								(
-									new VisualText
-									(
-										new DataSourceEntity
-										(
-											function(entity) 
-											{ 
-												var returnValue = 
-													"To " + entity.portal.destinationStarsystemName; 
-
-												return returnValue;
-											}
-										)
-									),
-									new Coords(0, 20) // offset
-								),
-							]
-						)
+						new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesForPortal)),
 					),
 					new PortalDefn(),
 				]
@@ -1164,8 +1125,7 @@ function Demo()
 				new BodyDefn(new Coords(20, 20, 1)), // sizeInPixels
 				new DrawableDefn
 				(
-					//new AnimationRun(AnimationDefnSet.fromImages("Sun", imagesForSun))
-					new VisualImage(imagesForSun[0].name)
+					new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesForSun))
 				),
 				new StarDefn(),
 			]
@@ -1181,8 +1141,7 @@ function Demo()
 				new ActorDefn("DoNothing"),
 				new DrawableDefn
 				(
-					//new AnimationRun(AnimationDefnSet.fromImages("Friendly", imagesFriendly))
-					new VisualImage(imagesFriendly[0].name)
+					new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesFriendly))
 				),
 				new FriendlyDefn(),
 			]
@@ -1205,8 +1164,7 @@ function Demo()
 				),
 				new DrawableDefn
 				(
-					//new AnimationRun(AnimationDefnSet.fromImages("Enemy", imagesEnemy))
-					new VisualImage(imagesEnemy[0].name)
+					new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesEnemy))
 				),
 				new KillableDefn(1), // integrityMax
 				new EnemyDefn(),
@@ -1295,12 +1253,6 @@ function Demo()
 				new ConstrainableDefn(),
 				new DrawableDefn
 				(
-					/*
-					AnimationDefnSet.fromImagesForHeadings
-					(
-						"Player", imagesForPlayerClockwise
-					).toAnimationRun()
-					*/
 					new VisualDirectional
 					(
 						new VisualNone(),
