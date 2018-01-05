@@ -11,14 +11,14 @@ function Demo()
 		(
 			"Accelerate", 
 			function perform(world, actor)
-			{		
+			{
 				var fuelUsedByAcceleration = 1;
 				var itemFuel = actor.itemContainer.items["Fuel"];
-				
+
 				if (itemFuel.quantity >= fuelUsedByAcceleration)
 				{
 					itemFuel.quantity -= fuelUsedByAcceleration;
-					
+
 					var actorLoc = actor.body.loc;
 					var actorOrientation = actorLoc.orientation;
 
@@ -31,8 +31,8 @@ function Demo()
 						(
 							.3 // accelerationPerTick
 						)
-					);			
-				}	
+					);
+				}
 			}
 		);
 
@@ -40,13 +40,13 @@ function Demo()
 		(
 			"Fire",
 			function perform(world, actor)
-			{	
+			{
 				var itemFuel = actor.itemContainer.items["Fuel"];
 				var fuelConsumed = 10;
 				if (itemFuel.quantity >= fuelConsumed)
 				{
 					itemFuel.quantity -= fuelConsumed;
-					
+
 					var venue = actor.body.loc.venue;
 					var entityDefnProjectile = world.entityDefns["Projectile"];
 
@@ -65,7 +65,7 @@ function Demo()
 						entityDefnProjectile.mover.speedMax
 					);
 
-					venue.entitiesToSpawn.push(entityToSpawn);			
+					venue.entitiesToSpawn.push(entityToSpawn);
 				}
 			}
 		);
@@ -148,15 +148,15 @@ function Demo()
 		}
 
 		var nameGenerator = new NameGenerator();
-		
+
 		var itemDefns = this.world_ItemDefns();
-		
+
 		var actions = this.actions();
 
 		var activityDefns = this.world_ActivityDefns();
 
 		var colors = Color.Instances._All;
-		
+
 		var constraintDefns = this.world_ConstraintDefns();
 
 		var entityDefns = this.world_EntityDefns(universe);
@@ -311,17 +311,17 @@ function Demo()
 					(
 						starsystemSizeInPixels
 					).round();
-					
+
 					var entityEnemy = new Entity
 					(
 						"Enemy" + e, 
 						entityDefns["Enemy"].name, 
 						[ new Body(new Location(pos)) ]
 					);
-					
+
 					starsystem.entitiesToSpawn.push(entityEnemy);
 				}
-				
+
 				var numberOfItemCollections = 1;
 				for (var c = 0; c < numberOfItemCollections; c++)
 				{
@@ -338,7 +338,7 @@ function Demo()
 							new Body(new Location(pos)) 
 						]
 					);
-					
+
 					starsystem.entitiesToSpawn.push(entityItemCollection);
 				}
 
@@ -371,7 +371,7 @@ function Demo()
 			}  // end for sizeInStarsystems.x
 
 		} // end for sizeInStarsystems.y
-	
+
 		var world = new World
 		(
 			"WorldGrid" + sizeInStarsystems.toString(),
@@ -387,7 +387,7 @@ function Demo()
 
 		return world;
 	}
-	
+
 	Demo.prototype.world_ItemDefns = function()
 	{
 			var returnValues = 
@@ -398,12 +398,12 @@ function Demo()
 				new ItemDefn("Fuel", "F"),
 				new ItemDefn("Food", "N"),
 				new ItemDefn("Luxuries", "L"),
-				new ItemDefn("Materials", "M"),				
-				new ItemDefn("Science", "S"),				
+				new ItemDefn("Materials", "M"),
+				new ItemDefn("Science", "S"),
 			];
-			
+
 			returnValues.addLookups("name");
-			
+
 			return returnValues;
 	}
 
@@ -439,15 +439,15 @@ function Demo()
 				var actorPos = actorLoc.pos;
 
 				if (activity.vars.target == null)
-				{					
+				{
 					var actorStarsystem = actorLoc.venue;
 					var starsystemSizeInPixels = actorStarsystem.sizeInPixels;
 
-					var newTarget = new Coords	
+					var newTarget = new Coords
 					(
 						Math.floor(Math.random() * starsystemSizeInPixels.x), 
 						Math.floor(Math.random() * starsystemSizeInPixels.y)
-					);	
+					);
 
 					activity.vars.target = newTarget;
 				}
@@ -471,7 +471,7 @@ function Demo()
 
 					if (speedCurrent > accelerationCurrent * timeToTarget)
 					{
-						directionToAccelerate.multiplyScalar(-1);	
+						directionToAccelerate.multiplyScalar(-1);
 					}
 				}
 
@@ -519,7 +519,7 @@ function Demo()
 						var action = mapping.action(universe);
 						actionsFromActor.push(action);
 					}
-				}	
+				}
 			}
 		);
 
@@ -534,7 +534,7 @@ function Demo()
 
 		return _all;
 	}
-	
+
 	Demo.prototype.world_ConstraintDefns = function()
 	{
 		var conformToBounds = new ConstraintDefn
@@ -550,8 +550,8 @@ function Demo()
 					boundsToConformTo.max()
 				);
 			}
-		);		
-		
+		);
+
 		var followEntityByName = new ConstraintDefn
 		(
 			"FollowEntityByName",
@@ -569,13 +569,13 @@ function Demo()
 				}
 			}
 		);
-		
+
 		var _all = 
 		[
 			conformToBounds,
 			followEntityByName,
 		];
-		
+
 		return _all;
 
 	}
@@ -583,7 +583,7 @@ function Demo()
 	Demo.prototype.world_EntityDefns = function(universe)
 	{
 		var imageHelper = new ImageHelper();
-		
+
 		var imagesForItemCollection = imageHelper.buildImagesFromStringArrays
 		(
 			"ItemCollection", 
@@ -597,7 +597,7 @@ function Demo()
 					".a...aa",
 					"..aaaaa",
 				],
-				
+
 				[
 					"..aaaaa",
 					".aa...a",
@@ -607,10 +607,10 @@ function Demo()
 					"aa...a.",
 					"aaaaa..",
 				],
-				
-				[				
+
+				[
 					"aaaaa..",
-					"aa...a.",				
+					"aa...a.",
 					"a.aaaaa",
 					"a.a...a",
 					"a.a...a",
@@ -625,9 +625,9 @@ function Demo()
 					"a...a.a",
 					"a...aa.",
 					"aaaaa..",
-				],				
-			]	
-		);		
+				],
+			]
+		);
 
 		var mediaLibrary = universe.mediaLibrary;
 		mediaLibrary.imagesAdd(imagesForItemCollection);
@@ -639,9 +639,9 @@ function Demo()
 				"yyy",
 				"y.y",
 				"yyy",
-			]			
+			]
 		);
-		
+
 		mediaLibrary.imagesAdd([imageMoverProjectile]);
 
 		var imagesForSun = imageHelper.buildImagesFromStringArrays
@@ -703,8 +703,8 @@ function Demo()
 				".............y............",
 			],
 		]);
-		
-		mediaLibrary.imagesAdd(imagesForSun);	
+
+		mediaLibrary.imagesAdd(imagesForSun);
 
 		var imagePlanet = imageHelper.buildImageFromStrings
 		(
@@ -728,9 +728,8 @@ function Demo()
 				"......ccccc.....",
 			]
 		)
-		imagePlanet = imageHelper.imageToColor(imagePlanet, Color.Instances.Green);
-		
-		mediaLibrary.imagesAdd([imagePlanet]);	
+
+		mediaLibrary.imagesAdd([imagePlanet]);
 
 		var imagesForPortal = imageHelper.buildImagesFromStringArrays
 		("Portal", [
@@ -778,8 +777,8 @@ function Demo()
 				"...v..v.....v..v...",
 			],
 		]);
-		
-		mediaLibrary.imagesAdd(imagesForPortal);	
+
+		mediaLibrary.imagesAdd(imagesForPortal);
 
 		var imagesFriendly = imageHelper.buildImagesFromStringArrays
 		("Friendly", [
@@ -816,9 +815,9 @@ function Demo()
 				".......vvvv.......",
 			],
 		]);
-		
-		mediaLibrary.imagesAdd(imagesFriendly);	
-		
+
+		mediaLibrary.imagesAdd(imagesFriendly);
+
 		var imagesEnemy = imageHelper.buildImagesFromStringArrays
 		("Enemy", [
 			[
@@ -854,9 +853,9 @@ function Demo()
 				".......vvvv.......",
 			],
 		]);
-		
-		mediaLibrary.imagesAdd(imagesEnemy);	
-		
+
+		mediaLibrary.imagesAdd(imagesEnemy);
+
 		var imagesForPlayerClockwise = imageHelper.buildImagesFromStringArrays
 		("Player", [
 			[
@@ -1012,9 +1011,9 @@ function Demo()
 				".................",
 			],
 		]);
-		
-		mediaLibrary.imagesAdd(imagesForPlayerClockwise);		
-		
+
+		mediaLibrary.imagesAdd(imagesForPlayerClockwise);
+
 		var entityDefnCamera = new EntityDefn
 		(
 			"Camera",
@@ -1024,7 +1023,7 @@ function Demo()
 				new ConstrainableDefn(),
 			]
 		);
-		
+
 		var entityDefnItemCollection = new EntityDefn
 		(
 			"ItemCollection",
@@ -1054,7 +1053,7 @@ function Demo()
 				new KillableDefn(1), // integrityMax
 			]
 		);
-		
+
 		var entityDefnProjectile = new EntityDefn
 		(
 			"Projectile",
@@ -1089,7 +1088,7 @@ function Demo()
 		);
 
 		var entityDefnPlanet = new EntityDefn
-		(	
+		(
 			"Planet",
 			[
 				new BodyDefn(new Coords(16, 16, 1)), // sizeInPixels
@@ -1105,20 +1104,20 @@ function Demo()
 		var colorsAll = Color.Instances._All;
 
 		var entityDefnsPortal = [];
-		
+
 		var animationDefnSetPortal = AnimationDefnSet.fromImages
 		(
 			entityDefnName, 
 			imagesForPortal
 		);
-		
+
 		var portalColorNames = [ "Red", "Green", "Blue", "Violet" ];
 		for (var c = 0; c < portalColorNames.length; c++)
 		{
 			var colorName = portalColorNames[c];
 			var color = colorsAll[colorName];
 			var entityDefnName = "Portal" + colorName;
-			
+
 			var entityDefnPortal = new EntityDefn
 			(
 				entityDefnName,
@@ -1130,37 +1129,31 @@ function Demo()
 						new VisualGroup
 						(
 							[
-								/*
-								animationDefnSetPortal.clone().toColor
-								(
-									color
-								).toAnimationRun(),
-								*/
 								new VisualImage(imagesForPortal[0].name),
 								new VisualOffset
 								(
 									new VisualText
 									(
 										new DataSourceEntity
-										(										
+										(
 											function(entity) 
-											{ 												
+											{ 
 												var returnValue = 
 													"To " + entity.portal.destinationStarsystemName; 
-													
+
 												return returnValue;
 											}
 										)
 									),
 									new Coords(0, 20) // offset
 								),
-							]	
+							]
 						)
 					),
 					new PortalDefn(),
 				]
-			);		
-			
+			);
+
 			entityDefnsPortal.push(entityDefnPortal);
 		}
 
@@ -1197,7 +1190,7 @@ function Demo()
 
 		var entityDefnEnemy = new EntityDefn
 		(
-			"Enemy", 	
+			"Enemy", 
 			[
 				new ActorDefn("MoveRandomly"),
 				new BodyDefn(new Coords(16, 9, 1)), // sizeInPixels
@@ -1216,7 +1209,7 @@ function Demo()
 					new VisualImage(imagesEnemy[0].name)
 				),
 				new KillableDefn(1), // integrityMax
-				new EnemyDefn(),				
+				new EnemyDefn(),
 				new MoverDefn(1, 1, 2), // mass, forcePerTick, speedMax
 			]
 		);
@@ -1226,7 +1219,7 @@ function Demo()
 			var player = entityThis;
 			var starsystem = player.body.loc.venue;
 			var entityOtherProperties = entityOther.defn(world).properties;
-			
+
 			if (entityOtherProperties["ItemCollection"] != null)
 			{
 				var itemCollection = entityOther;
@@ -1240,7 +1233,7 @@ function Demo()
 
 				/*
 				starsystem.entitiesToSpawn.push
-				(		
+				(
 					Globals.Instance.universe.world.font.buildEntityForText
 					(
 						"You lose!", 
@@ -1268,32 +1261,32 @@ function Demo()
 				starsystem.entitiesToRemove.push(player);
 
 				var portalData = portal.portal;
-				
+
 				var itemFuel = player.itemContainer.items["Fuel"];
 				var fuelUsedByPortal = 1000;
 				if (itemFuel.quantity >= fuelUsedByPortal)
 				{
 					itemFuel.quantity -= fuelUsedByPortal;
-					
+
 					var destinationStarsystemName = portalData.destinationStarsystemName;
 					var starsystems = world.starsystems;
 					var destinationStarsystem = starsystems[destinationStarsystemName];
-					
+
 					destinationStarsystem.entitiesToSpawn.push(player);
 					entityThis.body.loc.pos.overwriteWith(portalData.destinationPos);
-					universe.world.starsystemNext = destinationStarsystem;					
+					universe.world.starsystemNext = destinationStarsystem;
 				}
 			}
 		}
-		
+
 		var gridSpacing = 8;
 
 		var entityDefnPlayer = new EntityDefn
 		(
-			"Player", 	
+			"Player", 
 			[
 				new ActorDefn("UserInputAccept"),
-				new BodyDefn(new Coords(9, 9, 1)), // sizeInPixels	
+				new BodyDefn(new Coords(9, 9, 1)), // sizeInPixels
 				new CollidableDefn
 				(
 					[ "ItemCollection", "Enemy", "Planet", "Portal" ],
@@ -1316,14 +1309,14 @@ function Demo()
 				),
 				new ItemContainerDefn
 				([ 
-					new Item("Crew", 3),					
+					new Item("Crew", 3),
 					new Item("Food", 100000),
 					new Item("Fuel", 100000), 
 				]),				 
 				new KillableDefn(1), // integrityMax
 				new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
 				new PlayerDefn(),
-				
+
 				new ControllableDefn
 				(
 					// buildControlForEntity
@@ -1341,7 +1334,7 @@ function Demo()
 									function(entity) { return entity.name; }
 								)
 							),
-							
+
 							new ControlText
 							(
 								"textIntegrity",
@@ -1356,12 +1349,12 @@ function Demo()
 											+ entity.killable.integrity
 											+ " / "
 											+ entity.defn().killable.integrityMax;
-											
+
 										return returnValue;
 									}
 								)
 							),
-																							
+
 							new ControlText
 							(
 								"textLoc",
@@ -1371,15 +1364,15 @@ function Demo()
 								(
 									function(entity) { return entity.body.loc.toString(); }
 								)
-							),								
+							),
 						];
-												
+
 						var items = entity.itemContainer.items;
-						
+
 						for (var i = 0; i < items.length; i++)
 						{
-							var item = items[i];									
-						
+							var item = items[i];
+
 							var controlForItem = new ControlText
 							(
 								"textItem" + item.defnName,
@@ -1395,18 +1388,18 @@ function Demo()
 										var returnValue = 
 											item.defnName + ": " 
 											+ item.quantity;
-										
+
 										return returnValue;
 									}
 								)
-							);						
+							);
 
 							children.push
 							(
 								controlForItem
 							);
 						}
-						
+
 						/*
 						var controlContainer = new ControlContainer
 						(
@@ -1418,14 +1411,14 @@ function Demo()
 						);
 						var returnValue = controlContainer;
 						*/
-						
+
 						// hack
 						var returnValue = children[0];
-						
+
 
 						return returnValue;
 					}
-				),				
+				),
 			]
 		);
 

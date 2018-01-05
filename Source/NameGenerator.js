@@ -7,7 +7,7 @@ function NameGenerator()
 	NameGenerator.prototype.generateNameWithSyllables = function(numberOfSyllables)
 	{
 		var returnValue = "";
-		
+
 		for (var s = 0; s < numberOfSyllables; s++)
 		{
 			var syllable = this.consonants
@@ -22,12 +22,12 @@ function NameGenerator()
 			[
 				Math.floor(Math.random() * this.consonants.length)
 			];
-			
+
 			returnValue += syllable;
 		}
-		
+
 		returnValue = returnValue.substr(0, returnValue.length - 1);
-		
+
 		return returnValue;
 	}
 }

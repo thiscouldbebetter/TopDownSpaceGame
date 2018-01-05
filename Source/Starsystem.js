@@ -41,7 +41,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 				}
 			}
 		}
-		
+
 		var display = universe.display;
 		var cameraPos = new Coords(0, 0, 0);
 		var cameraViewSizeInPixels = display.sizeInPixels.clone();
@@ -60,7 +60,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 						new Constraint("FollowEntityByName", "Player"),
 						new Constraint
 						(
-							"ConformToBounds", 						
+							"ConformToBounds", 
 							new Bounds
 							(
 								cameraPos,
@@ -71,9 +71,9 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 				),
 			]
 		);
-	
+
 		this.camera.body.loc.venue = this;
-	
+
 		this.entitiesToSpawn.push(this.camera);
 
 		for (var b = 0; b < this.entities.length; b++)
@@ -107,18 +107,18 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 	Starsystem.prototype.updateForTimerTick = function(universe, world)
 	{
 		this.draw(universe);
-		
+
 		this.update_EntitiesToSpawn(universe, world);
 
 		var propertyNames = 
 		[
 			"Actor",
-			"Mover",		
+			"Mover",
 			"Controllable",
 			"Constrainable",
 			"Killable",
 			"Ephemeral",
-			"Collidable",			
+			"Collidable",
 		];
 
 		var numberOfProperties = propertyNames.length;
@@ -136,7 +136,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 				var entity = entitiesWithProperty[b];
 
 				var property = entity.defn(world).properties[propertyName];
-				
+
 				if (property == null)
 				{
 					property = entity.properties[propertyName];
@@ -180,7 +180,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		{
 			var entityToSpawn = this.entitiesToSpawn[i];
 
-			this.entities.push(entityToSpawn);		
+			this.entities.push(entityToSpawn);
 			this.entities[entityToSpawn.name] = entityToSpawn;
 
 			var entityToSpawnDefn = entityToSpawn.defn(world);
@@ -209,7 +209,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 	}
 
 	Starsystem.prototype.update_EntitiesToSpawn_Spawn = function(universe, entity, entityProperty)
-	{	
+	{
 		var entityPropertyName = entityProperty.propertyName();
 		var entitiesForPropertyName = this.entitiesByPropertyName[entityPropertyName];
 		if (entitiesForPropertyName.contains(entity) == false)
@@ -222,11 +222,11 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			entityProperty.initializeEntityForVenue(universe, entity, this);
 		}
 	}
-	
+
 	// draw
-	
+
 	Starsystem.prototype.draw = function(universe)
-	{		
+	{
 		var display = universe.display;
 		display.drawRectangle
 		(
@@ -235,24 +235,24 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			"rgb(32, 0, 32)", // dark purple 
 			"Black"
 		);
-		
+
 		var drawables = this.drawables();
-		
+
 		for (var i = 0; i < drawables.length; i++)
 		{
-			var drawable = drawables[i];			
+			var drawable = drawables[i];
 			var drawableDefn = drawable.defn(universe.world);
 			drawableDefn.drawable.updateEntityForVenue(universe, drawable, this);
 		}
 	}
-	
+
 	// helpers
-	
+
 	Starsystem.prototype.drawables = function()
 	{
 		return this.entitiesByPropertyName["Drawable"];
 	}
-	
+
 	Starsystem.prototype.enemies = function()
 	{
 		return this.entitiesByPropertyName["Enemy"];
@@ -262,17 +262,17 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 	{
 		return this.entitiesByPropertyName["Planet"];
 	}
-	
+
 	Starsystem.prototype.players = function()
 	{
 		return this.entitiesByPropertyName["Player"];
 	}
-	
+
 	Starsystem.prototype.portals = function()
 	{
 		return this.entitiesByPropertyName["Portal"];
 	}
-	
+
 	Starsystem.prototype.stars = function()
 	{
 		return this.entitiesByPropertyName["Star"];

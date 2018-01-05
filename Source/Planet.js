@@ -12,7 +12,7 @@ function Planet(name, color)
 	Planet.prototype.initializeEntityForVenue = function(universe, entity, venue)
 	{
 		// todo - Move this to PlanetDefn.
-		
+
 		entity.drawable.visual = new VisualGroup
 		(
 			[
@@ -35,7 +35,7 @@ function Planet(name, color)
 						)
 					),
 					new Coords(0, 30)
-				),				
+				),
 			]
 		);
 	}

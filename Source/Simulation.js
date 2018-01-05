@@ -6,7 +6,7 @@ function Simulation()
 	Simulation.prototype.main = function()
 	{
 		var displaySizeInPixels = new Coords(400, 300, 1);
-	
+
 		var display = new Display
 		(
 			[ displaySizeInPixels ],
@@ -14,7 +14,7 @@ function Simulation()
 			10, // fontHeightInPixels
 			"Gray", "White" // colorFore, colorBack
 		);
-	
+
 		var mediaLibrary = new MediaLibrary
 		(
 			// images

@@ -7,11 +7,11 @@ function AnimationFrame(image, ticksToHold)
 
 {
 	// static methods
-	
+
 	AnimationFrame.buildManyFromImages = function(imagesForFrames, ticksPerFrame)
 	{
 		if (ticksPerFrame == null) { ticksPerFrame = 1; }
-		
+
 		var returnValues = [];
 
 		var numberOfImages = imagesForFrames.length;
@@ -26,30 +26,20 @@ function AnimationFrame(image, ticksToHold)
 
 		return returnValues;
 	}
-	
+
 	// instance methods
-	
+
 	AnimationFrame.prototype.clone = function()
 	{
 		// hack
 		var imageCloned = new Image(this.image.name, this.image.sourcePath);
-		
+
 		var returnValue = new AnimationFrame
 		(
 			imageCloned,
 			this.ticksToHold
 		);
-		
+
 		return returnValue;
-	}
-	
-	// colorable
-	
-	AnimationFrame.prototype.toColor = function(color)
-	{
-		// hack
-		this.image = new ImageHelper().imageToColor(this.image, color);
-		
-		return this;
 	}
 }

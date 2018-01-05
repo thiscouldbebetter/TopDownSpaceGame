@@ -1,7 +1,7 @@
 
 function EntityDefn
 (
-	name, 	
+	name, 
 	properties
 )
 {

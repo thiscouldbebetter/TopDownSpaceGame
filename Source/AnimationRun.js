@@ -40,7 +40,7 @@ function AnimationRun(animationDefnSet)
 		returnValue.ticksOnFrameCurrentSoFar = this.ticksOnFrameCurrentSoFar;
 		return returnValue;
 	}
-	
+
 	AnimationRun.prototype.cloneDeep = function()
 	{
 		var returnValue = new AnimationRun(this.animationDefnSet.clone());
@@ -52,7 +52,7 @@ function AnimationRun(animationDefnSet)
 	}
 
 	// visual
-	
+
 	AnimationRun.prototype.drawForEntityAtOffset = function(entity, offset)
 	{
 		var frameCurrent = this.frameCurrent();
@@ -77,7 +77,7 @@ function AnimationRun(animationDefnSet)
 				this.frameIndexCurrent++;
 				this.ticksOnFrameCurrentSoFar = 0;
 		}
-		
+
 		var animationDefnCurrent = this.animationDefnCurrent();
 		if (this.frameIndexCurrent >= animationDefnCurrent.frames.length)
 		{
@@ -87,13 +87,5 @@ function AnimationRun(animationDefnSet)
 			);
 			this.frameIndexCurrent = 0;
 		}
-	}
-
-	// colorable
-
-	AnimationRun.prototype.toColor = function(color)
-	{
-		this.animationDefnSet.toColor(color);
-		return this;
 	}
 }

@@ -5,5 +5,5 @@ function Drawable(visual)
 }
 
 {
-	Drawable.prototype.propertyName = function() { return "Drawable"; }	
+	Drawable.prototype.propertyName = function() { return "Drawable"; }
 }

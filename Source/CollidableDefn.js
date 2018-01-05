@@ -24,7 +24,7 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 			for (var j = 0; j < entitiesToCollideWith.length; j++)
 			{
 				var collidableOther = entitiesToCollideWith[j];
-				if (collidableOther != collidableThis)	
+				if (collidableOther != collidableThis)
 				{
 					var colliderOther = collidableOther.bounds(world);
 
@@ -34,7 +34,7 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 					);
 
 					if (doEntitiesCollide == true)
-					{	
+					{
 						collidableThis.defn(world).collidable.collide
 						(
 							world, collidableThis, collidableOther
@@ -44,7 +44,7 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 							world, collidableOther, collidableThis
 						);
 					}
-				}	
+				}
 			}
 		}
 	}

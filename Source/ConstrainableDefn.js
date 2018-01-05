@@ -2,8 +2,8 @@ function ConstrainableDefn()
 {
 	// do nothing
 }
-{	
-	ConstrainableDefn.prototype.propertyName = function() { return "Constrainable"; }	
+{
+	ConstrainableDefn.prototype.propertyName = function() { return "Constrainable"; }
 
 	ConstrainableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
 	{
@@ -17,5 +17,5 @@ function ConstrainableDefn()
 			constraint.constrain(universe, world, place, entity, constraint.target);
 		}
 	}
-}	
+}
 

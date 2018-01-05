@@ -6,7 +6,7 @@ function PortalData(destinationStarsystemName, destinationPos, color)
 }
 {
 	PortalData.prototype.propertyName = function() { return "Portal"; }
-	
+
 	PortalData.prototype.destinationStarsystem = function(world)
 	{
 		return world.starsystems[this.destinationStarsystemName];

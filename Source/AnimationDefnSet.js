@@ -34,7 +34,7 @@ function AnimationDefnSet(name, animationDefns)
 	AnimationDefnSet.fromImages = function(animationDefnSetName, images, ticksPerFrame)
 	{
 		if (ticksPerFrame == null) { ticksPerFrame = 1; }
-		
+
 		var returnValue = new AnimationDefnSet
 		(
 			animationDefnSetName,
@@ -101,7 +101,7 @@ function AnimationDefnSet(name, animationDefns)
 	}
 
 	// instance methods
-	
+
 	AnimationDefnSet.prototype.clone = function()
 	{
 		var returnValue = new AnimationDefnSet
@@ -109,20 +109,12 @@ function AnimationDefnSet(name, animationDefns)
 			this.name,
 			Cloneable.cloneMany(this.animationDefns)
 		);
-		
-		return returnValue;	
+
+		return returnValue;
 	}
 
 	AnimationDefnSet.prototype.toAnimationRun = function()
 	{
 		return new AnimationRun(this);
-	}
-	
-	// colorable
-	
-	AnimationDefnSet.prototype.toColor = function(color)
-	{
-		Colorable.colorMany(this.animationDefns, color);
-		return this;
 	}
 }

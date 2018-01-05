@@ -7,7 +7,7 @@ function ItemContainer(items)
 	ItemContainer.prototype.hasItem = function(itemToCheck)
 	{
 		var returnValue = false;
-		
+
 		var itemHeld = this.items[itemToCheck.defnName];
 		if (itemHeld != null)
 		{
@@ -16,10 +16,10 @@ function ItemContainer(items)
 				returnValue = true;
 			}
 		}
-		
+
 		return returnValue;
 	}
-	
+
 	ItemContainer.prototype.itemAdd = function(itemToTransfer)
 	{
 		var itemsHeld = this.items;
@@ -35,7 +35,7 @@ function ItemContainer(items)
 			itemHeld.quantity += itemToTransfer.quantity;
 		}
 	}
-		
+
 	ItemContainer.prototype.itemSubtract = function(itemToTransfer)
 	{
 		var itemsHeld = this.items;
@@ -51,7 +51,7 @@ function ItemContainer(items)
 			itemHeld.quantity -= itemToTransfer.quantity;
 		}
 	}
-	
+
 	ItemContainer.prototype.itemsAdd = function(itemsToTransfer)
 	{
 		for (var i = 0; i < itemsToTransfer.length; i++)
@@ -59,8 +59,8 @@ function ItemContainer(items)
 			var itemToTransfer = itemsToTransfer[i];
 			this.itemAdd(itemToTransfer);
 		}
-	}	
-	
+	}
+
 	ItemContainer.prototype.itemsSubtract = function(itemsToTransfer)
 	{
 		for (var i = 0; i < itemsToTransfer.length; i++)

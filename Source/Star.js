@@ -5,7 +5,7 @@ function Star(name, color)
 }
 {
 	Star.prototype.propertyName = function() { return "Star"; }
-	
+
 	Star.prototype.initializeEntityForVenue = function(universe, entity, venue)
 	{
 		entity.drawable.visual = new VisualGroup

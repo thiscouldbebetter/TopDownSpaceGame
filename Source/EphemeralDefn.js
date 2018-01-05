@@ -11,7 +11,7 @@ function EphemeralDefn(ticksToLive)
 	{ 
 		entity.ticksToLive = entity.defn(universe.world).ephemeral.ticksToLive; 
 	}
-	
+
 	EphemeralDefn.prototype.updateEntityForVenue = function(universe, entity, venue) 
 	{ 
 		entity.ticksToLive--; 

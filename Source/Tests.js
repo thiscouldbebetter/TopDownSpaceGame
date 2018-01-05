@@ -26,12 +26,12 @@ function Tests()
 		if (bounds0.overlapWith(bounds2) == false)
 		{
 			throw "failed"
-		}		
+		}
 
 		else if (bounds0.overlapWith(bounds3) == true)
 		{
 			throw "failed"
 		}
-		
+
 	}
 }

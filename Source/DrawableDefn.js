@@ -2,6 +2,8 @@
 function DrawableDefn(visual)
 {
 	this.visual = visual;
+
+	this._posToSave = new Coords();
 }
 
 {
@@ -22,11 +24,9 @@ function DrawableDefn(visual)
 		var display = universe.display;
 		var visual = entity.drawable.visual;
 		var camera = venue.camera;
-		var drawLoc = display.drawLoc.overwriteWith
-		(
-			entity.body.loc
-		);
-		var drawPos = drawLoc.pos;
+
+		var drawPos = entity.body.loc.pos;
+		this._posToSave.overwriteWith(drawPos);
  		drawPos.subtract
  		(
 			camera.body.loc.pos
@@ -36,7 +36,8 @@ function DrawableDefn(visual)
 		);
 		visual.draw
 		(
-			universe, display, entity, drawLoc
+			universe, universe.world, display, entity.body
 		);
+		drawPos.overwriteWith(this._posToSave);
 	}
 }

@@ -23,7 +23,7 @@ function ImageHelper()
 		for (var y = 0; y < imageSizeInPixels.y; y++)
 		{
 			pixelPos.y = y;
-		
+
 			for (var x = 0; x < imageSizeInPixels.x; x++)
 			{
 				pixelPos.x = x;
@@ -32,10 +32,10 @@ function ImageHelper()
 				(
 					pixelColor, graphics, pixelPos
 				);
-		
+
 				pixelColor[nameOfColorFunctionToApply](argumentForColorFunction);
-	
-				graphics.fillStyle = pixelColor.systemColor;
+
+				graphics.fillStyle = pixelColor.systemColor();
 				graphics.fillRect(pixelPos.x, pixelPos.y, 1, 1);
 			}
 		}
@@ -45,10 +45,10 @@ function ImageHelper()
 			image.name,
 			canvas
 		);
-		
+
 		image.sourcePath = imageProcessed.sourcePath;
 		image.systemImage = imageProcessed.systemImage;
-		
+
 		return image;
 	}
 
@@ -67,7 +67,7 @@ function ImageHelper()
 		for (var i = 0; i < stringArraysForImagePixels.length; i++)
 		{
 			var stringsForImagePixels = stringArraysForImagePixels[i];
-			var image = new ImageHelper().buildImageFromStrings(name + i, stringsForImagePixels);
+			var image = this.buildImageFromStrings(name + i, stringsForImagePixels);
 			returnValue.push(image);
 		}
 
@@ -85,7 +85,9 @@ function ImageHelper()
 		var graphics = canvas.getContext("2d");
 
 		var pixelPos = new Coords(0, 0);
-		var colorForPixel = Color.Instances.Transparent;
+		var colorForPixel = Color.Instances._Transparent;
+
+		colors = Color.Instances._All;
 
 		for (var y = 0; y < sizeInPixels.y; y++)
 		{
@@ -97,16 +99,14 @@ function ImageHelper()
 				var charForPixel = stringForPixelRow[x];
 				pixelPos.x = x * scaleFactor.x;
 
-				colorForPixel = Color.getBySymbol(charForPixel);
+				colorForPixel = colors[charForPixel];
 
-				graphics.fillStyle = colorForPixel.systemColor;
+				graphics.fillStyle = colorForPixel.systemColor();
 				graphics.fillRect
 				(
-					pixelPos.x, 
-					pixelPos.y, 
-					scaleFactor.x, 
-					scaleFactor.y
-				);				
+					pixelPos.x, pixelPos.y, 
+					scaleFactor.x, scaleFactor.y
+				);
 			}
 		}
 
@@ -126,7 +126,9 @@ function ImageHelper()
 		var graphics = canvas.getContext("2d");
 
 		var pixelPos = new Coords(0, 0);
-		var colorForPixel = Color.Instances.Transparent;
+		var colorForPixel = Color.Instances._Transparent;
+
+		var colors = Color.Instances._All;
 
 		for (var j = 0; j < sizeInTiles.y; j++)
 		{
@@ -142,9 +144,9 @@ function ImageHelper()
 						var charForPixel = stringForPixelRow[x];
 						pixelPos.x = i * tileSizeInPixels.x + x;
 
-						colorForPixel = Color.getBySymbol(charForPixel);
+						colorForPixel = colors[charForPixel];
 
-						graphics.fillStyle = colorForPixel.systemColor;
+						graphics.fillStyle = colorForPixel.systemColor();
 						graphics.fillRect
 						(
 							pixelPos.x, 
@@ -194,21 +196,6 @@ function ImageHelper()
 		return [ canvas, graphics ];
 	}
 
-	ImageHelper.prototype.imageToColor = function(image, color)
-	{
-		return this.applyColorFunctionToImage
-		(
-			this.imageToGray(image),
-			"multiply", 
-			color
-		);
-	}
-
-	ImageHelper.prototype.imageToGray = function(image)
-	{
-		return this.applyColorFunctionToImage(image, "toGray");
-	}
-
 	ImageHelper.prototype.overwriteColorWithPixelFromGraphicsAtPos = function(color, graphics, pixelPos)
 	{
 		var pixelColorAsComponentsRGBA = graphics.getImageData(pixelPos.x, pixelPos.y, 1, 1).data;
@@ -220,14 +207,14 @@ function ImageHelper()
 				/ Color.SystemColorComponentMax;
 		}
 
-		color.systemColorRecalculate();
+		color._systemColor = null;
 	}
 
 	ImageHelper.prototype.sliceImageIntoTiles = function(imageToSlice, sizeInTiles)
 	{
 		var returnImages = [];
 
-		var systemImageToSlice = imageToSlice.systemImage;		
+		var systemImageToSlice = imageToSlice.systemImage;
 
 		var imageToSliceSize = new Coords
 		(
@@ -246,7 +233,7 @@ function ImageHelper()
 			var returnImageRow = [];
 
 			for (var x = 0; x < sizeInTiles.x; x++)
-			{							
+			{
 				tilePos.x = x;
 
 				var canvas		 = document.createElement("canvas");

@@ -1,6 +1,6 @@
 
 function FriendlyDefn()
-{	
+{
 	// do nothing
 }
 
