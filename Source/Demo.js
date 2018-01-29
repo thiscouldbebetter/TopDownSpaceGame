@@ -702,6 +702,7 @@ function Demo()
 
 		mediaLibrary.imagesAdd(imagesForSun);
 
+		/*
 		var imagePlanet = imageHelper.buildImageFromStrings
 		(
 			"Planet",
@@ -724,8 +725,46 @@ function Demo()
 				"......ccccc.....",
 			]
 		)
+		*/
 
-		mediaLibrary.imagesAdd([imagePlanet]);
+		var imagesForPlanet = 
+		[
+			new Image("Planet00", "../Media/Images/Planet/00.png"),
+			new Image("Planet01", "../Media/Images/Planet/01.png"),
+			new Image("Planet02", "../Media/Images/Planet/02.png"),
+			new Image("Planet03", "../Media/Images/Planet/03.png"),
+			new Image("Planet04", "../Media/Images/Planet/04.png"),
+			new Image("Planet05", "../Media/Images/Planet/05.png"),
+			new Image("Planet06", "../Media/Images/Planet/06.png"),
+			new Image("Planet07", "../Media/Images/Planet/07.png"),
+			new Image("Planet08", "../Media/Images/Planet/08.png"),
+			new Image("Planet09", "../Media/Images/Planet/09.png"),
+			new Image("Planet10", "../Media/Images/Planet/10.png"),
+			new Image("Planet11", "../Media/Images/Planet/11.png"),
+			new Image("Planet12", "../Media/Images/Planet/12.png"),
+			new Image("Planet13", "../Media/Images/Planet/13.png"),
+			new Image("Planet14", "../Media/Images/Planet/14.png"),
+			new Image("Planet15", "../Media/Images/Planet/15.png"),
+			new Image("Planet16", "../Media/Images/Planet/16.png"),
+			new Image("Planet17", "../Media/Images/Planet/17.png"),
+			new Image("Planet18", "../Media/Images/Planet/18.png"),
+			new Image("Planet19", "../Media/Images/Planet/19.png"),
+			new Image("Planet20", "../Media/Images/Planet/20.png"),
+			new Image("Planet21", "../Media/Images/Planet/21.png"),
+			new Image("Planet22", "../Media/Images/Planet/22.png"),
+			new Image("Planet23", "../Media/Images/Planet/23.png"),
+			new Image("Planet24", "../Media/Images/Planet/24.png"),
+			new Image("Planet25", "../Media/Images/Planet/25.png"),
+			new Image("Planet26", "../Media/Images/Planet/26.png"),
+			new Image("Planet27", "../Media/Images/Planet/27.png"),
+			new Image("Planet28", "../Media/Images/Planet/28.png"),
+			new Image("Planet29", "../Media/Images/Planet/29.png"),
+			new Image("Planet30", "../Media/Images/Planet/30.png"),
+			new Image("Planet31", "../Media/Images/Planet/31.png"),
+
+		];
+
+		mediaLibrary.imagesAdd(imagesForPlanet);
 
 		var imagesForPortal = imageHelper.buildImagesFromStringArrays
 		("Portal", [
@@ -852,6 +891,7 @@ function Demo()
 
 		mediaLibrary.imagesAdd(imagesEnemy);
 
+		/*
 		var imagesForPlayerClockwise = imageHelper.buildImagesFromStringArrays
 		("Player", [
 			[
@@ -1007,6 +1047,27 @@ function Demo()
 				".................",
 			],
 		]);
+		*/
+
+		imagesForPlayerClockwise = 
+		[
+			new Image("Player00", "../Media/Images/Rocket/00.png"),
+			new Image("Player01", "../Media/Images/Rocket/01.png"),
+			new Image("Player02", "../Media/Images/Rocket/02.png"),
+			new Image("Player03", "../Media/Images/Rocket/03.png"),
+			new Image("Player04", "../Media/Images/Rocket/04.png"),
+			new Image("Player05", "../Media/Images/Rocket/05.png"),
+			new Image("Player06", "../Media/Images/Rocket/06.png"),
+			new Image("Player07", "../Media/Images/Rocket/07.png"),
+			new Image("Player08", "../Media/Images/Rocket/08.png"),
+			new Image("Player09", "../Media/Images/Rocket/09.png"),
+			new Image("Player10", "../Media/Images/Rocket/10.png"),
+			new Image("Player11", "../Media/Images/Rocket/11.png"),
+			new Image("Player12", "../Media/Images/Rocket/12.png"),
+			new Image("Player13", "../Media/Images/Rocket/13.png"),
+			new Image("Player14", "../Media/Images/Rocket/14.png"),
+			new Image("Player15", "../Media/Images/Rocket/15.png"),
+		];
 
 		mediaLibrary.imagesAdd(imagesForPlayerClockwise);
 
@@ -1076,15 +1137,22 @@ function Demo()
 			]
 		);
 
+		var planetSizeInPixels = new Coords(32, 32, 1);
+
 		var entityDefnPlanet = new EntityDefn
 		(
 			"Planet",
 			[
-				new BodyDefn(new Coords(16, 16, 1)), // sizeInPixels
+				new BodyDefn(planetSizeInPixels),
 				new CollidableDefn([], function() {}),
 				new DrawableDefn
 				(
-					new VisualImage(imagePlanet.name),
+					//new VisualImage(imagePlanet.name),
+					new VisualAnimation
+					(
+						ticksPerAnimationFrame * 8,
+						VisualImage.manyFromImages(imagesForPlanet, planetSizeInPixels)
+					)
 				),
 				new PlanetDefn(),
 			]
@@ -1239,12 +1307,14 @@ function Demo()
 
 		var gridSpacing = 8;
 
+		var playerSizeInPixels = new Coords(32, 32, 1);
+
 		var entityDefnPlayer = new EntityDefn
 		(
 			"Player", 
 			[
 				new ActorDefn("UserInputAccept"),
-				new BodyDefn(new Coords(9, 9, 1)), // sizeInPixels
+				new BodyDefn(playerSizeInPixels),
 				new CollidableDefn
 				(
 					[ "ItemCollection", "Enemy", "Planet", "Portal" ],
@@ -1256,7 +1326,10 @@ function Demo()
 					new VisualDirectional
 					(
 						new VisualNone(),
-						VisualImage.manyFromImages(imagesForPlayerClockwise)
+						VisualImage.manyFromImages
+						(
+							imagesForPlayerClockwise, playerSizeInPixels
+						)
 					)
 				),
 				new ItemContainerDefn
