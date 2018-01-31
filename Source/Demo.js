@@ -727,41 +727,45 @@ function Demo()
 		)
 		*/
 
+		var imageDirectory = "../Media/Images/";
+
+		var imageNamePrefixPlanet = "Planet";
+		var imageDirectoryPlanet = imageDirectory + "Planet/";
+
 		var imagesForPlanet = 
 		[
-			new Image("Planet00", "../Media/Images/Planet/00.png"),
-			new Image("Planet01", "../Media/Images/Planet/01.png"),
-			new Image("Planet02", "../Media/Images/Planet/02.png"),
-			new Image("Planet03", "../Media/Images/Planet/03.png"),
-			new Image("Planet04", "../Media/Images/Planet/04.png"),
-			new Image("Planet05", "../Media/Images/Planet/05.png"),
-			new Image("Planet06", "../Media/Images/Planet/06.png"),
-			new Image("Planet07", "../Media/Images/Planet/07.png"),
-			new Image("Planet08", "../Media/Images/Planet/08.png"),
-			new Image("Planet09", "../Media/Images/Planet/09.png"),
-			new Image("Planet10", "../Media/Images/Planet/10.png"),
-			new Image("Planet11", "../Media/Images/Planet/11.png"),
-			new Image("Planet12", "../Media/Images/Planet/12.png"),
-			new Image("Planet13", "../Media/Images/Planet/13.png"),
-			new Image("Planet14", "../Media/Images/Planet/14.png"),
-			new Image("Planet15", "../Media/Images/Planet/15.png"),
-			new Image("Planet16", "../Media/Images/Planet/16.png"),
-			new Image("Planet17", "../Media/Images/Planet/17.png"),
-			new Image("Planet18", "../Media/Images/Planet/18.png"),
-			new Image("Planet19", "../Media/Images/Planet/19.png"),
-			new Image("Planet20", "../Media/Images/Planet/20.png"),
-			new Image("Planet21", "../Media/Images/Planet/21.png"),
-			new Image("Planet22", "../Media/Images/Planet/22.png"),
-			new Image("Planet23", "../Media/Images/Planet/23.png"),
-			new Image("Planet24", "../Media/Images/Planet/24.png"),
-			new Image("Planet25", "../Media/Images/Planet/25.png"),
-			new Image("Planet26", "../Media/Images/Planet/26.png"),
-			new Image("Planet27", "../Media/Images/Planet/27.png"),
-			new Image("Planet28", "../Media/Images/Planet/28.png"),
-			new Image("Planet29", "../Media/Images/Planet/29.png"),
-			new Image("Planet30", "../Media/Images/Planet/30.png"),
-			new Image("Planet31", "../Media/Images/Planet/31.png"),
-
+			new Image(imageNamePrefixPlanet + "00", imageDirectoryPlanet + "00.png"),
+			new Image(imageNamePrefixPlanet + "01", imageDirectoryPlanet + "01.png"),
+			new Image(imageNamePrefixPlanet + "02", imageDirectoryPlanet + "02.png"),
+			new Image(imageNamePrefixPlanet + "03", imageDirectoryPlanet + "03.png"),
+			new Image(imageNamePrefixPlanet + "04", imageDirectoryPlanet + "04.png"),
+			new Image(imageNamePrefixPlanet + "05", imageDirectoryPlanet + "05.png"),
+			new Image(imageNamePrefixPlanet + "06", imageDirectoryPlanet + "06.png"),
+			new Image(imageNamePrefixPlanet + "07", imageDirectoryPlanet + "07.png"),
+			new Image(imageNamePrefixPlanet + "08", imageDirectoryPlanet + "08.png"),
+			new Image(imageNamePrefixPlanet + "09", imageDirectoryPlanet + "09.png"),
+			new Image(imageNamePrefixPlanet + "10", imageDirectoryPlanet + "10.png"),
+			new Image(imageNamePrefixPlanet + "11", imageDirectoryPlanet + "11.png"),
+			new Image(imageNamePrefixPlanet + "12", imageDirectoryPlanet + "12.png"),
+			new Image(imageNamePrefixPlanet + "13", imageDirectoryPlanet + "13.png"),
+			new Image(imageNamePrefixPlanet + "14", imageDirectoryPlanet + "14.png"),
+			new Image(imageNamePrefixPlanet + "15", imageDirectoryPlanet + "15.png"),
+			new Image(imageNamePrefixPlanet + "16", imageDirectoryPlanet + "16.png"),
+			new Image(imageNamePrefixPlanet + "17", imageDirectoryPlanet + "17.png"),
+			new Image(imageNamePrefixPlanet + "18", imageDirectoryPlanet + "18.png"),
+			new Image(imageNamePrefixPlanet + "19", imageDirectoryPlanet + "19.png"),
+			new Image(imageNamePrefixPlanet + "20", imageDirectoryPlanet + "20.png"),
+			new Image(imageNamePrefixPlanet + "21", imageDirectoryPlanet + "21.png"),
+			new Image(imageNamePrefixPlanet + "22", imageDirectoryPlanet + "22.png"),
+			new Image(imageNamePrefixPlanet + "23", imageDirectoryPlanet + "23.png"),
+			new Image(imageNamePrefixPlanet + "24", imageDirectoryPlanet + "24.png"),
+			new Image(imageNamePrefixPlanet + "25", imageDirectoryPlanet + "25.png"),
+			new Image(imageNamePrefixPlanet + "26", imageDirectoryPlanet + "26.png"),
+			new Image(imageNamePrefixPlanet + "27", imageDirectoryPlanet + "27.png"),
+			new Image(imageNamePrefixPlanet + "28", imageDirectoryPlanet + "28.png"),
+			new Image(imageNamePrefixPlanet + "29", imageDirectoryPlanet + "29.png"),
+			new Image(imageNamePrefixPlanet + "30", imageDirectoryPlanet + "30.png"),
+			new Image(imageNamePrefixPlanet + "31", imageDirectoryPlanet + "31.png"),
 		];
 
 		mediaLibrary.imagesAdd(imagesForPlanet);
@@ -853,6 +857,7 @@ function Demo()
 
 		mediaLibrary.imagesAdd(imagesFriendly);
 
+		/*
 		var imagesEnemy = imageHelper.buildImagesFromStringArrays
 		("Enemy", [
 			[
@@ -888,6 +893,30 @@ function Demo()
 				".......vvvv.......",
 			],
 		]);
+		*/
+
+		var imageNamePrefixEnemy = "Enemy";
+		var imageDirectoryEnemy = imageDirectory + "Saucer/";
+
+		var imagesEnemy =
+		[
+			new Image(imageNamePrefixEnemy + "00", imageDirectoryEnemy + "00.png"),
+			new Image(imageNamePrefixEnemy + "01", imageDirectoryEnemy + "01.png"),
+			new Image(imageNamePrefixEnemy + "02", imageDirectoryEnemy + "02.png"),
+			new Image(imageNamePrefixEnemy + "03", imageDirectoryEnemy + "03.png"),
+			new Image(imageNamePrefixEnemy + "04", imageDirectoryEnemy + "04.png"),
+			new Image(imageNamePrefixEnemy + "05", imageDirectoryEnemy + "05.png"),
+			new Image(imageNamePrefixEnemy + "06", imageDirectoryEnemy + "06.png"),
+			new Image(imageNamePrefixEnemy + "07", imageDirectoryEnemy + "07.png"),
+			new Image(imageNamePrefixEnemy + "08", imageDirectoryEnemy + "08.png"),
+			new Image(imageNamePrefixEnemy + "09", imageDirectoryEnemy + "09.png"),
+			new Image(imageNamePrefixEnemy + "10", imageDirectoryEnemy + "10.png"),
+			new Image(imageNamePrefixEnemy + "11", imageDirectoryEnemy + "11.png"),
+			new Image(imageNamePrefixEnemy + "12", imageDirectoryEnemy + "12.png"),
+			new Image(imageNamePrefixEnemy + "13", imageDirectoryEnemy + "13.png"),
+			new Image(imageNamePrefixEnemy + "14", imageDirectoryEnemy + "14.png"),
+			new Image(imageNamePrefixEnemy + "15", imageDirectoryEnemy + "15.png"),
+		]
 
 		mediaLibrary.imagesAdd(imagesEnemy);
 
@@ -1049,24 +1078,27 @@ function Demo()
 		]);
 		*/
 
+		var imageNamePrefixPlayer = "Player";
+		var imageDirectoryPlayer = imageDirectory + "Rocket/"
+
 		imagesForPlayerClockwise = 
 		[
-			new Image("Player00", "../Media/Images/Rocket/00.png"),
-			new Image("Player01", "../Media/Images/Rocket/01.png"),
-			new Image("Player02", "../Media/Images/Rocket/02.png"),
-			new Image("Player03", "../Media/Images/Rocket/03.png"),
-			new Image("Player04", "../Media/Images/Rocket/04.png"),
-			new Image("Player05", "../Media/Images/Rocket/05.png"),
-			new Image("Player06", "../Media/Images/Rocket/06.png"),
-			new Image("Player07", "../Media/Images/Rocket/07.png"),
-			new Image("Player08", "../Media/Images/Rocket/08.png"),
-			new Image("Player09", "../Media/Images/Rocket/09.png"),
-			new Image("Player10", "../Media/Images/Rocket/10.png"),
-			new Image("Player11", "../Media/Images/Rocket/11.png"),
-			new Image("Player12", "../Media/Images/Rocket/12.png"),
-			new Image("Player13", "../Media/Images/Rocket/13.png"),
-			new Image("Player14", "../Media/Images/Rocket/14.png"),
-			new Image("Player15", "../Media/Images/Rocket/15.png"),
+			new Image(imageNamePrefixPlayer + "00", imageDirectoryPlayer + "00.png"),
+			new Image(imageNamePrefixPlayer + "01", imageDirectoryPlayer + "01.png"),
+			new Image(imageNamePrefixPlayer + "02", imageDirectoryPlayer + "02.png"),
+			new Image(imageNamePrefixPlayer + "03", imageDirectoryPlayer + "03.png"),
+			new Image(imageNamePrefixPlayer + "04", imageDirectoryPlayer + "04.png"),
+			new Image(imageNamePrefixPlayer + "05", imageDirectoryPlayer + "05.png"),
+			new Image(imageNamePrefixPlayer + "06", imageDirectoryPlayer + "06.png"),
+			new Image(imageNamePrefixPlayer + "07", imageDirectoryPlayer + "07.png"),
+			new Image(imageNamePrefixPlayer + "08", imageDirectoryPlayer + "08.png"),
+			new Image(imageNamePrefixPlayer + "09", imageDirectoryPlayer + "09.png"),
+			new Image(imageNamePrefixPlayer + "10", imageDirectoryPlayer + "10.png"),
+			new Image(imageNamePrefixPlayer + "11", imageDirectoryPlayer + "11.png"),
+			new Image(imageNamePrefixPlayer + "12", imageDirectoryPlayer + "12.png"),
+			new Image(imageNamePrefixPlayer + "13", imageDirectoryPlayer + "13.png"),
+			new Image(imageNamePrefixPlayer + "14", imageDirectoryPlayer + "14.png"),
+			new Image(imageNamePrefixPlayer + "15", imageDirectoryPlayer + "15.png"),
 		];
 
 		mediaLibrary.imagesAdd(imagesForPlayerClockwise);
@@ -1215,12 +1247,14 @@ function Demo()
 			]
 		);
 
+		var enemySize = new Coords(32, 32, 1);
+
 		var entityDefnEnemy = new EntityDefn
 		(
 			"Enemy", 
 			[
 				new ActorDefn("MoveRandomly"),
-				new BodyDefn(new Coords(16, 9, 1)), // sizeInPixels
+				new BodyDefn(enemySize), 
 				new CollidableDefn
 				(
 					[ "Player" ],
@@ -1232,7 +1266,11 @@ function Demo()
 				),
 				new DrawableDefn
 				(
-					new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesEnemy))
+					new VisualAnimation
+					(
+						1, // ticksPerAnimationFrame, 
+						VisualImage.manyFromImages(imagesEnemy, enemySize)
+					)
 				),
 				new KillableDefn(1), // integrityMax
 				new EnemyDefn(),
