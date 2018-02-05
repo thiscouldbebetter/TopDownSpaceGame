@@ -1242,7 +1242,7 @@ if (p == 0) { pos = new Coords(150, 100); }
 									(
 										function(universe, world, display, entity)
 										{
-											return entity.planet.itemTradeOffer.toString(world);
+											return entity.planet.itemTradeOffer.toString(universe, world);
 										}
 									),
 									"White", "Black"
@@ -1396,11 +1396,29 @@ if (p == 0) { pos = new Coords(150, 100); }
 					new VisualCameraProjection
 					(
 						camera,
-						new VisualAnimation
-						(
-							ticksPerAnimationFrame,
-							VisualImage.manyFromImages(imagesForSun)
-						)
+						new VisualGroup
+						([
+							new VisualAnimation
+							(
+								ticksPerAnimationFrame,
+								VisualImage.manyFromImages(imagesForSun)
+							),
+							new VisualOffset
+							(
+								new VisualText
+								(
+									new DataSourceEntity
+									(
+										function(universe, world, display, entity)
+										{
+											return entity.star.name;
+										}
+									),
+									"White", "Black"
+								),
+								new Coords(0, 20, 0)
+							),
+						])
 					)
 				),
 				new StarDefn(),
@@ -1466,7 +1484,7 @@ if (p == 0) { pos = new Coords(150, 100); }
 			]
 		);
 
-		var playerCollide = function(world, entityThis, entityOther)
+		var playerCollide = function(universe, world, entityThis, entityOther)
 		{
 			var player = entityThis;
 			var starsystem = player.body.loc.venue;
@@ -1503,7 +1521,7 @@ if (p == 0) { pos = new Coords(150, 100); }
 				var itemTradeOffer = planet.planet.itemTradeOffer;
 				if (itemTradeOffer != null)
 				{
-					itemTradeOffer.trade(world, player, planet);
+					itemTradeOffer.trade(universe, world, player, planet);
 				}
 			}
 			else if (entityOtherProperties["Portal"] != null)

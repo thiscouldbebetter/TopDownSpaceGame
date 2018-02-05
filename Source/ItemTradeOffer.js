@@ -24,34 +24,34 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 
 	// instance methods
 
-	ItemTradeOffer.prototype.isCharged = function(world)
+	ItemTradeOffer.prototype.isCharged = function(universe, world)
 	{
 		var returnValue =
-			(this.secondLastUsed == null ? true : (this.secondsSinceLastUsed(world) >= this.secondsToRecharge));
+			(this.secondLastUsed == null ? true : (this.secondsSinceLastUsed(universe, world) >= this.secondsToRecharge));
 		return returnValue;
 	}
 
-	ItemTradeOffer.prototype.secondsSinceLastUsed = function(world)
+	ItemTradeOffer.prototype.secondsSinceLastUsed = function(universe, world)
 	{
-		return world.secondsSoFar() - this.secondLastUsed;
+		return world.secondsSoFar(universe) - this.secondLastUsed;
 	}
 
-	ItemTradeOffer.prototype.trade = function(world, entityCustomer, entityVendor)
+	ItemTradeOffer.prototype.trade = function(universe, world, entityCustomer, entityVendor)
 	{
 		var customerItemContainer = entityCustomer.itemContainer;
 		if (customerItemContainer.hasItem(this.itemTaken) == true)
 		{
 			customerItemContainer.itemSubtract(this.itemTaken);
 			customerItemContainer.itemAdd(this.itemGiven.clone());
-			this.secondLastUsed = world.secondsSoFar();
+			this.secondLastUsed = world.secondsSoFar(universe);
 		}
 	}
 
-	ItemTradeOffer.prototype.toString = function(world)
+	ItemTradeOffer.prototype.toString = function(universe, world)
 	{
 		var returnValue;
 
-		if (this.isCharged(world) == true)
+		if (this.isCharged(universe, world) == true)
 		{
 			returnValue = this.itemTaken.toString(world)
 				+ " > "
@@ -62,7 +62,7 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 		else
 		{
 			returnValue =
-				this.secondsSinceLastUsed(world)
+				this.secondsSinceLastUsed(universe, world)
 				+ " / "
 				+ this.secondsToRecharge + "s";
 		}

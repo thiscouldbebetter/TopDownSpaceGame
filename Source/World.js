@@ -51,7 +51,7 @@ function World
 	{
 		return Math.round
 		(
-			this.timerTicksSoFar / universe.timerHelper.timerTicksPerSecond
+			this.timerTicksSoFar / universe.timerHelper.ticksPerSecond
 		);
 	}
 

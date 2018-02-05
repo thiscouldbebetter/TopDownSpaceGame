@@ -37,11 +37,11 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 					{
 						collidableThis.defn(world).collidable.collide
 						(
-							world, collidableThis, collidableOther
+							universe, world, collidableThis, collidableOther
 						);
 						collidableOther.defn(world).collidable.collide
 						(
-							world, collidableOther, collidableThis
+							universe, world, collidableOther, collidableThis
 						);
 					}
 				}
