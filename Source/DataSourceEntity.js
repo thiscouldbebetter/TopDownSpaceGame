@@ -1,5 +1,5 @@
 
-function DataSourceEntity(evaluate)
+function DataSourceEntity(get)
 {
-	this.evaluate = evaluate;
+	this.get = get;
 }

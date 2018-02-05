@@ -1,13 +1,13 @@
 
 function World
 (
-	name, 
-	colors, 
-	itemDefns, 
+	name,
+	colors,
+	itemDefns,
 	actions,
-	activityDefns, 
-	constraintDefns, 
-	entityDefns, 
+	activityDefns,
+	constraintDefns,
+	entityDefns,
 	starsystemDefns,
 	starsystems
 )

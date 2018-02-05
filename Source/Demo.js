@@ -9,7 +9,7 @@ function Demo()
 	{
 		var accelerate = new Action
 		(
-			"Accelerate", 
+			"Accelerate",
 			function perform(world, actor)
 			{
 				var fuelUsedByAcceleration = 1;
@@ -52,7 +52,7 @@ function Demo()
 
 					var entityToSpawn = new Entity
 					(
-						"[projectile]", 
+						"[projectile]",
 						entityDefnProjectile.name,
 						[
 							new Body(actor.body.loc.clone())
@@ -124,9 +124,9 @@ function Demo()
 			}
 		);
 
-		var actions = 
+		var actions =
 		[
-			accelerate, 
+			accelerate,
 			fire,
 			turnLeft,
 			turnRight,
@@ -189,16 +189,26 @@ function Demo()
 					starsystemSizeInPixels,
 					// entities
 					[
+						// background
+						new Entity
+						(
+							"Background",
+							entityDefns["Background"].name,
+							[
+								new Body( new Location( new Coords(0, 0, 0) ) ),
+							]
+						),
+
 						// sun
 						new Entity
 						(
-							"Sun", 
-							entityDefns["Sun"].name, 
-							[ 
+							"Sun",
+							entityDefns["Sun"].name,
+							[
 								new Body(new Location(starsystemSizeInPixelsHalf.clone())),
 								new Star
 								(
-									new NameGenerator().generateNameWithSyllables(3), 
+									new NameGenerator().generateNameWithSyllables(3),
 									null // color
 								),
 							]
@@ -208,8 +218,8 @@ function Demo()
 
 						new Entity
 						(
-							"PortalWest", 
-							entityDefns["PortalRed"].name, 
+							"PortalWest",
+							entityDefns["PortalRed"].name,
 							[
 								new Body(new Location(new Coords(.05 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
 								new PortalData
@@ -223,8 +233,8 @@ function Demo()
 
 						new Entity
 						(
-							"PortalEast", 
-							entityDefns["PortalGreen"].name, 
+							"PortalEast",
+							entityDefns["PortalGreen"].name,
 							[
 								new Body(new Location(new Coords(.95 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
 								new PortalData
@@ -238,8 +248,8 @@ function Demo()
 
 						new Entity
 						(
-							"PortalNorth", 
-							entityDefns["PortalBlue"].name, 
+							"PortalNorth",
+							entityDefns["PortalBlue"].name,
 							[
 								new Body(new Location(new Coords(starsystemSizeInPixelsHalf.x, .05 * starsystemSizeInPixels.y))),
 								new PortalData
@@ -253,8 +263,8 @@ function Demo()
 
 						new Entity
 						(
-							"PortalEast", 
-							entityDefns["PortalViolet"].name, 
+							"PortalEast",
+							entityDefns["PortalViolet"].name,
 							[
 								new Body(new Location(new Coords(starsystemSizeInPixelsHalf.x, .95 * starsystemSizeInPixels.y))),
 								new PortalData
@@ -268,21 +278,22 @@ function Demo()
 					]
 				);
 
-				var numberOfPlanetsMin = 0;
+				var numberOfPlanetsMin = 1;
 				var numberOfPlanetsMax = 5;
 				var numberOfPlanetsRange = numberOfPlanetsMax - numberOfPlanetsMin;
-				var numberOfPlanets = 
-					numberOfPlanetsMin 
+				var numberOfPlanets =
+					numberOfPlanetsMin
 					+ Math.floor(Math.random() * numberOfPlanetsRange);
 
 				for (var p = 0; p < numberOfPlanets; p++)
 				{
 					var pos = new Coords().randomize().multiply(starsystemSizeInPixels).round();
+if (p == 0) { pos = new Coords(150, 100); }
 					var entityPlanet = new Entity
 					(
-						"Planet" + p, 
-						entityDefns["Planet"].name, 
-						[ 
+						"Planet" + p,
+						entityDefns["Planet"].name,
+						[
 							new Body(new Location(pos)),
 							new Planet
 							(
@@ -297,8 +308,8 @@ function Demo()
 				var numberOfEnemiesMin = 0;
 				var numberOfEnemiesMax = 5;
 				var numberOfEnemiesRange = numberOfEnemiesMax - numberOfEnemiesMin;
-				var numberOfEnemies = 
-						numberOfEnemiesMin 
+				var numberOfEnemies =
+						numberOfEnemiesMin
 						+ Math.floor(Math.random() * numberOfEnemiesRange);
 
 				for (var e = 0; e < numberOfEnemies; e++)
@@ -310,8 +321,8 @@ function Demo()
 
 					var entityEnemy = new Entity
 					(
-						"Enemy" + e, 
-						entityDefns["Enemy"].name, 
+						"Enemy" + e,
+						entityDefns["Enemy"].name,
 						[ new Body(new Location(pos)) ]
 					);
 
@@ -328,10 +339,10 @@ function Demo()
 
 					var entityItemCollection = new Entity
 					(
-						"ItemCollection" + c, 
-						entityDefns["ItemCollection"].name, 
-						[ 
-							new Body(new Location(pos)) 
+						"ItemCollection" + c,
+						entityDefns["ItemCollection"].name,
+						[
+							new Body(new Location(pos))
 						]
 					);
 
@@ -342,12 +353,12 @@ function Demo()
 				{
 					var entityPlayer = new Entity
 					(
-						"Player", 
-						entityDefns["Player"].name, 
-						[ 
+						"Player",
+						entityDefns["Player"].name,
+						[
 							new Body(new Location(new Coords(100, 100))),
 							new Constrainable([]),
-						] 
+						]
 					);
 					starsystem.entitiesToSpawn.push(entityPlayer);
 
@@ -355,9 +366,9 @@ function Demo()
 
 					var entityFriendly = new Entity
 					(
-						"Friendly0", 
-						entityDefns["Friendly"].name, 
-						[ new Body(new Location(new Coords(350, 50))) ] 
+						"Friendly0",
+						entityDefns["Friendly"].name,
+						[ new Body(new Location(new Coords(350, 50))) ]
 					);
 					starsystem.entitiesToSpawn.push(entityFriendly);
 				}
@@ -377,7 +388,7 @@ function Demo()
 			activityDefns,
 			constraintDefns,
 			entityDefns,
-			starsystemDefns, 
+			starsystemDefns,
 			starsystems
 		);
 
@@ -386,7 +397,7 @@ function Demo()
 
 	Demo.prototype.world_ItemDefns = function()
 	{
-			var returnValues = 
+			var returnValues =
 			[
 				new ItemDefn("Ammo", "A"),
 				new ItemDefn("Bioforms", "B"),
@@ -409,11 +420,11 @@ function Demo()
 		(
 			"DoNothing",
 			// initialize
-			function(universe, activity) 
+			function(universe, activity)
 			{
 				// do nothing
 			},
-			// perform 
+			// perform
 			function(universe, activity)
 			{
 				// do nothing
@@ -427,7 +438,7 @@ function Demo()
 			// initialize
 			function(universe, activity) {},
 
-			// perform 
+			// perform
 			function(universe, activity)
 			{
 				var actor = activity.actor;
@@ -441,7 +452,7 @@ function Demo()
 
 					var newTarget = new Coords
 					(
-						Math.floor(Math.random() * starsystemSizeInPixels.x), 
+						Math.floor(Math.random() * starsystemSizeInPixels.x),
 						Math.floor(Math.random() * starsystemSizeInPixels.y)
 					);
 
@@ -457,12 +468,12 @@ function Demo()
 				var speedCurrent = actorLoc.vel.magnitude();
 				if (speedCurrent > 0)
 				{
-					var timeToTarget = 
+					var timeToTarget =
 						distanceToTarget / speedCurrent;
 
 					var moverDefn = actor.defn(universe.world).mover;
 
-					var accelerationCurrent = 
+					var accelerationCurrent =
 						moverDefn.force / moverDefn.mass;
 
 					if (speedCurrent > accelerationCurrent * timeToTarget)
@@ -491,11 +502,11 @@ function Demo()
 		(
 			"UserInputAccept",
 
-			// initialize 
-			function(universe, activity) 
+			// initialize
+			function(universe, activity)
 			{},
 
-			// perform 
+			// perform
 			function(universe, activity)
 			{
 				var inputHelper = universe.inputHelper
@@ -504,7 +515,7 @@ function Demo()
 				var world = universe.world;
 				var starsystemCurrent = world.starsystemCurrent;
 				var starsystemDefn = starsystemCurrent.defn(world);
-				var inputToActionMappings = starsystemDefn.inputToActionMappings; 
+				var inputToActionMappings = starsystemDefn.inputToActionMappings;
 
 				for (var i = 0; i < inputsActive.length; i++)
 				{
@@ -519,7 +530,7 @@ function Demo()
 			}
 		);
 
-		var _all = 
+		var _all =
 		[
 			doNothing,
 			moveRandomly,
@@ -566,7 +577,7 @@ function Demo()
 			}
 		);
 
-		var _all = 
+		var _all =
 		[
 			conformToBounds,
 			followEntityByName,
@@ -579,10 +590,11 @@ function Demo()
 	Demo.prototype.world_EntityDefns = function(universe)
 	{
 		var imageHelper = new ImageHelper();
+		var mediaLibrary = universe.mediaLibrary;
 
 		var imagesForItemCollection = imageHelper.buildImagesFromStringArrays
 		(
-			"ItemCollection", 
+			"ItemCollection",
 			[
 				[
 					"aaaaa..",
@@ -625,7 +637,6 @@ function Demo()
 			]
 		);
 
-		var mediaLibrary = universe.mediaLibrary;
 		mediaLibrary.imagesAdd(imagesForItemCollection);
 
 		var imageMoverProjectile = imageHelper.buildImageFromStrings
@@ -732,7 +743,7 @@ function Demo()
 		var imageNamePrefixPlanet = "Planet";
 		var imageDirectoryPlanet = imageDirectory + "Planet/";
 
-		var imagesForPlanet = 
+		var imagesForPlanet =
 		[
 			new Image(imageNamePrefixPlanet + "00", imageDirectoryPlanet + "00.png"),
 			new Image(imageNamePrefixPlanet + "01", imageDirectoryPlanet + "01.png"),
@@ -1081,7 +1092,7 @@ function Demo()
 		var imageNamePrefixPlayer = "Player";
 		var imageDirectoryPlayer = imageDirectory + "Rocket/"
 
-		imagesForPlayerClockwise = 
+		imagesForPlayerClockwise =
 		[
 			new Image(imageNamePrefixPlayer + "00", imageDirectoryPlayer + "00.png"),
 			new Image(imageNamePrefixPlayer + "01", imageDirectoryPlayer + "01.png"),
@@ -1105,12 +1116,19 @@ function Demo()
 
 		var ticksPerAnimationFrame = 2;
 
+		var camera = new Camera
+		(
+			universe.display.sizesAvailable[0], // viewSize
+			1, // focalLength
+			new Location(new Coords(0, 0, 0))
+		);
+
 		var entityDefnCamera = new EntityDefn
 		(
 			"Camera",
 			// properties
 			[
-				new CameraDefn(),
+				new CameraDefn(camera),
 				new ConstrainableDefn(),
 			]
 		);
@@ -1129,7 +1147,15 @@ function Demo()
 				),
 				new DrawableDefn
 				(
-					new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesForItemCollection)),
+					new VisualCameraProjection
+					(
+						camera,
+						new VisualAnimation
+						(
+							ticksPerAnimationFrame,
+							VisualImage.manyFromImages(imagesForItemCollection)
+						)
+					)
 				),
 				new ItemCollectionDefn(),
 				new ItemContainerDefn([ new Item("Fuel", 100) ]), // hack
@@ -1149,7 +1175,11 @@ function Demo()
 				new MoverDefn(1, 1, 16), // mass, force, speedMax
 				new DrawableDefn
 				(
-					new VisualImage(imageMoverProjectile.name),
+					new VisualCameraProjection
+					(
+						camera,
+						new VisualImage(imageMoverProjectile.name)
+					),
 				),
 				new ProjectileDefn(),
 				new CollidableDefn
@@ -1179,11 +1209,47 @@ function Demo()
 				new CollidableDefn([], function() {}),
 				new DrawableDefn
 				(
-					//new VisualImage(imagePlanet.name),
-					new VisualAnimation
+					new VisualCameraProjection
 					(
-						ticksPerAnimationFrame * 8,
-						VisualImage.manyFromImages(imagesForPlanet, planetSizeInPixels)
+						camera,
+						new VisualGroup
+						([
+							new VisualAnimation
+							(
+								ticksPerAnimationFrame * 8,
+								VisualImage.manyFromImages(imagesForPlanet, planetSizeInPixels)
+							),
+							new VisualOffset
+							(
+								new VisualText
+								(
+									new DataSourceEntity
+									(
+										function(universe, world, display, entity)
+										{
+											return entity.planet.name;
+										}
+									),
+									"White", "Black"
+								),
+								new Coords(0, 20, 0)
+							),
+							new VisualOffset
+							(
+								new VisualText
+								(
+									new DataSourceEntity
+									(
+										function(universe, world, display, entity)
+										{
+											return entity.planet.itemTradeOffer.toString(world);
+										}
+									),
+									"White", "Black"
+								),
+								new Coords(0, 30, 0)
+							),
+						])
 					)
 				),
 				new PlanetDefn(),
@@ -1209,7 +1275,15 @@ function Demo()
 					new CollidableDefn([], function() {}),
 					new DrawableDefn
 					(
-						new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesForPortal)),
+						new VisualCameraProjection
+						(
+							camera,
+							new VisualAnimation
+							(
+								ticksPerAnimationFrame,
+								VisualImage.manyFromImages(imagesForPortal)
+							),
+						)
 					),
 					new PortalDefn(),
 				]
@@ -1218,6 +1292,100 @@ function Demo()
 			entityDefnsPortal.push(entityDefnPortal);
 		}
 
+		var imageBackgroundLayer0 = imageHelper.buildImageFromStrings
+		(
+			"BackgroundLayer0",
+			[
+				"c..c..c",
+				".c.c.c.",
+				"...c...",
+				"ccccccc",
+				"...c...",
+				".c.c.c.",
+				"c..c..c",
+			]
+		);
+		mediaLibrary.imagesAdd([imageBackgroundLayer0]);
+		var visualImageBackgroundLayer0 = new VisualImage("BackgroundLayer0");
+
+		var imageBackgroundLayer1 = imageHelper.buildImageFromStrings
+		(
+			"BackgroundLayer1",
+			[
+				"..a..",
+				"..a..",
+				"aaaaa",
+				"..a..",
+				"..a..",
+			]
+		);
+		mediaLibrary.imagesAdd([imageBackgroundLayer1]);
+		var visualImageBackgroundLayer1 = new VisualImage("BackgroundLayer1");
+
+		var backgroundViewSize = new Coords(400, 300, 1);
+		var backgroundCellSizeMultiplier = 1.5;
+		var backgroundCellSize = new Coords
+		(
+			backgroundViewSize.x * backgroundCellSizeMultiplier,
+			backgroundViewSize.x * backgroundCellSizeMultiplier, // x, not y
+			1
+		);
+
+		var entityDefnBackground = new EntityDefn
+		(
+			"Background",
+			[
+				new DrawableDefn
+				(
+					new VisualGroup
+					([
+						new VisualOffset
+						(
+							new VisualCameraProjection
+							(
+								camera,
+								new VisualRepeating
+								(
+									backgroundCellSize,
+									backgroundViewSize,
+									new VisualGroup
+									([
+										visualImageBackgroundLayer0,
+										new VisualOffset
+										(
+											visualImageBackgroundLayer0,
+											new Coords
+											(
+												backgroundCellSize.x / 3,
+												backgroundCellSize.y / 4,
+												0
+											)
+										),
+									])
+								)
+							),
+							new Coords(0, 0, 2), // offset
+						),
+
+						new VisualOffset
+						(
+							new VisualCameraProjection
+							(
+								camera,
+								new VisualRepeating
+								(
+									backgroundCellSize,
+									backgroundViewSize,
+									visualImageBackgroundLayer1
+								)
+							),
+							new Coords(0, 0, 4) // offset
+						),
+					])
+				)
+			]
+		);
+
 		var entityDefnSun = new EntityDefn
 		(
 			"Sun",
@@ -1225,7 +1393,15 @@ function Demo()
 				new BodyDefn(new Coords(20, 20, 1)), // sizeInPixels
 				new DrawableDefn
 				(
-					new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesForSun))
+					new VisualCameraProjection
+					(
+						camera,
+						new VisualAnimation
+						(
+							ticksPerAnimationFrame,
+							VisualImage.manyFromImages(imagesForSun)
+						)
+					)
 				),
 				new StarDefn(),
 			]
@@ -1233,7 +1409,7 @@ function Demo()
 
 		var entityDefnFriendly = new EntityDefn
 		(
-			"Friendly", 
+			"Friendly",
 			[
 				new KillableDefn(1), // integrityMax
 				new BodyDefn(new Coords(16, 9, 1)), // sizeInPixels
@@ -1241,7 +1417,15 @@ function Demo()
 				new ActorDefn("DoNothing"),
 				new DrawableDefn
 				(
-					new VisualAnimation(ticksPerAnimationFrame, VisualImage.manyFromImages(imagesFriendly))
+					new VisualCameraProjection
+					(
+						camera,
+						new VisualAnimation
+						(
+							ticksPerAnimationFrame,
+							VisualImage.manyFromImages(imagesFriendly)
+						)
+					)
 				),
 				new FriendlyDefn(),
 			]
@@ -1251,25 +1435,29 @@ function Demo()
 
 		var entityDefnEnemy = new EntityDefn
 		(
-			"Enemy", 
+			"Enemy",
 			[
 				new ActorDefn("MoveRandomly"),
-				new BodyDefn(enemySize), 
+				new BodyDefn(enemySize),
 				new CollidableDefn
 				(
 					[ "Player" ],
 					// collide
-					function (entityThis, entityOther) 
+					function (entityThis, entityOther)
 					{
 						// do nothing
 					}
 				),
 				new DrawableDefn
 				(
-					new VisualAnimation
+					new VisualCameraProjection
 					(
-						1, // ticksPerAnimationFrame, 
-						VisualImage.manyFromImages(imagesEnemy, enemySize)
+						camera,
+						new VisualAnimation
+						(
+							1, // ticksPerAnimationFrame,
+							VisualImage.manyFromImages(imagesEnemy, enemySize)
+						)
 					)
 				),
 				new KillableDefn(1), // integrityMax
@@ -1300,7 +1488,7 @@ function Demo()
 				(
 					Globals.Instance.universe.world.font.buildEntityForText
 					(
-						"You lose!", 
+						"You lose!",
 						entityThis.body.loc.pos.clone(),
 						true // isFloater
 					)
@@ -1349,7 +1537,7 @@ function Demo()
 
 		var entityDefnPlayer = new EntityDefn
 		(
-			"Player", 
+			"Player",
 			[
 				new ActorDefn("UserInputAccept"),
 				new BodyDefn(playerSizeInPixels),
@@ -1361,21 +1549,25 @@ function Demo()
 				new ConstrainableDefn(),
 				new DrawableDefn
 				(
-					new VisualDirectional
+					new VisualCameraProjection
 					(
-						new VisualNone(),
-						VisualImage.manyFromImages
+						camera,
+						new VisualDirectional
 						(
-							imagesForPlayerClockwise, playerSizeInPixels
+							new VisualNone(),
+							VisualImage.manyFromImages
+							(
+								imagesForPlayerClockwise, playerSizeInPixels
+							)
 						)
 					)
 				),
 				new ItemContainerDefn
-				([ 
+				([
 					new Item("Crew", 3),
 					new Item("Food", 100000),
-					new Item("Fuel", 100000), 
-				]),				 
+					new Item("Fuel", 100000),
+				]),
 				new KillableDefn(1), // integrityMax
 				new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
 				new PlayerDefn(),
@@ -1405,10 +1597,10 @@ function Demo()
 								new Coords(1, 2).multiplyScalar(gridSpacing), // pos
 								new DataSourceEntity
 								(
-									function(entity) 
+									function(entity)
 									{
-										var returnValue = 
-											"HP: " 
+										var returnValue =
+											"HP: "
 											+ entity.killable.integrity
 											+ " / "
 											+ entity.defn().killable.integrityMax;
@@ -1446,10 +1638,10 @@ function Demo()
 								), // pos
 								new DataSourceEntity
 								(
-									function(item) 
+									function(item)
 									{
-										var returnValue = 
-											item.defnName + ": " 
+										var returnValue =
+											item.defnName + ": "
 											+ item.quantity;
 
 										return returnValue;
@@ -1487,6 +1679,7 @@ function Demo()
 
 		var entityDefns =
 		[
+			entityDefnBackground,
 			entityDefnCamera,
 			entityDefnPlanet,
 			entityDefnsPortal[0],
@@ -1509,7 +1702,7 @@ function Demo()
 
 	Demo.prototype.world_StarsystemDefns = function()
 	{
-		var starsystemDefns = 
+		var starsystemDefns =
 		[
 			new StarsystemDefn
 			(

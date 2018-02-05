@@ -26,7 +26,7 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 
 	ItemTradeOffer.prototype.isCharged = function(world)
 	{
-		var returnValue = 
+		var returnValue =
 			(this.secondLastUsed == null ? true : (this.secondsSinceLastUsed(world) >= this.secondsToRecharge));
 		return returnValue;
 	}
@@ -52,17 +52,17 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 		var returnValue;
 
 		if (this.isCharged(world) == true)
-		{ 
-			returnValue = this.itemTaken.toString() 
-				+ " > " 
-				+ this.itemGiven.toString()
+		{
+			returnValue = this.itemTaken.toString(world)
+				+ " > "
+				+ this.itemGiven.toString(world)
 				+ " / "
 				+ this.secondsToRecharge + "s";
 		}
 		else
 		{
-			returnValue = 
-				this.secondsSinceLastUsed(world) 
+			returnValue =
+				this.secondsSinceLastUsed(world)
 				+ " / "
 				+ this.secondsToRecharge + "s";
 		}

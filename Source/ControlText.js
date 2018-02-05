@@ -10,12 +10,12 @@ function ControlText(name, entity, pos, dataSourceText)
 {
 	ControlText.prototype.draw = function(display)
 	{
-		var textToDraw = this.dataSourceText.evaluate(this.entity);
+		var textToDraw = this.dataSourceText.get(this.entity);
 
 		display.drawText
 		(
 			textToDraw,
-			this.pos, 
+			this.pos,
 			"White" // hack
 		);
 	}

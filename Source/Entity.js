@@ -31,13 +31,13 @@ function Entity(name, defnName, properties)
 
 	// instance methods
 
-	Entity.prototype.activity = function(universe, value) 
-	{ 
+	Entity.prototype.activity = function(universe, value)
+	{
 		if (value != null)
 		{
 			this._activity = value;
-			this._activity.initialize(universe); 
-		} 
+			this._activity.initialize(universe);
+		}
 
 		return this._activity;
 	}

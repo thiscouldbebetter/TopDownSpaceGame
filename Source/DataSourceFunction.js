@@ -1,6 +1,6 @@
 
-function DataSourceFunction(context, evaluate)
+function DataSourceFunction(context, get)
 {
 	this.context = context;
-	this.evaluate = evaluate;
+	this.get = get;
 }

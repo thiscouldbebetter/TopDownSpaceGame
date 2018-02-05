@@ -14,30 +14,19 @@ function DrawableDefn(visual)
 		if (entity.drawable == null)
 		{
 			var visual = entity.defn(universe.world).drawable.visual;
-			entity.drawable = new Drawable(visual);//.cloneShallow());
-			//entity.drawable.visual.pos = entity.body.loc.pos;
+			entity.drawable = new Drawable(visual);
+			entity.loc = entity.body.loc;
 		}
 	}
 
 	DrawableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
 	{
 		var display = universe.display;
-		var visual = entity.drawable.visual;
-		var camera = venue.camera;
-
-		var drawPos = entity.body.loc.pos;
-		this._posToSave.overwriteWith(drawPos);
- 		drawPos.subtract
- 		(
-			camera.body.loc.pos
-		).add
-		(
-			camera.camera.viewSizeHalf
-		);
+		var drawable = entity.drawable;
+		var visual = drawable.visual;
 		visual.draw
 		(
-			universe, universe.world, display, entity.body
+			universe, universe.world, display, entity
 		);
-		drawPos.overwriteWith(this._posToSave);
 	}
 }

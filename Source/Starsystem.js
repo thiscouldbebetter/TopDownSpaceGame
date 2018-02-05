@@ -42,25 +42,25 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			}
 		}
 
-		var display = universe.display;
-		var cameraPos = new Coords(0, 0, 0);
-		var cameraViewSizeInPixels = display.sizeInPixels.clone();
-		var cameraViewSizeInPixelsHalf = cameraViewSizeInPixels.clone().divideScalar(2);
+		var entityDefnCamera = entityDefns["Camera"];
+		var camera = entityDefnCamera.camera.camera;
+		var cameraViewSizeInPixels = camera.viewSize;
+		var cameraLoc = camera.loc;
+		var cameraPos = cameraLoc.pos;
 
 		this.camera = new Entity
 		(
 			"Camera",
 			"Camera", // entityDefnName
 			[
-				new Body(new Location(cameraPos)),
-				new Camera(cameraViewSizeInPixels),
+				new Body(cameraLoc),
 				new Constrainable
 				(
 					[
 						new Constraint("FollowEntityByName", "Player"),
 						new Constraint
 						(
-							"ConformToBounds", 
+							"ConformToBounds",
 							new Bounds
 							(
 								cameraPos,
@@ -110,7 +110,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 
 		this.update_EntitiesToSpawn(universe, world);
 
-		var propertyNames = 
+		var propertyNames =
 		[
 			"Actor",
 			"Mover",
@@ -230,9 +230,9 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		var display = universe.display;
 		display.drawRectangle
 		(
-			Coords.Instances.Zeroes, 
-			this.sizeInPixels, 
-			"rgb(32, 0, 32)", // dark purple 
+			Coords.Instances.Zeroes,
+			this.sizeInPixels,
+			"rgb(32, 0, 32)", // dark purple
 			"Black"
 		);
 

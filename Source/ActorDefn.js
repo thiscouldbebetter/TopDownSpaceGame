@@ -13,7 +13,7 @@ function ActorDefn(activityDefnNameInitial)
 
 		entity.activity
 		(
-			universe, 
+			universe,
 			new Activity
 			(
 				entity,

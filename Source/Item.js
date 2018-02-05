@@ -14,8 +14,8 @@ function Item(defnName, quantity)
 		return world.itemDefns[this.defnName];
 	}
 
-	Item.prototype.toString = function()
+	Item.prototype.toString = function(world)
 	{
-		return this.quantity + this.defn().name;
+		return this.quantity + this.defn(world).name;
 	}
 }

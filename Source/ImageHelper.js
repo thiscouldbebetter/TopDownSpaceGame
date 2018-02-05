@@ -104,7 +104,7 @@ function ImageHelper()
 				graphics.fillStyle = colorForPixel.systemColor();
 				graphics.fillRect
 				(
-					pixelPos.x, pixelPos.y, 
+					pixelPos.x, pixelPos.y,
 					scaleFactor.x, scaleFactor.y
 				);
 			}
@@ -149,9 +149,9 @@ function ImageHelper()
 						graphics.fillStyle = colorForPixel.systemColor();
 						graphics.fillRect
 						(
-							pixelPos.x, 
-							pixelPos.y, 
-							1, 
+							pixelPos.x,
+							pixelPos.y,
+							1,
 							1
 						);
 					}
@@ -189,7 +189,7 @@ function ImageHelper()
 
 		graphics.drawImage
 		(
-			image.systemImage, 
+			image.systemImage,
 			0, 0
 		);
 
@@ -202,7 +202,7 @@ function ImageHelper()
 
 		for (var i = 0; i < Color.NumberOfComponentsRGBA; i++)
 		{
-			color.componentsRGBA[i] = 
+			color.componentsRGBA[i] =
 				pixelColorAsComponentsRGBA[i]
 				/ Color.SystemColorComponentMax;
 		}
@@ -218,7 +218,7 @@ function ImageHelper()
 
 		var imageToSliceSize = new Coords
 		(
-			systemImageToSlice.width, 
+			systemImageToSlice.width,
 			systemImageToSlice.height
 		);
 		var tileSize = imageToSliceSize.clone().divide(sizeInTiles);
