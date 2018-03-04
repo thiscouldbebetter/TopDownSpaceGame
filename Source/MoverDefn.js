@@ -7,9 +7,7 @@ function MoverDefn(massBase, force, speedMax)
 }
 
 {
-	MoverDefn.prototype.propertyName = function() { return "Mover"; }
-
-	MoverDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
+	MoverDefn.prototype.update = function(universe, world, venue, entity)
 	{
 		var mover = entity;
 

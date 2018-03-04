@@ -3,9 +3,7 @@ function CameraDefn(camera)
 	this.camera = camera;
 }
 {
-	CameraDefn.prototype.propertyName = function() { return "Camera"; }
-
-	CameraDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
+	CameraDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
 		if (entity.camera == null)
 		{

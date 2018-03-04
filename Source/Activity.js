@@ -1,7 +1,6 @@
 
-function Activity(actor, defnName, target)
+function Activity(defnName, target)
 {
-	this.actor = actor;
 	this.defnName = defnName;
 	this.target = target;
 }
@@ -9,23 +8,19 @@ function Activity(actor, defnName, target)
 {
 	// instance methods
 
-	Activity.prototype.defn = function(universe)
+	Activity.prototype.defn = function(world)
 	{
-		return universe.world.activityDefns[this.defnName];
+		return world.defns.activityDefns[this.defnName];
 	}
 
-	Activity.prototype.initialize = function(universe)
+	Activity.prototype.initialize = function(universe, world, place, actor)
 	{
-		this.vars = new Activity_Variables();
-		this.defn(universe).initialize(this);
+		this.defn(world).initialize(universe, world, place, actor, this);
+		return this;
 	}
 
-	Activity.prototype.perform = function(universe)
+	Activity.prototype.perform = function(universe, world, place, actor)
 	{
-		this.defn(universe).perform(universe, this);
+		this.defn(world).perform(universe, world, place, actor, this);
 	}
-
-	// inner classes
-	function Activity_Variables()
-	{}
 }

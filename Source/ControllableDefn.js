@@ -5,15 +5,13 @@ function ControllableDefn(buildControlForEntity)
 }
 
 {
-	ControllableDefn.prototype.propertyName = function() { return "Controllable"; }
-
-	ControllableDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
+	ControllableDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
 		var control = this.buildControlForEntity(entity);
 		entity.controllable = new Controllable(control);
 	}
 
-	ControllableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
+	ControllableDefn.prototype.update = function(universe, world, venue, entity)
 	{
 		entity.controllable.control.draw(universe.display);
 	}

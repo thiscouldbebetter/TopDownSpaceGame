@@ -5,14 +5,12 @@ function KillableDefn(integrityMax)
 }
 
 {
-	KillableDefn.prototype.propertyName = function() { return "Killable"; }
-
-	KillableDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
+	KillableDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
-		entity.killable = new Killable(entity.defn(universe.world).killable.integrityMax);
+		entity.killable = new Killable(entity.defn(world).killable.integrityMax);
 	}
 
-	KillableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
+	KillableDefn.prototype.update = function(universe, world, venue, entity)
 	{
 		if (entity.killable.integrity <= 0) { venue.entitiesToRemove.push(entity); }
 	}

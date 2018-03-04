@@ -48,7 +48,7 @@ function Demo()
 					itemFuel.quantity -= fuelConsumed;
 
 					var venue = actor.body.loc.venue;
-					var entityDefnProjectile = world.entityDefns["Projectile"];
+					var entityDefnProjectile = world.defns.entityDefns["Projectile"];
 
 					var entityToSpawn = new Entity
 					(
@@ -222,7 +222,7 @@ function Demo()
 							entityDefns["PortalRed"].name,
 							[
 								new Body(new Location(new Coords(.05 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
-								new PortalData
+								new Portal
 								(
 									starsystemNamePrefix + starsystemPosWest.toString(),
 									new Coords(.9 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y),
@@ -237,7 +237,7 @@ function Demo()
 							entityDefns["PortalGreen"].name,
 							[
 								new Body(new Location(new Coords(.95 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
-								new PortalData
+								new Portal
 								(
 									starsystemNamePrefix + starsystemPosEast.toString(),
 									new Coords(.1 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y),
@@ -252,7 +252,7 @@ function Demo()
 							entityDefns["PortalBlue"].name,
 							[
 								new Body(new Location(new Coords(starsystemSizeInPixelsHalf.x, .05 * starsystemSizeInPixels.y))),
-								new PortalData
+								new Portal
 								(
 									starsystemNamePrefix + starsystemPosNorth.toString(),
 									new Coords(starsystemSizeInPixelsHalf.x, .9 * starsystemSizeInPixels.y),
@@ -267,7 +267,7 @@ function Demo()
 							entityDefns["PortalViolet"].name,
 							[
 								new Body(new Location(new Coords(starsystemSizeInPixelsHalf.x, .95 * starsystemSizeInPixels.y))),
-								new PortalData
+								new Portal
 								(
 									starsystemNamePrefix + starsystemPosSouth.toString(),
 									new Coords(starsystemSizeInPixelsHalf.x, .1 * starsystemSizeInPixels.y),
@@ -288,7 +288,6 @@ function Demo()
 				for (var p = 0; p < numberOfPlanets; p++)
 				{
 					var pos = new Coords().randomize().multiply(starsystemSizeInPixels).round();
-if (p == 0) { pos = new Coords(150, 100); }
 					var entityPlanet = new Entity
 					(
 						"Planet" + p,
@@ -379,16 +378,21 @@ if (p == 0) { pos = new Coords(150, 100); }
 
 		} // end for sizeInStarsystems.y
 
-		var world = new World
+		var defns = new WorldDefns
 		(
-			"WorldGrid" + sizeInStarsystems.toString(),
 			colors,
 			itemDefns,
 			actions,
 			activityDefns,
 			constraintDefns,
 			entityDefns,
-			starsystemDefns,
+			starsystemDefns
+		);
+
+		var world = new World
+		(
+			"WorldGrid" + sizeInStarsystems.toString(),
+			defns,
 			starsystems
 		);
 
@@ -420,12 +424,12 @@ if (p == 0) { pos = new Coords(150, 100); }
 		(
 			"DoNothing",
 			// initialize
-			function(universe, activity)
+			function(universe, world, actor, activity)
 			{
 				// do nothing
 			},
 			// perform
-			function(universe, activity)
+			function(universe, world, actor, activity)
 			{
 				// do nothing
 			}
@@ -436,16 +440,15 @@ if (p == 0) { pos = new Coords(150, 100); }
 			"MoveRandomly",
 
 			// initialize
-			function(universe, activity) {},
+			function(universe, world, place, actor, activity) {},
 
 			// perform
-			function(universe, activity)
+			function(universe, world, place, actor, activity)
 			{
-				var actor = activity.actor;
 				var actorLoc = actor.body.loc;
 				var actorPos = actorLoc.pos;
 
-				if (activity.vars.target == null)
+				if (activity.target == null)
 				{
 					var actorStarsystem = actorLoc.venue;
 					var starsystemSizeInPixels = actorStarsystem.sizeInPixels;
@@ -456,10 +459,10 @@ if (p == 0) { pos = new Coords(150, 100); }
 						Math.floor(Math.random() * starsystemSizeInPixels.y)
 					);
 
-					activity.vars.target = newTarget;
+					activity.target = newTarget;
 				}
 
-				var target = activity.vars.target;
+				var target = activity.target;
 
 				var displacementToTarget = target.clone().subtract(actorPos);
 				var distanceToTarget = displacementToTarget.magnitude();
@@ -485,7 +488,7 @@ if (p == 0) { pos = new Coords(150, 100); }
 				var distanceThreshold = 8;
 				if (distanceToTarget < distanceThreshold)
 				{
-					activity.vars.target = null;
+					activity.target = null;
 				}
 				else
 				{
@@ -503,15 +506,15 @@ if (p == 0) { pos = new Coords(150, 100); }
 			"UserInputAccept",
 
 			// initialize
-			function(universe, activity)
+			function(universe, world, place, actor, activity)
 			{},
 
 			// perform
-			function(universe, activity)
+			function(universe, world, place, actor, activity)
 			{
 				var inputHelper = universe.inputHelper
 				var inputsActive = inputHelper.inputsActive;
-				var actionsFromActor = activity.actor.actions;
+				var actionsFromActor = actor.actions;
 				var world = universe.world;
 				var starsystemCurrent = world.starsystemCurrent;
 				var starsystemDefn = starsystemCurrent.defn(world);
@@ -547,8 +550,9 @@ if (p == 0) { pos = new Coords(150, 100); }
 		var conformToBounds = new ConstraintDefn
 		(
 			"ConformToBounds",
-			function constrain(universe, world, place, entity, target)
+			function constrain(universe, world, place, entity, constraint)
 			{
+				var target = constraint.target;
 				var entityLoc = entity.body.loc;
 				var boundsToConformTo = target;
 				entityLoc.pos.trimToRangeMinMax
@@ -562,10 +566,10 @@ if (p == 0) { pos = new Coords(150, 100); }
 		var followEntityByName = new ConstraintDefn
 		(
 			"FollowEntityByName",
-			function constrain(universe, world, place, entity, target)
+			function constrain(universe, world, place, entity, constraint)
 			{
 				var starsystem = entity.body.loc.venue;
-				var nameOfEntityToFollow = target;
+				var nameOfEntityToFollow = constraint.target;
 				var entityToFollow = starsystem.entities[nameOfEntityToFollow];
 				if (entityToFollow != null) // hack
 				{
@@ -651,6 +655,7 @@ if (p == 0) { pos = new Coords(150, 100); }
 
 		mediaLibrary.imagesAdd([imageMoverProjectile]);
 
+		/*
 		var imagesForSun = imageHelper.buildImagesFromStringArrays
 		( "Sun", [
 			[
@@ -710,6 +715,48 @@ if (p == 0) { pos = new Coords(150, 100); }
 				".............y............",
 			],
 		]);
+		*/
+
+		var imageDirectory = "../Media/Images/";
+
+		var imageNamePrefixStar = "Star";
+		var imageDirectoryStar = imageDirectory + "Star/";
+
+		var imagesForSun =
+		[
+			new Image(imageNamePrefixStar + "00", imageDirectoryStar + "00.png"),
+			new Image(imageNamePrefixStar + "01", imageDirectoryStar + "01.png"),
+			new Image(imageNamePrefixStar + "02", imageDirectoryStar + "02.png"),
+			new Image(imageNamePrefixStar + "03", imageDirectoryStar + "03.png"),
+			new Image(imageNamePrefixStar + "04", imageDirectoryStar + "04.png"),
+			new Image(imageNamePrefixStar + "05", imageDirectoryStar + "05.png"),
+			new Image(imageNamePrefixStar + "06", imageDirectoryStar + "06.png"),
+			new Image(imageNamePrefixStar + "07", imageDirectoryStar + "07.png"),
+			new Image(imageNamePrefixStar + "08", imageDirectoryStar + "08.png"),
+			new Image(imageNamePrefixStar + "09", imageDirectoryStar + "09.png"),
+			new Image(imageNamePrefixStar + "10", imageDirectoryStar + "10.png"),
+			new Image(imageNamePrefixStar + "11", imageDirectoryStar + "11.png"),
+			new Image(imageNamePrefixStar + "12", imageDirectoryStar + "12.png"),
+			new Image(imageNamePrefixStar + "13", imageDirectoryStar + "13.png"),
+			new Image(imageNamePrefixStar + "14", imageDirectoryStar + "14.png"),
+			new Image(imageNamePrefixStar + "15", imageDirectoryStar + "15.png"),
+			new Image(imageNamePrefixStar + "16", imageDirectoryStar + "16.png"),
+			new Image(imageNamePrefixStar + "17", imageDirectoryStar + "17.png"),
+			new Image(imageNamePrefixStar + "18", imageDirectoryStar + "18.png"),
+			new Image(imageNamePrefixStar + "19", imageDirectoryStar + "19.png"),
+			new Image(imageNamePrefixStar + "20", imageDirectoryStar + "20.png"),
+			new Image(imageNamePrefixStar + "21", imageDirectoryStar + "21.png"),
+			new Image(imageNamePrefixStar + "22", imageDirectoryStar + "22.png"),
+			new Image(imageNamePrefixStar + "23", imageDirectoryStar + "23.png"),
+			new Image(imageNamePrefixStar + "24", imageDirectoryStar + "24.png"),
+			new Image(imageNamePrefixStar + "25", imageDirectoryStar + "25.png"),
+			new Image(imageNamePrefixStar + "26", imageDirectoryStar + "26.png"),
+			new Image(imageNamePrefixStar + "27", imageDirectoryStar + "27.png"),
+			new Image(imageNamePrefixStar + "28", imageDirectoryStar + "28.png"),
+			new Image(imageNamePrefixStar + "29", imageDirectoryStar + "29.png"),
+			new Image(imageNamePrefixStar + "30", imageDirectoryStar + "30.png"),
+			new Image(imageNamePrefixStar + "31", imageDirectoryStar + "31.png"),
+		];
 
 		mediaLibrary.imagesAdd(imagesForSun);
 
@@ -737,8 +784,6 @@ if (p == 0) { pos = new Coords(150, 100); }
 			]
 		)
 		*/
-
-		var imageDirectory = "../Media/Images/";
 
 		var imageNamePrefixPlanet = "Planet";
 		var imageDirectoryPlanet = imageDirectory + "Planet/";
@@ -1530,7 +1575,7 @@ if (p == 0) { pos = new Coords(150, 100); }
 
 				starsystem.entitiesToRemove.push(player);
 
-				var portalData = portal.portal;
+				var portal = portal.portal;
 
 				var itemFuel = player.itemContainer.items["Fuel"];
 				var fuelUsedByPortal = 1000;
@@ -1538,12 +1583,12 @@ if (p == 0) { pos = new Coords(150, 100); }
 				{
 					itemFuel.quantity -= fuelUsedByPortal;
 
-					var destinationStarsystemName = portalData.destinationStarsystemName;
+					var destinationStarsystemName = portal.destinationStarsystemName;
 					var starsystems = world.starsystems;
 					var destinationStarsystem = starsystems[destinationStarsystemName];
 
 					destinationStarsystem.entitiesToSpawn.push(player);
-					entityThis.body.loc.pos.overwriteWith(portalData.destinationPos);
+					entityThis.body.loc.pos.overwriteWith(portal.destinationPos);
 					universe.world.starsystemNext = destinationStarsystem;
 				}
 			}
@@ -1735,6 +1780,5 @@ if (p == 0) { pos = new Coords(150, 100); }
 		];
 
 		return starsystemDefns;
-
 	}
 }

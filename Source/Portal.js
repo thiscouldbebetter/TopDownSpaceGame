@@ -1,18 +1,16 @@
 
-function PortalData(destinationStarsystemName, destinationPos, color)
+function Portal(destinationStarsystemName, destinationPos, color)
 {
 	this.destinationStarsystemName = destinationStarsystemName;
 	this.destinationPos = destinationPos;
 }
 {
-	PortalData.prototype.propertyName = function() { return "Portal"; }
-
-	PortalData.prototype.destinationStarsystem = function(world)
+	Portal.prototype.destinationStarsystem = function(world)
 	{
 		return world.starsystems[this.destinationStarsystemName];
 	}
 
-	PortalData.prototype.initializeEntityForVenue = function(universe, entity, venue)
+	Portal.prototype.initialize = function(universe, world, venue, entity)
 	{
 		entity.drawable.visual = new VisualGroup
 		(

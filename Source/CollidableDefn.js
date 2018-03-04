@@ -6,11 +6,8 @@ function CollidableDefn(propertyNamesCollidedWith, collide)
 }
 
 {
-	CollidableDefn.prototype.propertyName = function() { return "Collidable"; }
-
-	CollidableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
+	CollidableDefn.prototype.update = function(universe, world, venue, entity)
 	{
-		var world = universe.world;
 		var collisionHelper = universe.collisionHelper;
 
 		var collidableThis = entity;

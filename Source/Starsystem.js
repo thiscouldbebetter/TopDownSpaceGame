@@ -18,13 +18,13 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 
 	Starsystem.prototype.defn = function(world)
 	{
-		return world.starsystemDefns[this.defnName];
+		return world.defns.starsystemDefns[this.defnName];
 	}
 
 	Starsystem.prototype.initialize = function(universe)
 	{
 		var world = universe.world;
-		var entityDefns = world.entityDefns;
+		var entityDefns = world.defns.entityDefns;
 
 		for (var i = 0; i < entityDefns.length; i++)
 		{
@@ -33,7 +33,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			for (var c = 0; c < properties.length; c++)
 			{
 				var property = properties[c];
-				var propertyName = property.propertyName();
+				var propertyName = Entity.propertyName(property);
 
 				if (this.entitiesByPropertyName[propertyName] == null)
 				{
@@ -85,9 +85,9 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			{
 				var entityProperty = entityProperties[c];
 
-				if (entityProperty.initializeEntityForVenue != null)
+				if (entityProperty.initialize != null)
 				{
-					entityProperty.initializeEntityForVenue(universe, entity, this);
+					entityProperty.initialize(universe, world, this, entity);
 				}
 			}
 
@@ -96,9 +96,9 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			{
 				var entityProperty = entityProperties[c];
 
-				if (entityProperty.initializeEntityForVenue != null)
+				if (entityProperty.initialize != null)
 				{
-					entityProperty.initializeEntityForVenue(universe, entity, this);
+					entityProperty.initialize(universe, world, this, entity);
 				}
 			}
 		}
@@ -106,7 +106,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 
 	Starsystem.prototype.updateForTimerTick = function(universe, world)
 	{
-		this.draw(universe);
+		this.draw(universe, world);
 
 		this.update_EntitiesToSpawn(universe, world);
 
@@ -142,9 +142,9 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 					property = entity.properties[propertyName];
 				}
 
-				if (property.updateEntityForVenue != null)
+				if (property.update != null)
 				{
-					property.updateEntityForVenue(universe, entity, this);
+					property.update(universe, world, this, entity);
 				}
 			}
 		}
@@ -165,7 +165,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			for (var c = 0; c < entityProperties.length; c++)
 			{
 				var entityProperty = entityProperties[c];
-				var entityPropertyName = entityProperty.propertyName();
+				var entityPropertyName = Entity.propertyName(entityProperty);
 				var entitiesForProperty = this.entitiesByPropertyName[entityPropertyName];
 				entitiesForProperty.remove(entityToRemove);
 			}
@@ -190,7 +190,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			{
 				this.update_EntitiesToSpawn_Spawn
 				(
-					universe, entityToSpawn, entityProperties[c]
+					universe, world, entityToSpawn, entityProperties[c]
 				);
 			}
 
@@ -199,7 +199,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			{
 				this.update_EntitiesToSpawn_Spawn
 				(
-					universe, entityToSpawn, entityProperties[c]
+					universe, world, entityToSpawn, entityProperties[c]
 				);
 			}
 
@@ -208,24 +208,27 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		this.entitiesToSpawn.length = 0;
 	}
 
-	Starsystem.prototype.update_EntitiesToSpawn_Spawn = function(universe, entity, entityProperty)
+	Starsystem.prototype.update_EntitiesToSpawn_Spawn = function
+	(
+		universe, world, entity, entityProperty
+	)
 	{
-		var entityPropertyName = entityProperty.propertyName();
+		var entityPropertyName = Entity.propertyName(entityProperty);
 		var entitiesForPropertyName = this.entitiesByPropertyName[entityPropertyName];
 		if (entitiesForPropertyName.contains(entity) == false)
 		{
 			entitiesForPropertyName.push(entity);
 		}
 
-		if (entityProperty.initializeEntityForVenue != null)
+		if (entityProperty.initialize != null)
 		{
-			entityProperty.initializeEntityForVenue(universe, entity, this);
+			entityProperty.initialize(universe, world, this, entity);
 		}
 	}
 
 	// draw
 
-	Starsystem.prototype.draw = function(universe)
+	Starsystem.prototype.draw = function(universe, world)
 	{
 		var display = universe.display;
 		display.drawRectangle
@@ -242,7 +245,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		{
 			var drawable = drawables[i];
 			var drawableDefn = drawable.defn(universe.world);
-			drawableDefn.drawable.updateEntityForVenue(universe, drawable, this);
+			drawableDefn.drawable.update(universe, world, this, drawable);
 		}
 	}
 

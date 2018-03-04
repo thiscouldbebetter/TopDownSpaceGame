@@ -5,33 +5,28 @@ function ActorDefn(activityDefnNameInitial)
 }
 
 {
-	ActorDefn.prototype.propertyName = function() { return "Actor"; }
-
-	ActorDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
+	ActorDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
 		entity.actions = [];
 
-		entity.activity
+		entity._activity = new Activity
 		(
-			universe,
-			new Activity
-			(
-				entity,
-				entity.defn(universe.world).actor.activityDefnNameInitial,
-				null
-			)
+			entity.defn(universe.world).actor.activityDefnNameInitial
+		).initialize
+		(
+			universe, world, venue, entity
 		);
 	}
 
-
-	ActorDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
+	ActorDefn.prototype.update = function(universe, world, venue, entity)
 	{
-		var activity = entity.activity(universe);
-		activity.perform(universe);
+		var world = universe.world;
+
+		var activity = entity.activity();
+		activity.perform(universe, world, venue, entity);
 
 		var entityActions = entity.actions;
 
-		var world = universe.world;
 		for (var a = 0; a < entityActions.length; a++)
 		{
 			var action = entityActions[a];

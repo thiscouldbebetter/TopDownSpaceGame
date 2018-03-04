@@ -7,26 +7,24 @@ function DrawableDefn(visual)
 }
 
 {
-	DrawableDefn.prototype.propertyName = function() { return "Drawable"; }
-
-	DrawableDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
+	DrawableDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
 		if (entity.drawable == null)
 		{
-			var visual = entity.defn(universe.world).drawable.visual;
+			var visual = entity.defn(world).drawable.visual;
 			entity.drawable = new Drawable(visual);
 			entity.loc = entity.body.loc;
 		}
 	}
 
-	DrawableDefn.prototype.updateEntityForVenue = function(universe, entity, venue)
+	DrawableDefn.prototype.update = function(universe, world, venue, entity)
 	{
 		var display = universe.display;
 		var drawable = entity.drawable;
 		var visual = drawable.visual;
 		visual.draw
 		(
-			universe, universe.world, display, entity
+			universe, world, display, entity
 		);
 	}
 }

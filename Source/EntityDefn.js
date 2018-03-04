@@ -11,7 +11,7 @@ function EntityDefn
 	for (var i = 0; i < this.properties.length; i++)
 	{
 		var property = this.properties[i];
-		var propertyName = property.propertyName();
+		var propertyName = Entity.propertyName(property);
 		this.properties[propertyName] = property;
 		this[propertyName.toLowerCase()] = property;
 	}

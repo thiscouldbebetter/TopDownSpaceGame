@@ -6,6 +6,3 @@ function Planet(name, color)
 
 	this.itemTradeOffer = ItemTradeOffer.random();
 }
-{
-	Planet.prototype.propertyName = function() { return "Planet"; }
-}

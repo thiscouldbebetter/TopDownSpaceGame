@@ -3,9 +3,7 @@ function ItemContainerDefn(itemsInitial)
 	this.itemsInitial = itemsInitial;
 }
 {
-	ItemContainerDefn.prototype.propertyName = function() { return "ItemContainer"; }
-
-	ItemContainerDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
+	ItemContainerDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
 		if (entity.itemContainer == null)
 		{

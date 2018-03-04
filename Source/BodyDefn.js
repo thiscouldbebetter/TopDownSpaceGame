@@ -7,9 +7,7 @@ function BodyDefn(sizeInPixels)
 }
 
 {
-	BodyDefn.prototype.propertyName = function() { return "Body"; }
-
-	BodyDefn.prototype.initializeEntityForVenue = function(universe, entity, venue)
+	BodyDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
 		entity.body.loc.venue = venue;
 	}

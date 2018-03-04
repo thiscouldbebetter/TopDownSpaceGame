@@ -10,7 +10,7 @@ function Entity(name, defnName, properties)
 		for (var i = 0; i < this.properties.length; i++)
 		{
 			var property = this.properties[i];
-			var propertyName = property.propertyName();
+			var propertyName = Entity.propertyName(property);
 			this.properties[propertyName] = property;
 			this[propertyName.toLowerCase()] = property;
 		}
@@ -29,16 +29,20 @@ function Entity(name, defnName, properties)
 		return returnValue;
 	}
 
+	Entity.propertyName = function(property)
+	{
+		var propertyName = property.constructor.name;
+		if (propertyName.endsWith("Defn") == true)
+		{
+			propertyName = propertyName.substr(0, propertyName.length - "Defn".length);
+		}
+		return propertyName;
+	}
+
 	// instance methods
 
-	Entity.prototype.activity = function(universe, value)
+	Entity.prototype.activity = function()
 	{
-		if (value != null)
-		{
-			this._activity = value;
-			this._activity.initialize(universe);
-		}
-
 		return this._activity;
 	}
 
@@ -61,7 +65,7 @@ function Entity(name, defnName, properties)
 
 		if (this.defnName != null)
 		{
-			var entityDefns = world.entityDefns;
+			var entityDefns = world.defns.entityDefns;
 			returnValue = entityDefns[this.defnName];
 		}
 		else
