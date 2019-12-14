@@ -1181,7 +1181,7 @@ function Demo()
 			]
 		);
 
-		var itemSizeInPixels = new Coords(3, 3, 1);
+		var itemSizeInPixels = new Coords(10, 10, 1);
 
 		var entityDefnItemCollection = new EntityDefn
 		(
@@ -1453,7 +1453,7 @@ function Demo()
 			]
 		);
 
-		var sunSizeInPixels = new Coords(20, 20, 1);
+		var sunSizeInPixels = new Coords(40, 40, 1);
 
 		var entityDefnSun = new EntityDefn
 		(
@@ -1598,7 +1598,21 @@ function Demo()
 				);
 				*/
 				// hack
-				alert("You lose!");
+				//alert("You lose!");
+				var venueMessage = new VenueMessage
+				(
+					"You lose!",
+					universe.venueCurrent, // venuePrev
+					universe.display.sizeDefault().clone().half(),
+					function acknowledge(universe)
+					{
+						universe.venueNext = new VenueFader
+						(
+							new VenueControls(universe.controlBuilder.title(universe))
+						);
+					}
+				);
+				universe.venueNext = venueMessage;
 			}
 			else if (entityOtherProperties["Planet"] != null)
 			{
