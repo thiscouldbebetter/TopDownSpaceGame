@@ -1,6 +1,9 @@
 
-function StarsystemDefn(name, inputToActionMappings)
+function StarsystemDefn(name, actionToInputsMappings)
 {
 	this.name = name;
-	this.inputToActionMappings = inputToActionMappings.addLookups("inputName");
+	this.actionToInputsMappings = actionToInputsMappings.addLookupsMultiple
+	(
+		(x) => { return x.inputNames; }
+	);
 }

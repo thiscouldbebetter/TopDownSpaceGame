@@ -8,7 +8,7 @@ function World
 {
 	this.name = name;
 	this.defns = defns;
-	this.starsystems = starsystems.addLookups("name");
+	this.starsystems = starsystems.addLookupsByName();
 
 	this.timerTicksSoFar = 0;
 

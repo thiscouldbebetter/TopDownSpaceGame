@@ -233,7 +233,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		var display = universe.display;
 		display.drawRectangle
 		(
-			Coords.Instances.Zeroes,
+			Coords.Instances().Zeroes,
 			this.sizeInPixels,
 			"rgb(32, 0, 32)", // dark purple
 			"Black"

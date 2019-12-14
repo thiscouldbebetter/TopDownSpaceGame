@@ -19,26 +19,33 @@ function Simulation()
 		(
 			// images
 			[
-				new Image("Title", "Framework/Media/Title.png"),
+				new Image("Title", "Framework/Content/Images/Title.png"),
 			],
 			// sounds
 			[
-				new Sound("Sound", "Framework/Media/Sound.wav", false),
-				new Sound("Music", "Framework/Media/Music.mp3", true),
+				new Sound("Sound", "Framework/Content/Audio/Effects/Sound.wav", false),
+				new Sound("Music", "Framework/Content/Audio/Music/Music.mp3", true),
 			],
 			// videos
 			[
-				new Video("Movie", "Framework/Media/Movie.webm"),
+				new Video("Movie", "Framework/Content/Video/Movie.webm"),
 			],
 			// fonts
 			[
-				new Font("Font", "Framework/Media/Font.ttf"),
-			]
+				new Font("Font", "Framework/Content/Fonts/Font.ttf"),
+			],
+			// textStrings
+			[]
 		);
 
 		var universe = Universe.new
 		(
-			"TopDownSpaceGame", new TimerHelper(20), display, mediaLibrary, null
+			"TopDownSpaceGame",
+			"0.0.0", // version
+			new TimerHelper(20),
+			display,
+			mediaLibrary,
+			null // world
 		);
 		universe.initialize();
 

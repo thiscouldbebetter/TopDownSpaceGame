@@ -1,7 +1,7 @@
 function ItemContainer(items)
 {
 	this.items = items;
-	this.items.addLookups("defnName");
+	this.items.addLookups( (x) => { return x.defnName; } );
 }
 {
 	ItemContainer.prototype.hasItem = function(itemToCheck)

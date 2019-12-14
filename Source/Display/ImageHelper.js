@@ -56,7 +56,7 @@ function ImageHelper()
 	{
 		return this.buildImageFromStringsScaled
 		(
-			name, Coords.Instances.Ones, stringsForPixels
+			name, Coords.Instances().Ones, stringsForPixels
 		);
 	}
 
@@ -85,9 +85,9 @@ function ImageHelper()
 		var graphics = canvas.getContext("2d");
 
 		var pixelPos = new Coords(0, 0);
-		var colorForPixel = Color.Instances._Transparent;
+		var colorForPixel = Color.Instances()._Transparent;
 
-		colors = Color.Instances._All;
+		colors = Color.Instances()._All;
 
 		for (var y = 0; y < sizeInPixels.y; y++)
 		{
@@ -126,9 +126,9 @@ function ImageHelper()
 		var graphics = canvas.getContext("2d");
 
 		var pixelPos = new Coords(0, 0);
-		var colorForPixel = Color.Instances._Transparent;
+		var colorForPixel = Color.Instances()._Transparent;
 
-		var colors = Color.Instances._All;
+		var colors = Color.Instances()._All;
 
 		for (var j = 0; j < sizeInTiles.y; j++)
 		{

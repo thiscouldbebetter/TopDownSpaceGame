@@ -38,12 +38,15 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 
 	ItemTradeOffer.prototype.trade = function(universe, world, entityCustomer, entityVendor)
 	{
-		var customerItemContainer = entityCustomer.itemContainer;
-		if (customerItemContainer.hasItem(this.itemTaken) == true)
+		if (this.secondsSinceLastUsed(universe, world) >= this.secondsToRecharge)
 		{
-			customerItemContainer.itemSubtract(this.itemTaken);
-			customerItemContainer.itemAdd(this.itemGiven.clone());
-			this.secondLastUsed = world.secondsSoFar(universe);
+			var customerItemContainer = entityCustomer.itemContainer;
+			if (customerItemContainer.hasItem(this.itemTaken) == true)
+			{
+				customerItemContainer.itemSubtract(this.itemTaken);
+				customerItemContainer.itemAdd(this.itemGiven.clone());
+				this.secondLastUsed = world.secondsSoFar(universe);
+			}
 		}
 	}
 

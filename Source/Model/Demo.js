@@ -151,7 +151,7 @@ function Demo()
 
 		var activityDefns = this.world_ActivityDefns();
 
-		var colors = Color.Instances._All;
+		var colors = Color.Instances()._All;
 
 		var constraintDefns = this.world_ConstraintDefns();
 
@@ -297,7 +297,7 @@ function Demo()
 							new Planet
 							(
 								nameGenerator.generateNameWithSyllables(2),
-								Color.Instances.Orange
+								Color.Instances().Orange
 							)
 						]
 					);
@@ -413,7 +413,7 @@ function Demo()
 				new ItemDefn("Science", "S"),
 			];
 
-			returnValues.addLookups("name");
+			returnValues.addLookupsByName();
 
 			return returnValues;
 	}
@@ -513,21 +513,24 @@ function Demo()
 			function(universe, world, place, actor, activity)
 			{
 				var inputHelper = universe.inputHelper
-				var inputsActive = inputHelper.inputsActive;
+				var inputsActive = inputHelper.inputsActive();
 				var actionsFromActor = actor.actions;
 				var world = universe.world;
 				var starsystemCurrent = world.starsystemCurrent;
 				var starsystemDefn = starsystemCurrent.defn(world);
-				var inputToActionMappings = starsystemDefn.inputToActionMappings;
+				var actionToInputsMappings = starsystemDefn.actionToInputsMappings;
 
 				for (var i = 0; i < inputsActive.length; i++)
 				{
-					var inputActive = inputsActive[i];
-					var mapping = inputToActionMappings[inputActive];
-					if (mapping != null)
+					var inputActiveName = inputsActive[i].name;
+					if (inputActiveName.startsWith("Mouse") == false)
 					{
-						var action = mapping.action(universe);
-						actionsFromActor.push(action);
+						var mapping = actionToInputsMappings[inputActiveName];
+						if (mapping != null)
+						{
+							var action = mapping.action(universe);
+							actionsFromActor.push(action);
+						}
 					}
 				}
 			}
@@ -540,7 +543,7 @@ function Demo()
 			userInputAccept,
 		];
 
-		_all.addLookups("name");
+		_all.addLookupsByName();
 
 		return _all;
 	}
@@ -717,7 +720,7 @@ function Demo()
 		]);
 		*/
 
-		var imageDirectory = "../Media/Images/";
+		var imageDirectory = "../Content/Images/";
 
 		var imageNamePrefixStar = "Star";
 		var imageDirectoryStar = imageDirectory + "Star/";
@@ -1178,13 +1181,15 @@ function Demo()
 			]
 		);
 
+		var itemSizeInPixels = new Coords(3, 3, 1);
+
 		var entityDefnItemCollection = new EntityDefn
 		(
 			"ItemCollection",
 
 			// properties
 			[
-				new BodyDefn(new Coords(3, 3, 1)), // sizeInPixels
+				new BodyDefn(itemSizeInPixels), // sizeInPixels
 				new CollidableDefn
 				(
 					[], // entityDefnNameToCollideWith
@@ -1197,8 +1202,13 @@ function Demo()
 						camera,
 						new VisualAnimation
 						(
+							null, // name
 							ticksPerAnimationFrame,
-							VisualImage.manyFromImages(imagesForItemCollection)
+							VisualImageScaled.manyFromSizeAndVisuals
+							(
+								itemSizeInPixels,
+								VisualImageImmediate.manyFromImages(imagesForItemCollection)
+							)
 						)
 					)
 				),
@@ -1223,7 +1233,7 @@ function Demo()
 					new VisualCameraProjection
 					(
 						camera,
-						new VisualImage(imageMoverProjectile.name)
+						new VisualImageFromLibrary(imageMoverProjectile.name)
 					),
 				),
 				new ProjectileDefn(),
@@ -1261,8 +1271,13 @@ function Demo()
 						([
 							new VisualAnimation
 							(
+								null, // name
 								ticksPerAnimationFrame * 8,
-								VisualImage.manyFromImages(imagesForPlanet, planetSizeInPixels)
+								VisualImageScaled.manyFromSizeAndVisuals
+								(
+									planetSizeInPixels,
+									VisualImageImmediate.manyFromImages(imagesForPlanet, planetSizeInPixels)
+								)
 							),
 							new VisualOffset
 							(
@@ -1301,7 +1316,7 @@ function Demo()
 			]
 		);
 
-		var colorsAll = Color.Instances._All;
+		var colorsAll = Color.Instances()._All;
 
 		var entityDefnsPortal = [];
 
@@ -1312,11 +1327,13 @@ function Demo()
 			var color = colorsAll[colorName];
 			var entityDefnName = "Portal" + colorName;
 
+			var portalSizeInPixels = new Coords(19, 19, 1);
+
 			var entityDefnPortal = new EntityDefn
 			(
 				entityDefnName,
 				[
-					new BodyDefn(new Coords(19, 19, 1)), // sizeInPixels
+					new BodyDefn(portalSizeInPixels), // sizeInPixels
 					new CollidableDefn([], function() {}),
 					new DrawableDefn
 					(
@@ -1325,8 +1342,13 @@ function Demo()
 							camera,
 							new VisualAnimation
 							(
+								null, // name
 								ticksPerAnimationFrame,
-								VisualImage.manyFromImages(imagesForPortal)
+								VisualImageScaled.manyFromSizeAndVisuals
+								(
+									portalSizeInPixels,
+									VisualImageImmediate.manyFromImages(imagesForPortal)
+								)
 							),
 						)
 					),
@@ -1351,7 +1373,7 @@ function Demo()
 			]
 		);
 		mediaLibrary.imagesAdd([imageBackgroundLayer0]);
-		var visualImageBackgroundLayer0 = new VisualImage("BackgroundLayer0");
+		var visualImageBackgroundLayer0 = new VisualImageFromLibrary("BackgroundLayer0");
 
 		var imageBackgroundLayer1 = imageHelper.buildImageFromStrings
 		(
@@ -1365,7 +1387,7 @@ function Demo()
 			]
 		);
 		mediaLibrary.imagesAdd([imageBackgroundLayer1]);
-		var visualImageBackgroundLayer1 = new VisualImage("BackgroundLayer1");
+		var visualImageBackgroundLayer1 = new VisualImageFromLibrary("BackgroundLayer1");
 
 		var backgroundViewSize = new Coords(400, 300, 1);
 		var backgroundCellSizeMultiplier = 1.5;
@@ -1431,11 +1453,13 @@ function Demo()
 			]
 		);
 
+		var sunSizeInPixels = new Coords(20, 20, 1);
+
 		var entityDefnSun = new EntityDefn
 		(
 			"Sun",
 			[
-				new BodyDefn(new Coords(20, 20, 1)), // sizeInPixels
+				new BodyDefn(sunSizeInPixels), // sizeInPixels
 				new DrawableDefn
 				(
 					new VisualCameraProjection
@@ -1445,8 +1469,13 @@ function Demo()
 						([
 							new VisualAnimation
 							(
+								null, // name
 								ticksPerAnimationFrame,
-								VisualImage.manyFromImages(imagesForSun)
+								VisualImageScaled.manyFromSizeAndVisuals
+								(
+									sunSizeInPixels,
+									VisualImageImmediate.manyFromImages(imagesForSun)
+								)
 							),
 							new VisualOffset
 							(
@@ -1470,12 +1499,13 @@ function Demo()
 			]
 		);
 
+		var friendlySizeInPixels = new Coords(16, 9, 1);
 		var entityDefnFriendly = new EntityDefn
 		(
 			"Friendly",
 			[
 				new KillableDefn(1), // integrityMax
-				new BodyDefn(new Coords(16, 9, 1)), // sizeInPixels
+				new BodyDefn(friendlySizeInPixels), // sizeInPixels
 				new MoverDefn(1, 1, 4), // mass, forcePerTick, speedMax
 				new ActorDefn("DoNothing"),
 				new DrawableDefn
@@ -1485,8 +1515,13 @@ function Demo()
 						camera,
 						new VisualAnimation
 						(
+							null, // name
 							ticksPerAnimationFrame,
-							VisualImage.manyFromImages(imagesFriendly)
+							VisualImageScaled.manyFromSizeAndVisuals
+							(
+								friendlySizeInPixels,
+								VisualImageImmediate.manyFromImages(imagesFriendly)
+							)
 						)
 					)
 				),
@@ -1518,8 +1553,13 @@ function Demo()
 						camera,
 						new VisualAnimation
 						(
+							null, // name
 							1, // ticksPerAnimationFrame,
-							VisualImage.manyFromImages(imagesEnemy, enemySize)
+							VisualImageScaled.manyFromSizeAndVisuals
+							(
+								enemySize,
+								VisualImageImmediate.manyFromImages(imagesEnemy, enemySize)
+							)
 						)
 					)
 				),
@@ -1618,9 +1658,13 @@ function Demo()
 						new VisualDirectional
 						(
 							new VisualNone(),
-							VisualImage.manyFromImages
+							VisualImageScaled.manyFromSizeAndVisuals
 							(
-								imagesForPlayerClockwise, playerSizeInPixels
+								playerSizeInPixels,
+								VisualImageImmediate.manyFromImages
+								(
+									imagesForPlayerClockwise, playerSizeInPixels
+								)
 							)
 						)
 					)
@@ -1758,7 +1802,7 @@ function Demo()
 			entityDefnPlayer,
 		];
 
-		entityDefns.addLookups("name");
+		entityDefns.addLookupsByName();
 
 		return entityDefns;
 	}
@@ -1771,10 +1815,10 @@ function Demo()
 			(
 				"StarsystemDefn0",
 				[
-					new InputToActionMapping("_w", "Accelerate", false),
-					new InputToActionMapping("_a", "TurnLeft", false),
-					new InputToActionMapping("_d", "TurnRight", false),
-					new InputToActionMapping("_f", "Fire", true),
+					new ActionToInputsMapping("Accelerate", ["w"], false),
+					new ActionToInputsMapping("TurnLeft", ["a"], false),
+					new ActionToInputsMapping("TurnRight", ["d"],false),
+					new ActionToInputsMapping("Fire", ["f"],true),
 				]
 			),
 		];
