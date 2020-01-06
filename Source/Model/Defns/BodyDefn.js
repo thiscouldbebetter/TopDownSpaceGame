@@ -9,6 +9,6 @@ function BodyDefn(sizeInPixels)
 {
 	BodyDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
-		entity.body.loc.venue = venue;
+		entity.Locatable.loc.venue = venue;
 	}
 }

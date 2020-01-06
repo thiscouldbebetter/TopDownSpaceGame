@@ -7,25 +7,26 @@ function ActorDefn(activityDefnNameInitial)
 {
 	ActorDefn.prototype.initialize = function(universe, world, venue, entity)
 	{
-		entity.actions = [];
+		this.actions = [];
 
-		entity._activity = new Activity
+		this.activity = new Activity
 		(
-			entity.defn(universe.world).actor.activityDefnNameInitial
+			this.activityDefnNameInitial
 		).initialize
 		(
 			universe, world, venue, entity
 		);
-	}
+	};
 
 	ActorDefn.prototype.update = function(universe, world, venue, entity)
 	{
 		var world = universe.world;
 
-		var activity = entity.activity();
+		var actor = entity.ActorDefn;
+		var activity = actor.activity;
 		activity.perform(universe, world, venue, entity);
 
-		var entityActions = entity.actions;
+		var entityActions = actor.actions;
 
 		for (var a = 0; a < entityActions.length; a++)
 		{
@@ -34,5 +35,5 @@ function ActorDefn(activityDefnNameInitial)
 		}
 
 		entityActions.length = 0;
-	}
+	};
 }

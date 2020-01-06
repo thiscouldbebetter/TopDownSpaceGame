@@ -1,4 +1,0 @@
-function ItemCollectionDefn()
-{
-	// do nothing
-}

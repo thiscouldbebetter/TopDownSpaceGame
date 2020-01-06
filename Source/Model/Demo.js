@@ -13,13 +13,13 @@ function Demo()
 			function perform(world, actor)
 			{
 				var fuelUsedByAcceleration = 1;
-				var itemFuel = actor.itemContainer.items["Fuel"];
+				var itemFuel = actor.ItemContainer.items["Fuel"];
 
 				if (itemFuel.quantity >= fuelUsedByAcceleration)
 				{
 					itemFuel.quantity -= fuelUsedByAcceleration;
 
-					var actorLoc = actor.body.loc;
+					var actorLoc = actor.Locatable.loc;
 					var actorOrientation = actorLoc.orientation;
 
 					actorLoc.accel.add
@@ -41,28 +41,27 @@ function Demo()
 			"Fire",
 			function perform(world, actor)
 			{
-				var itemFuel = actor.itemContainer.items["Fuel"];
+				var itemFuel = actor.ItemContainer.items["Fuel"];
 				var fuelConsumed = 10;
 				if (itemFuel.quantity >= fuelConsumed)
 				{
 					itemFuel.quantity -= fuelConsumed;
 
-					var venue = actor.body.loc.venue;
+					var venue = actor.Locatable.loc.venue;
 					var entityDefnProjectile = world.defns.entityDefns["Projectile"];
 
-					var entityToSpawn = new Entity
+					var entityToSpawn = entityDefnProjectile.clone().nameAndPropertiesAdd
 					(
 						"[projectile]",
-						entityDefnProjectile.name,
 						[
-							new Body(actor.body.loc.clone())
+							new Locatable(actor.Locatable.loc.clone())
 						]
 					);
 
-					var forward = actor.body.loc.orientation.forward;
-					entityToSpawn.body.loc.vel = forward.clone().normalize().multiplyScalar
+					var forward = actor.Locatable.loc.orientation.forward;
+					entityToSpawn.Locatable.loc.vel = forward.clone().normalize().multiplyScalar
 					(
-						entityDefnProjectile.mover.speedMax
+						entityDefnProjectile.MoverDefn.speedMax
 					);
 
 					venue.entitiesToSpawn.push(entityToSpawn);
@@ -75,7 +74,7 @@ function Demo()
 			"TurnLeft",
 			function perform(world, actor)
 			{
-				var actorLoc = actor.body.loc;
+				var actorLoc = actor.Locatable.loc;
 				var actorOrientation = actorLoc.orientation;
 
 				var turnRate = .25;
@@ -102,7 +101,7 @@ function Demo()
 			"TurnRight",
 			function perform(world, actor)
 			{
-				var actorLoc = actor.body.loc;
+				var actorLoc = actor.Locatable.loc;
 				var actorOrientation = actorLoc.orientation;
 
 				var turnRate = .25;
@@ -153,8 +152,6 @@ function Demo()
 
 		var colors = Color.Instances()._All;
 
-		var constraintDefns = this.world_ConstraintDefns();
-
 		var entityDefns = this.world_EntityDefns(universe);
 
 		var starsystemDefns = this.world_StarsystemDefns();
@@ -190,22 +187,20 @@ function Demo()
 					// entities
 					[
 						// background
-						new Entity
+						entityDefns["Background"].clone().nameAndPropertiesAdd
 						(
 							"Background",
-							entityDefns["Background"].name,
 							[
-								new Body( new Location( new Coords(0, 0, 0) ) ),
+								new Locatable( new Location( new Coords(0, 0, 0) ) ),
 							]
 						),
 
 						// sun
-						new Entity
+						entityDefns["Sun"].clone().nameAndPropertiesAdd
 						(
 							"Sun",
-							entityDefns["Sun"].name,
 							[
-								new Body(new Location(starsystemSizeInPixelsHalf.clone())),
+								new Locatable(new Location(starsystemSizeInPixelsHalf.clone())),
 								new Star
 								(
 									new NameGenerator().generateNameWithSyllables(3),
@@ -216,12 +211,11 @@ function Demo()
 
 						// portals
 
-						new Entity
+						entityDefns["PortalRed"].clone().nameAndPropertiesAdd
 						(
 							"PortalWest",
-							entityDefns["PortalRed"].name,
 							[
-								new Body(new Location(new Coords(.05 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
+								new Locatable(new Location(new Coords(.05 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
 								new Portal
 								(
 									starsystemNamePrefix + starsystemPosWest.toString(),
@@ -231,12 +225,11 @@ function Demo()
 							]
 						),
 
-						new Entity
+						entityDefns["PortalGreen"].clone().nameAndPropertiesAdd
 						(
 							"PortalEast",
-							entityDefns["PortalGreen"].name,
 							[
-								new Body(new Location(new Coords(.95 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
+								new Locatable(new Location(new Coords(.95 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
 								new Portal
 								(
 									starsystemNamePrefix + starsystemPosEast.toString(),
@@ -246,12 +239,11 @@ function Demo()
 							]
 						),
 
-						new Entity
+						entityDefns["PortalBlue"].clone().nameAndPropertiesAdd
 						(
 							"PortalNorth",
-							entityDefns["PortalBlue"].name,
 							[
-								new Body(new Location(new Coords(starsystemSizeInPixelsHalf.x, .05 * starsystemSizeInPixels.y))),
+								new Locatable(new Location(new Coords(starsystemSizeInPixelsHalf.x, .05 * starsystemSizeInPixels.y))),
 								new Portal
 								(
 									starsystemNamePrefix + starsystemPosNorth.toString(),
@@ -261,12 +253,11 @@ function Demo()
 							]
 						),
 
-						new Entity
+						entityDefns["PortalViolet"].clone().nameAndPropertiesAdd
 						(
 							"PortalEast",
-							entityDefns["PortalViolet"].name,
 							[
-								new Body(new Location(new Coords(starsystemSizeInPixelsHalf.x, .95 * starsystemSizeInPixels.y))),
+								new Locatable(new Location(new Coords(starsystemSizeInPixelsHalf.x, .95 * starsystemSizeInPixels.y))),
 								new Portal
 								(
 									starsystemNamePrefix + starsystemPosSouth.toString(),
@@ -285,15 +276,16 @@ function Demo()
 					numberOfPlanetsMin
 					+ Math.floor(Math.random() * numberOfPlanetsRange);
 
+				var entityDefnPlanet = entityDefns["Planet"];
+
 				for (var p = 0; p < numberOfPlanets; p++)
 				{
 					var pos = new Coords().randomize().multiply(starsystemSizeInPixels).round();
-					var entityPlanet = new Entity
+					var entityPlanet = entityDefnPlanet.clone().nameAndPropertiesAdd
 					(
 						"Planet" + p,
-						entityDefns["Planet"].name,
 						[
-							new Body(new Location(pos)),
+							new Locatable(new Location(pos)),
 							new Planet
 							(
 								nameGenerator.generateNameWithSyllables(2),
@@ -311,6 +303,7 @@ function Demo()
 						numberOfEnemiesMin
 						+ Math.floor(Math.random() * numberOfEnemiesRange);
 
+				var entityDefnEnemy = entityDefns["Enemy"];
 				for (var e = 0; e < numberOfEnemies; e++)
 				{
 					var pos = new Coords().randomize().multiply
@@ -318,17 +311,17 @@ function Demo()
 						starsystemSizeInPixels
 					).round();
 
-					var entityEnemy = new Entity
+					var entityEnemy = entityDefnEnemy.clone().nameAndPropertiesAdd
 					(
 						"Enemy" + e,
-						entityDefns["Enemy"].name,
-						[ new Body(new Location(pos)) ]
+						[ new Locatable(new Location(pos)) ]
 					);
 
 					starsystem.entitiesToSpawn.push(entityEnemy);
 				}
 
 				var numberOfItemCollections = 1;
+				var entityDefnItemCollection = entityDefns["ItemCollection"];
 				for (var c = 0; c < numberOfItemCollections; c++)
 				{
 					var pos = new Coords().randomize().multiply
@@ -336,12 +329,11 @@ function Demo()
 						starsystemSizeInPixels
 					).round();
 
-					var entityItemCollection = new Entity
+					var entityItemCollection = entityDefnItemCollection.clone().nameAndPropertiesAdd
 					(
 						"ItemCollection" + c,
-						entityDefns["ItemCollection"].name,
 						[
-							new Body(new Location(pos))
+							new Locatable(new Location(pos))
 						]
 					);
 
@@ -350,24 +342,21 @@ function Demo()
 
 				if (starsystemPos.x == 0 && starsystemPos.y == 0)
 				{
-					var entityPlayer = new Entity
+					var entityPlayer = entityDefns["Player"].clone().nameAndPropertiesAdd
 					(
 						"Player",
-						entityDefns["Player"].name,
 						[
-							new Body(new Location(new Coords(100, 100))),
-							new Constrainable([]),
+							new Locatable(new Location(new Coords(100, 100)))
 						]
 					);
 					starsystem.entitiesToSpawn.push(entityPlayer);
 
 					// friendlies
 
-					var entityFriendly = new Entity
+					var entityFriendly = entityDefns["Friendly"].clone().nameAndPropertiesAdd
 					(
 						"Friendly0",
-						entityDefns["Friendly"].name,
-						[ new Body(new Location(new Coords(350, 50))) ]
+						[ new Locatable(new Location(new Coords(350, 50))) ]
 					);
 					starsystem.entitiesToSpawn.push(entityFriendly);
 				}
@@ -384,7 +373,6 @@ function Demo()
 			itemDefns,
 			actions,
 			activityDefns,
-			constraintDefns,
 			entityDefns,
 			starsystemDefns
 		);
@@ -445,7 +433,7 @@ function Demo()
 			// perform
 			function(universe, world, place, actor, activity)
 			{
-				var actorLoc = actor.body.loc;
+				var actorLoc = actor.Locatable.loc;
 				var actorPos = actorLoc.pos;
 
 				if (activity.target == null)
@@ -474,7 +462,7 @@ function Demo()
 					var timeToTarget =
 						distanceToTarget / speedCurrent;
 
-					var moverDefn = actor.defn(universe.world).mover;
+					var moverDefn = actor.MoverDefn;
 
 					var accelerationCurrent =
 						moverDefn.force / moverDefn.mass;
@@ -494,7 +482,7 @@ function Demo()
 				{
 					var forceToApplyTowardTarget = directionToAccelerate.clone().multiplyScalar
 					(
-						actor.defn(universe.world).mover.force
+						actor.MoverDefn.force
 					);
 					actorLoc.force.add(forceToApplyTowardTarget);
 				}
@@ -505,16 +493,14 @@ function Demo()
 		(
 			"UserInputAccept",
 
-			// initialize
-			function(universe, world, place, actor, activity)
+			function initialize(universe, world, place, actor, activity)
 			{},
 
-			// perform
-			function(universe, world, place, actor, activity)
+			function perform(universe, world, place, actor, activity)
 			{
 				var inputHelper = universe.inputHelper
 				var inputsActive = inputHelper.inputsActive();
-				var actionsFromActor = actor.actions;
+				var actionsFromActor = actor.ActorDefn.actions;
 				var world = universe.world;
 				var starsystemCurrent = world.starsystemCurrent;
 				var starsystemDefn = starsystemCurrent.defn(world);
@@ -548,50 +534,38 @@ function Demo()
 		return _all;
 	}
 
-	Demo.prototype.world_ConstraintDefns = function()
+	function Constraint_ConformToBounds(boxToConformTo)
 	{
-		var conformToBounds = new ConstraintDefn
-		(
-			"ConformToBounds",
-			function constrain(universe, world, place, entity, constraint)
+		this.boxToConformTo = boxToConformTo;
+	}
+	{
+		Constraint_ConformToBounds.prototype.constrain = function(universe, world, place, entity)
+		{
+			var entityLoc = entity.Locatable.loc;
+			entityLoc.pos.trimToRangeMinMax
+			(
+				this.boxToConformTo.min(),
+				this.boxToConformTo.max()
+			);
+		};
+	}
+
+	function Constraint_FollowEntityByName(entityToFollowName)
+	{
+		this.entityToFollowName = entityToFollowName;
+	}
+	{
+		Constraint_FollowEntityByName.prototype.constrain = function(universe, world, place, entity)
+		{
+			var entityToFollow = place.entities[this.entityToFollowName];
+			if (entityToFollow != null) // hack
 			{
-				var target = constraint.target;
-				var entityLoc = entity.body.loc;
-				var boundsToConformTo = target;
-				entityLoc.pos.trimToRangeMinMax
+				entity.Locatable.loc.pos.overwriteWith
 				(
-					boundsToConformTo.min(),
-					boundsToConformTo.max()
+					entityToFollow.Locatable.loc.pos
 				);
 			}
-		);
-
-		var followEntityByName = new ConstraintDefn
-		(
-			"FollowEntityByName",
-			function constrain(universe, world, place, entity, constraint)
-			{
-				var starsystem = entity.body.loc.venue;
-				var nameOfEntityToFollow = constraint.target;
-				var entityToFollow = starsystem.entities[nameOfEntityToFollow];
-				if (entityToFollow != null) // hack
-				{
-					entity.body.loc.pos.overwriteWith
-					(
-						entityToFollow.body.loc.pos
-					);
-				}
-			}
-		);
-
-		var _all =
-		[
-			conformToBounds,
-			followEntityByName,
-		];
-
-		return _all;
-
+		};
 	}
 
 	Demo.prototype.world_EntityDefns = function(universe)
@@ -979,164 +953,6 @@ function Demo()
 
 		mediaLibrary.imagesAdd(imagesEnemy);
 
-		/*
-		var imagesForPlayerClockwise = imageHelper.buildImagesFromStringArrays
-		("Player", [
-			[
-				".................",
-				".....b...........",
-				".....bb..........",
-				".....b.b.........",
-				".....b..b........",
-				".....b...b.......",
-				".....b....b......",
-				".....b.....b.....",
-				".....b......b....",
-				".....b.....b.....",
-				".....b....b......",
-				".....b...b.......",
-				".....b..b........",
-				".....b.b.........",
-				".....bb..........",
-				".....b...........",
-				".................",
-			],
-			[
-				".................",
-				".................",
-				".................",
-				"............b....",
-				"...........bb....",
-				"..........b.b....",
-				".........b..b....",
-				"........b...b....",
-				".......b....b....",
-				"......b.....b....",
-				".....b......b....",
-				"....b.......b....",
-				"...bbbbbbbbbb....",
-				".................",
-				".................",
-				".................",
-				".................",
-			],
-			[
-				".................",
-				".................",
-				".................",
-				".................",
-				".................",
-				".bbbbbbbbbbbbbbb.",
-				"..b...........b..",
-				"...b.........b...",
-				"....b.......b....",
-				".....b.....b.....",
-				"......b...b......",
-				".......b.b.......",
-				"........b........",
-				".................",
-				".................",
-				".................",
-				".................",
-			],
-			[
-				".................",
-				".................",
-				".................",
-				"....b............",
-				"....bb...........",
-				"....b.b..........",
-				"....b..b.........",
-				"....b...b........",
-				"....b....b.......",
-				"....b.....b......",
-				"....b......b.....",
-				"....b.......b....",
-				"....bbbbbbbbbb...",
-				".................",
-				".................",
-				".................",
-				".................",
-			],
-			[
-				".................",
-				"...........b.....",
-				"..........bb.....",
-				".........b.b.....",
-				"........b..b.....",
-				".......b...b.....",
-				"......b....b.....",
-				".....b.....b.....",
-				"....b......b.....",
-				".....b.....b.....",
-				"......b....b.....",
-				".......b...b......",
-				"........b..b.....",
-				".........b.b.....",
-				"..........bb.....",
-				"...........b.....",
-				".................",
-			],
-			[
-				".................",
-				".................",
-				".................",
-				".................",
-				"....bbbbbbbbbb...",
-				"....b.......b....",
-				"....b......b.....",
-				"....b.....b......",
-				"....b....b.......",
-				"....b...b........",
-				"....b..b.........",
-				"....b.b..........",
-				"....bb...........",
-				"....b............",
-				".................",
-				".................",
-				".................",
-			],
-			[
-				".................",
-				".................",
-				".................",
-				".................",
-				"........b........",
-				".......b.b.......",
-				"......b...b......",
-				".....b.....b.....",
-				"....b.......b....",
-				"...b.........b...",
-				"..b...........b..",
-				".bbbbbbbbbbbbbbb.",
-				".................",
-				".................",
-				".................",
-				".................",
-				".................",
-			],
-			[
-				".................",
-				".................",
-				".................",
-				".................",
-				"...bbbbbbbbbb....",
-				"....b.......b....",
-				".....b......b....",
-				"......b.....b....",
-				".......b....b....",
-				"........b...b....",
-				".........b..b....",
-				"..........b.b....",
-				"...........bb....",
-				"............b....",
-				".................",
-				".................",
-				".................",
-			],
-		]);
-		*/
-
 		var imageNamePrefixPlayer = "Player";
 		var imageDirectoryPlayer = imageDirectory + "Rocket/"
 
@@ -1171,31 +987,31 @@ function Demo()
 			new Location(new Coords(0, 0, 0))
 		);
 
-		var entityDefnCamera = new EntityDefn
+		var entityDefnCamera = new Entity
 		(
 			"Camera",
 			// properties
 			[
 				new CameraDefn(camera),
-				new ConstrainableDefn(),
 			]
 		);
 
 		var itemSizeInPixels = new Coords(10, 10, 1);
 
-		var entityDefnItemCollection = new EntityDefn
+		var entityDefnItemCollection = new Entity
 		(
 			"ItemCollection",
 
 			// properties
 			[
 				new BodyDefn(itemSizeInPixels), // sizeInPixels
-				new CollidableDefn
+				new Collidable
 				(
+					new Box(new Coords(0, 0, 0), itemSizeInPixels),
 					[], // entityDefnNameToCollideWith
 					function() {} // collide
 				),
-				new DrawableDefn
+				new Drawable
 				(
 					new VisualCameraProjection
 					(
@@ -1212,23 +1028,25 @@ function Demo()
 						)
 					)
 				),
-				new ItemCollectionDefn(),
-				new ItemContainerDefn([ new Item("Fuel", 100) ]), // hack
-				new KillableDefn(1), // integrityMax
+				new ItemCollection(),
+				new ItemContainer([ new Item("Fuel", 100) ]), // hack
+				new Killable(1), // integrityMax
 			]
 		);
 
-		var entityDefnProjectile = new EntityDefn
+		var projectileSizeInPixels = new Coords(3, 3, 1);
+
+		var entityDefnProjectile = new Entity
 		(
 			"Projectile",
 
 			// properties
 			[
-				new KillableDefn(1), // integrityMax
+				new Killable(1), // integrityMax
 				new EphemeralDefn(16), // ticksToLive
-				new BodyDefn(new Coords(3, 3, 1)), // sizeInPixels
+				new BodyDefn(projectileSizeInPixels),
 				new MoverDefn(1, 1, 16), // mass, force, speedMax
-				new DrawableDefn
+				new Drawable
 				(
 					new VisualCameraProjection
 					(
@@ -1237,17 +1055,17 @@ function Demo()
 					),
 				),
 				new ProjectileDefn(),
-				new CollidableDefn
+				new Collidable
 				(
-					[ "Enemy" ],
-					// collide
-					function(world, entityThis, entityOther)
+					new Box(new Coords(0, 0, 0), projectileSizeInPixels),
+					[ Enemy.name ],
+					function collide(world, entityThis, entityOther)
 					{
-						var entityOtherProperties = entityOther.defn().properties;
-						if (entityOtherProperties["Enemy"] != null)
+						var enemy = entityOther.Enemy;
+						if (enemy != null)
 						{
-							entityOther.killable.integrity -= entityThis.defn(world).projectile.damage;
-							entityThis.killable.integrity = 0;
+							entityOther.Killable.integrity -= entityThis.Projectile.damage;
+							entityThis.Killable.integrity = 0;
 						}
 					}
 				),
@@ -1256,13 +1074,18 @@ function Demo()
 
 		var planetSizeInPixels = new Coords(32, 32, 1);
 
-		var entityDefnPlanet = new EntityDefn
+		var entityDefnPlanet = new Entity
 		(
 			"Planet",
 			[
 				new BodyDefn(planetSizeInPixels),
-				new CollidableDefn([], function() {}),
-				new DrawableDefn
+				new Collidable
+				(
+					new Box(new Coords(0, 0, 0), planetSizeInPixels),
+					[],
+					function collide() {}
+				),
+				new Drawable
 				(
 					new VisualCameraProjection
 					(
@@ -1287,7 +1110,7 @@ function Demo()
 									(
 										function(universe, world, display, entity)
 										{
-											return entity.planet.name;
+											return entity.Planet.name;
 										}
 									),
 									"White", "Black"
@@ -1302,7 +1125,7 @@ function Demo()
 									(
 										function(universe, world, display, entity)
 										{
-											return entity.planet.itemTradeOffer.toString(universe, world);
+											return entity.Planet.itemTradeOffer.toString(universe, world);
 										}
 									),
 									"White", "Black"
@@ -1329,13 +1152,18 @@ function Demo()
 
 			var portalSizeInPixels = new Coords(19, 19, 1);
 
-			var entityDefnPortal = new EntityDefn
+			var entityDefnPortal = new Entity
 			(
 				entityDefnName,
 				[
 					new BodyDefn(portalSizeInPixels), // sizeInPixels
-					new CollidableDefn([], function() {}),
-					new DrawableDefn
+					new Collidable
+					(
+						new Box(new Coords(0, 0, 0), portalSizeInPixels),
+						[],
+						function collide() {}
+					),
+					new Drawable
 					(
 						new VisualCameraProjection
 						(
@@ -1398,11 +1226,11 @@ function Demo()
 			1
 		);
 
-		var entityDefnBackground = new EntityDefn
+		var entityDefnBackground = new Entity
 		(
 			"Background",
 			[
-				new DrawableDefn
+				new Drawable
 				(
 					new VisualGroup
 					([
@@ -1455,12 +1283,12 @@ function Demo()
 
 		var sunSizeInPixels = new Coords(40, 40, 1);
 
-		var entityDefnSun = new EntityDefn
+		var entityDefnSun = new Entity
 		(
 			"Sun",
 			[
 				new BodyDefn(sunSizeInPixels), // sizeInPixels
-				new DrawableDefn
+				new Drawable
 				(
 					new VisualCameraProjection
 					(
@@ -1485,7 +1313,7 @@ function Demo()
 									(
 										function(universe, world, display, entity)
 										{
-											return entity.star.name;
+											return entity.Star.name;
 										}
 									),
 									"White", "Black"
@@ -1500,15 +1328,15 @@ function Demo()
 		);
 
 		var friendlySizeInPixels = new Coords(16, 9, 1);
-		var entityDefnFriendly = new EntityDefn
+		var entityDefnFriendly = new Entity
 		(
 			"Friendly",
 			[
-				new KillableDefn(1), // integrityMax
+				new Killable(1), // integrityMax
 				new BodyDefn(friendlySizeInPixels), // sizeInPixels
 				new MoverDefn(1, 1, 4), // mass, forcePerTick, speedMax
 				new ActorDefn("DoNothing"),
-				new DrawableDefn
+				new Drawable
 				(
 					new VisualCameraProjection
 					(
@@ -1531,22 +1359,23 @@ function Demo()
 
 		var enemySize = new Coords(32, 32, 1);
 
-		var entityDefnEnemy = new EntityDefn
+		var entityDefnEnemy = new Entity
 		(
 			"Enemy",
 			[
 				new ActorDefn("MoveRandomly"),
 				new BodyDefn(enemySize),
-				new CollidableDefn
+				new Collidable
 				(
-					[ "Player" ],
+					new Box(new Coords(0, 0, 0), enemySize),
+					[ Player.name ],
 					// collide
 					function (entityThis, entityOther)
 					{
 						// do nothing
 					}
 				),
-				new DrawableDefn
+				new Drawable
 				(
 					new VisualCameraProjection
 					(
@@ -1563,42 +1392,30 @@ function Demo()
 						)
 					)
 				),
-				new KillableDefn(1), // integrityMax
-				new EnemyDefn(),
+				new Killable(1), // integrityMax
+				new Enemy(),
 				new MoverDefn(1, 1, 2), // mass, forcePerTick, speedMax
 			]
 		);
 
 		var playerCollide = function(universe, world, entityThis, entityOther)
 		{
-			var player = entityThis;
-			var starsystem = player.body.loc.venue;
-			var entityOtherProperties = entityOther.defn(world).properties;
+			//return; // hack - Currently colliding with everything all the time.
 
-			if (entityOtherProperties["ItemCollection"] != null)
+			var player = entityThis;
+			var starsystem = player.Locatable.loc.venue;
+
+			if (entityOther.ItemCollection != null)
 			{
 				var itemCollection = entityOther;
 				starsystem.entitiesToRemove.push(itemCollection);
-				var itemsToTransfer = itemCollection.itemContainer.items;
-				player.itemContainer.itemsAdd(itemsToTransfer);
+				var itemsToTransfer = itemCollection.ItemContainer.items;
+				player.ItemContainer.itemsAdd(itemsToTransfer);
 			}
-			else if (entityOtherProperties["Enemy"] != null)
+			else if (entityOther.Enemy != null)
 			{
-				player.killable.integrity = 0;
+				player.Killable.integrity = 0;
 
-				/*
-				starsystem.entitiesToSpawn.push
-				(
-					Globals.Instance.universe.world.font.buildEntityForText
-					(
-						"You lose!",
-						entityThis.body.loc.pos.clone(),
-						true // isFloater
-					)
-				);
-				*/
-				// hack
-				//alert("You lose!");
 				var venueMessage = new VenueMessage
 				(
 					"You lose!",
@@ -1614,24 +1431,22 @@ function Demo()
 				);
 				universe.venueNext = venueMessage;
 			}
-			else if (entityOtherProperties["Planet"] != null)
+			else if (entityOther.Planet != null)
 			{
 				var planet = entityOther;
-				var itemTradeOffer = planet.planet.itemTradeOffer;
+				var itemTradeOffer = planet.Planet.itemTradeOffer;
 				if (itemTradeOffer != null)
 				{
 					itemTradeOffer.trade(universe, world, player, planet);
 				}
 			}
-			else if (entityOtherProperties["Portal"] != null)
+			else if (entityOther.Portal != null)
 			{
-				var portal = entityOther;
-
 				starsystem.entitiesToRemove.push(player);
 
-				var portal = portal.portal;
+				var portal = entityOther.Portal;
 
-				var itemFuel = player.itemContainer.items["Fuel"];
+				var itemFuel = player.ItemContainer.items["Fuel"];
 				var fuelUsedByPortal = 1000;
 				if (itemFuel.quantity >= fuelUsedByPortal)
 				{
@@ -1642,7 +1457,7 @@ function Demo()
 					var destinationStarsystem = starsystems[destinationStarsystemName];
 
 					destinationStarsystem.entitiesToSpawn.push(player);
-					entityThis.body.loc.pos.overwriteWith(portal.destinationPos);
+					entityThis.Locatable.loc.pos.overwriteWith(portal.destinationPos);
 					universe.world.starsystemNext = destinationStarsystem;
 				}
 			}
@@ -1652,19 +1467,19 @@ function Demo()
 
 		var playerSizeInPixels = new Coords(32, 32, 1);
 
-		var entityDefnPlayer = new EntityDefn
+		var entityDefnPlayer = new Entity
 		(
 			"Player",
 			[
 				new ActorDefn("UserInputAccept"),
 				new BodyDefn(playerSizeInPixels),
-				new CollidableDefn
+				new Collidable
 				(
-					[ "ItemCollection", "Enemy", "Planet", "Portal" ],
+					new Box( new Coords(0, 0, 0), playerSizeInPixels),
+					[ ItemCollection.name, Enemy.name, Planet.name, Portal.name ],
 					playerCollide
 				),
-				new ConstrainableDefn(),
-				new DrawableDefn
+				new Drawable
 				(
 					new VisualCameraProjection
 					(
@@ -1683,16 +1498,15 @@ function Demo()
 						)
 					)
 				),
-				new ItemContainerDefn
+				new ItemContainer
 				([
 					new Item("Crew", 3),
 					new Item("Food", 100000),
 					new Item("Fuel", 100000),
 				]),
-				new KillableDefn(1), // integrityMax
+				new Killable(1), // integrityMax
 				new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
-				new PlayerDefn(),
-
+				new Player(),
 				new ControllableDefn
 				(
 					// buildControlForEntity
@@ -1722,9 +1536,9 @@ function Demo()
 									{
 										var returnValue =
 											"HP: "
-											+ entity.killable.integrity
+											+ entity.Killable.integrity
 											+ " / "
-											+ entity.defn().killable.integrityMax;
+											+ entity.Killable.integrityMax;
 
 										return returnValue;
 									}
@@ -1738,12 +1552,12 @@ function Demo()
 								new Coords(1, 3).multiplyScalar(gridSpacing), // pos
 								new DataSourceEntity
 								(
-									function(entity) { return entity.body.loc.toString(); }
+									function(entity) { return entity.Locatable.loc.toString(); }
 								)
 							),
 						];
 
-						var items = entity.itemContainer.items;
+						var items = entity.ItemContainer.items;
 
 						for (var i = 0; i < items.length; i++)
 						{

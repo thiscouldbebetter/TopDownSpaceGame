@@ -1,5 +1,0 @@
-
-function PlayerDefn()
-{
-	// do nothing
-}

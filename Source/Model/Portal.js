@@ -12,10 +12,10 @@ function Portal(destinationStarsystemName, destinationPos, color)
 
 	Portal.prototype.initialize = function(universe, world, venue, entity)
 	{
-		entity.drawable.visual = new VisualGroup
+		entity.Drawable.visual = new VisualGroup
 		(
 			[
-				entity.drawable.visual,
+				entity.Drawable.visual,
 				new VisualOffset
 				(
 					new VisualText("To " + this.destinationStarsystemName, "White", "Black"),

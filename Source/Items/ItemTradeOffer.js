@@ -40,7 +40,7 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 	{
 		if (this.secondsSinceLastUsed(universe, world) >= this.secondsToRecharge)
 		{
-			var customerItemContainer = entityCustomer.itemContainer;
+			var customerItemContainer = entityCustomer.ItemContainer;
 			if (customerItemContainer.hasItem(this.itemTaken) == true)
 			{
 				customerItemContainer.itemSubtract(this.itemTaken);

@@ -47,7 +47,10 @@ function Simulation()
 			mediaLibrary,
 			null // world
 		);
-		universe.initialize();
+		universe.initialize
+		(
+			x => x.start()
+		);
 
 	}
 }

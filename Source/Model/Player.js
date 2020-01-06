@@ -1,5 +1,5 @@
 
-function Enemy()
+function Player()
 {
 	// do nothing
 }

@@ -3,19 +3,19 @@ function VisualCameraProjection(camera, child)
 {
 	this.camera = camera;
 	this.child = child;
-	
+
 	this._drawablePosToRestore = new Coords();
 }
 {
-	VisualCameraProjection.prototype.draw = function(universe, world, display, drawable)
+	VisualCameraProjection.prototype.draw = function(universe, world, display, drawable, entity)
 	{
 		var camera = this.camera;
 		var cameraViewSizeHalf = camera.viewSizeHalf;
 		var cameraLoc = camera.loc;
 		var cameraPos = cameraLoc.pos;
 		var cameraOrientation = cameraLoc.orientation;
-		
-		var drawPos = drawable.loc.pos;
+
+		var drawPos = entity.Locatable.loc.pos;
 		this._drawablePosToRestore.overwriteWith(drawPos);
 
 		drawPos.subtract(cameraPos);
@@ -28,9 +28,9 @@ function VisualCameraProjection(camera, child)
 			drawPos.z = drawPosZ;
 		}
 		drawPos.add(cameraViewSizeHalf);
-		
-		this.child.draw(universe, world, display, drawable);
-		
+
+		this.child.draw(universe, world, display, drawable, entity);
+
 		drawPos.overwriteWith(this._drawablePosToRestore);
-	}	
+	};
 }

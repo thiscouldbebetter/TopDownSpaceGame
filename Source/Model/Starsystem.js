@@ -33,7 +33,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			for (var c = 0; c < properties.length; c++)
 			{
 				var property = properties[c];
-				var propertyName = Entity.propertyName(property);
+				var propertyName = property.constructor.name;
 
 				if (this.entitiesByPropertyName[propertyName] == null)
 				{
@@ -43,25 +43,23 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		}
 
 		var entityDefnCamera = entityDefns["Camera"];
-		var camera = entityDefnCamera.camera.camera;
+		var camera = entityDefnCamera.CameraDefn.camera;
 		var cameraViewSizeInPixels = camera.viewSize;
 		var cameraLoc = camera.loc;
 		var cameraPos = cameraLoc.pos;
 
-		this.camera = new Entity
+		this.camera = entityDefnCamera.clone().nameAndPropertiesAdd
 		(
 			"Camera",
-			"Camera", // entityDefnName
 			[
-				new Body(cameraLoc),
+				new Locatable(cameraLoc),
 				new Constrainable
 				(
 					[
-						new Constraint("FollowEntityByName", "Player"),
-						new Constraint
+						new Constraint_FollowEntityByName("Player"),
+						new Constraint_ConformToBounds
 						(
-							"ConformToBounds",
-							new Bounds
+							new Box
 							(
 								cameraPos,
 								cameraViewSizeInPixels
@@ -72,24 +70,13 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			]
 		);
 
-		this.camera.body.loc.venue = this;
+		this.camera.Locatable.loc.venue = this;
 
 		this.entitiesToSpawn.push(this.camera);
 
 		for (var b = 0; b < this.entities.length; b++)
 		{
 			var entity = this.entities[b];
-
-			var entityProperties = entity.defn(world).properties;
-			for (var c = 0; c < entityProperties.length; c++)
-			{
-				var entityProperty = entityProperties[c];
-
-				if (entityProperty.initialize != null)
-				{
-					entityProperty.initialize(universe, world, this, entity);
-				}
-			}
 
 			var entityProperties = entity.properties;
 			for (var c = 0; c < entityProperties.length; c++)
@@ -112,13 +99,14 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 
 		var propertyNames =
 		[
-			"Actor",
-			"Mover",
-			"Controllable",
-			"Constrainable",
-			"Killable",
-			"Ephemeral",
-			"Collidable",
+			Locatable.name,
+			ActorDefn.name,
+			MoverDefn.name,
+			//Controllable.name,
+			Constrainable.name,
+			Killable.name,
+			EphemeralDefn.name,
+			Collidable.name,
 		];
 
 		var numberOfProperties = propertyNames.length;
@@ -135,12 +123,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			{
 				var entity = entitiesWithProperty[b];
 
-				var property = entity.defn(world).properties[propertyName];
-
-				if (property == null)
-				{
-					property = entity.properties[propertyName];
-				}
+				var property = entity[propertyName];
 
 				if (property.update != null)
 				{
@@ -161,18 +144,18 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			this.entities.remove(entityToRemove);
 			delete this.entities[entityToRemove.name];
 
-			var entityProperties = entityToRemove.defn(world).properties;
+			var entityProperties = entityToRemove.properties;
 			for (var c = 0; c < entityProperties.length; c++)
 			{
 				var entityProperty = entityProperties[c];
-				var entityPropertyName = Entity.propertyName(entityProperty);
+				var entityPropertyName = entityProperty.constructor.name;
 				var entitiesForProperty = this.entitiesByPropertyName[entityPropertyName];
 				entitiesForProperty.remove(entityToRemove);
 			}
 		}
 
 		this.entitiesToRemove.length = 0;
-	}
+	};
 
 	Starsystem.prototype.update_EntitiesToSpawn = function(universe, world)
 	{
@@ -183,17 +166,6 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			this.entities.push(entityToSpawn);
 			this.entities[entityToSpawn.name] = entityToSpawn;
 
-			var entityToSpawnDefn = entityToSpawn.defn(world);
-
-			var entityProperties = entityToSpawnDefn.properties;
-			for (var c = 0; c < entityProperties.length; c++)
-			{
-				this.update_EntitiesToSpawn_Spawn
-				(
-					universe, world, entityToSpawn, entityProperties[c]
-				);
-			}
-
 			var entityProperties = entityToSpawn.properties;
 			for (var c = 0; c < entityProperties.length; c++)
 			{
@@ -202,19 +174,24 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 					universe, world, entityToSpawn, entityProperties[c]
 				);
 			}
-
 		}
 
 		this.entitiesToSpawn.length = 0;
-	}
+	};
 
 	Starsystem.prototype.update_EntitiesToSpawn_Spawn = function
 	(
 		universe, world, entity, entityProperty
 	)
 	{
-		var entityPropertyName = Entity.propertyName(entityProperty);
+		var entityPropertyName = entityProperty.constructor.name;
 		var entitiesForPropertyName = this.entitiesByPropertyName[entityPropertyName];
+		if (entitiesForPropertyName == null)
+		{
+			entitiesForPropertyName = [];
+			this.entitiesByPropertyName[entityPropertyName] = entitiesForPropertyName;
+		}
+
 		if (entitiesForPropertyName.contains(entity) == false)
 		{
 			entitiesForPropertyName.push(entity);
@@ -243,41 +220,41 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 
 		for (var i = 0; i < drawables.length; i++)
 		{
-			var drawable = drawables[i];
-			var drawableDefn = drawable.defn(universe.world);
-			drawableDefn.drawable.update(universe, world, this, drawable);
+			var entityDrawable = drawables[i];
+			var drawable = entityDrawable.Drawable;
+			drawable.update(universe, world, this, entityDrawable);
 		}
-	}
+	};
 
 	// helpers
 
 	Starsystem.prototype.drawables = function()
 	{
-		return this.entitiesByPropertyName["Drawable"];
-	}
+		return this.entitiesByPropertyName[Drawable.name];
+	};
 
 	Starsystem.prototype.enemies = function()
 	{
-		return this.entitiesByPropertyName["Enemy"];
-	}
+		return this.entitiesByPropertyName[Enemy.name];
+	};
 
 	Starsystem.prototype.planets = function()
 	{
-		return this.entitiesByPropertyName["Planet"];
-	}
+		return this.entitiesByPropertyName[Planet.name];
+	};
 
 	Starsystem.prototype.players = function()
 	{
-		return this.entitiesByPropertyName["Player"];
-	}
+		return this.entitiesByPropertyName[Player.name];
+	};
 
 	Starsystem.prototype.portals = function()
 	{
-		return this.entitiesByPropertyName["Portal"];
-	}
+		return this.entitiesByPropertyName[Portal.name];
+	};
 
 	Starsystem.prototype.stars = function()
 	{
-		return this.entitiesByPropertyName["Star"];
-	}
+		return this.entitiesByPropertyName[Star.name];
+	};
 }
