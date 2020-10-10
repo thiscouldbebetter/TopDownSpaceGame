@@ -1,20 +1,21 @@
 
-function Collidable(colliderAtRest, propertyNamesCollidedWith, collide)
+class Collidable
 {
-	this.colliderAtRest = colliderAtRest;
-	this.propertyNamesCollidedWith = propertyNamesCollidedWith;
-	this.collide = collide;
+	constructor(colliderAtRest, propertyNamesCollidedWith, collide)
+	{
+		this.colliderAtRest = colliderAtRest;
+		this.propertyNamesCollidedWith = propertyNamesCollidedWith;
+		this.collide = collide;
 
-	this.collider = this.colliderAtRest.clone();
-}
+		this.collider = this.colliderAtRest.clone();
+	}
 
-{
-	Collidable.prototype.initialize = function(universe, world, venue, entity)
+	initialize(universe, world, venue, entity)
 	{
 		this.update_Collider(entity);
-	};
+	}
 
-	Collidable.prototype.update = function(universe, world, venue, entity)
+	update(universe, world, venue, entity)
 	{
 		var collisionHelper = universe.collisionHelper;
 
@@ -51,9 +52,9 @@ function Collidable(colliderAtRest, propertyNamesCollidedWith, collide)
 				}
 			}
 		}
-	};
+	}
 
-	Collidable.prototype.update_Collider = function(entity)
+	update_Collider(entity)
 	{
 		var collidable = entity.Collidable;
 		var collider = collidable.collider;
@@ -69,5 +70,5 @@ function Collidable(colliderAtRest, propertyNamesCollidedWith, collide)
 			transformTranslate
 		);
 		return collider;
-	};
+	}
 }

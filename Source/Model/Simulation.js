@@ -1,9 +1,7 @@
-// application
 
-function Simulation()
-{}
+class Simulation
 {
-	Simulation.prototype.main = function()
+	main()
 	{
 		var displaySizeInPixels = new Coords(400, 300, 1);
 
@@ -19,7 +17,7 @@ function Simulation()
 		(
 			// images
 			[
-				new Image("Title", "Framework/Content/Images/Title.png"),
+				new Image("Title", "../Content/Images/Title.png"),
 			],
 			// sounds
 			[
@@ -51,6 +49,5 @@ function Simulation()
 		(
 			x => x.start()
 		);
-
 	}
 }

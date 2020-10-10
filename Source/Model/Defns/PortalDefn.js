@@ -1,5 +1,8 @@
 
-function PortalDefn(colorName)
+class PortalDefn
 {
-	this.colorName = colorName;
+	constructor(colorName)
+	{
+		this.colorName = colorName;
+	}
 }

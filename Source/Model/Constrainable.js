@@ -1,9 +1,12 @@
-function Constrainable(constraints)
+
+class Constrainable
 {
-	this.constraints = constraints;
-}
-{
-	Constrainable.prototype.update = function(universe, world, venue, entity)
+	constructor(constraints)
+	{
+		this.constraints = constraints;
+	}
+
+	update(universe, world, venue, entity)
 	{
 		var constraints = entity.Constrainable.constraints;
 		for (var i = 0; i < constraints.length; i++)

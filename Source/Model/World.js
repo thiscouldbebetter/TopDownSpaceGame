@@ -1,41 +1,41 @@
 
-function World
-(
-	name,
-	defns,
-	starsystems
-)
+class World
 {
-	this.name = name;
-	this.defns = defns;
-	this.starsystems = starsystems.addLookupsByName();
+	constructor
+	(
+		name, defns, starsystems
+	)
+	{
+		this.name = name;
+		this.defns = defns;
+		this.starsystems = starsystems.addLookupsByName();
 
-	this.timerTicksSoFar = 0;
+		this.timerTicksSoFar = 0;
 
-	// hack
-	this.initialize();
-}
-{
+		// hack
+		this.initialize();
+	}
+
 	// static methods
 
-	World.new = function(universe)
+	static new(universe)
 	{
 		return new Demo().worldGrid(universe, null);
 	}
 
 	// instance methods
 
-	World.prototype.draw = function()
+	draw()
 	{
 		// todo
 	}
 
-	World.prototype.initialize = function(universe)
+	initialize(universe)
 	{
 		this.starsystemNext = this.starsystems[0];
 	}
 
-	World.prototype.secondsSoFar = function(universe)
+	secondsSoFar(universe)
 	{
 		return Math.round
 		(
@@ -43,7 +43,7 @@ function World
 		);
 	}
 
-	World.prototype.updateForTimerTick = function(universe)
+	updateForTimerTick(universe)
 	{
 		if (this.starsystemNext != null)
 		{

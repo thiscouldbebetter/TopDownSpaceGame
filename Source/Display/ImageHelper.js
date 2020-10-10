@@ -1,13 +1,7 @@
 
-function ImageHelper()
+class ImageHelper
 {
-	// do nothing
-}
-
-{
-	// methods
-
-	ImageHelper.prototype.applyColorFunctionToImage = function
+	applyColorFunctionToImage
 	(
 		image, nameOfColorFunctionToApply, argumentForColorFunction
 	)
@@ -42,8 +36,7 @@ function ImageHelper()
 
 		var imageProcessed = this.canvasToImage
 		(
-			image.name,
-			canvas
+			image.name, canvas
 		);
 
 		image.sourcePath = imageProcessed.sourcePath;
@@ -52,7 +45,7 @@ function ImageHelper()
 		return image;
 	}
 
-	ImageHelper.prototype.buildImageFromStrings = function(name, stringsForPixels)
+	buildImageFromStrings(name, stringsForPixels)
 	{
 		return this.buildImageFromStringsScaled
 		(
@@ -60,7 +53,7 @@ function ImageHelper()
 		);
 	}
 
-	ImageHelper.prototype.buildImagesFromStringArrays = function(name, stringArraysForImagePixels)
+	buildImagesFromStringArrays(name, stringArraysForImagePixels)
 	{
 		var returnValue = [];
 
@@ -74,7 +67,7 @@ function ImageHelper()
 		return returnValue;
 	}
 
-	ImageHelper.prototype.buildImageFromStringsScaled = function(name, scaleFactor, stringsForPixels)
+	buildImageFromStringsScaled(name, scaleFactor, stringsForPixels)
 	{
 		var sizeInPixels = new Coords(stringsForPixels[0].length, stringsForPixels.length);
 
@@ -87,7 +80,7 @@ function ImageHelper()
 		var pixelPos = new Coords(0, 0);
 		var colorForPixel = Color.Instances()._Transparent;
 
-		colors = Color.Instances()._All;
+		var colors = Color.Instances()._All;
 
 		for (var y = 0; y < sizeInPixels.y; y++)
 		{
@@ -115,7 +108,7 @@ function ImageHelper()
 		return returnValue;
 	}
 
-	ImageHelper.prototype.buildImageFromStringsTiled = function(name, sizeInTiles, stringsForPixels)
+	buildImageFromStringsTiled(name, sizeInTiles, stringsForPixels)
 	{
 		var tileSizeInPixels = new Coords(stringsForPixels[0].length, stringsForPixels.length);
 
@@ -164,7 +157,7 @@ function ImageHelper()
 		return returnValue;
 	}
 
-	ImageHelper.prototype.canvasToImage = function(name, canvas)
+	canvasToImage(name, canvas)
 	{
 		var imageFromCanvasURL = canvas.toDataURL("image/png");
 
@@ -178,7 +171,7 @@ function ImageHelper()
 		return returnValue;
 	}
 
-	ImageHelper.prototype.imageToCanvasAndGraphicsContext = function(image)
+	imageToCanvasAndGraphicsContext(image)
 	{
 		var canvas = document.createElement("canvas");
 		var imageSizeInPixels = image.sizeInPixels;
@@ -196,7 +189,7 @@ function ImageHelper()
 		return [ canvas, graphics ];
 	}
 
-	ImageHelper.prototype.overwriteColorWithPixelFromGraphicsAtPos = function(color, graphics, pixelPos)
+	overwriteColorWithPixelFromGraphicsAtPos(color, graphics, pixelPos)
 	{
 		var pixelColorAsComponentsRGBA = graphics.getImageData(pixelPos.x, pixelPos.y, 1, 1).data;
 
@@ -210,7 +203,7 @@ function ImageHelper()
 		color._systemColor = null;
 	}
 
-	ImageHelper.prototype.sliceImageIntoTiles = function(imageToSlice, sizeInTiles)
+	sliceImageIntoTiles(imageToSlice, sizeInTiles)
 	{
 		var returnImages = [];
 

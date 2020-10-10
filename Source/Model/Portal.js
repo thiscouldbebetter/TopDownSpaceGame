@@ -1,16 +1,18 @@
 
-function Portal(destinationStarsystemName, destinationPos, color)
+class Portal
 {
-	this.destinationStarsystemName = destinationStarsystemName;
-	this.destinationPos = destinationPos;
-}
-{
-	Portal.prototype.destinationStarsystem = function(world)
+	constructor(destinationStarsystemName, destinationPos, color)
+	{
+		this.destinationStarsystemName = destinationStarsystemName;
+		this.destinationPos = destinationPos;
+	}
+
+	destinationStarsystem(world)
 	{
 		return world.starsystems[this.destinationStarsystemName];
 	}
 
-	Portal.prototype.initialize = function(universe, world, venue, entity)
+	initialize(universe, world, venue, entity)
 	{
 		entity.Drawable.visual = new VisualGroup
 		(

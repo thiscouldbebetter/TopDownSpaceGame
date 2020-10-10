@@ -1,5 +1,8 @@
 
-function ProjectileDefn(damage)
+class ProjectileDefn
 {
-	this.damage = damage;
+	constructor(damage)
+	{
+		this.damage = damage;
+	}
 }

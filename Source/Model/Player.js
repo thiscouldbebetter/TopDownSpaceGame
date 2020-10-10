@@ -1,5 +1,8 @@
 
-function Player()
+class Player
 {
-	// do nothing
+	constructor()
+	{
+		// do nothing
+	}
 }

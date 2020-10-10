@@ -1,22 +1,24 @@
 
-function VisualRepeating(cellSize, viewSize, child)
+class VisualRepeating
 {
-	this.cellSize = cellSize;
-	this.viewSize = viewSize;
-	this.child = child;
+	constructor(cellSize, viewSize, child)
+	{
+		this.cellSize = cellSize;
+		this.viewSize = viewSize;
+		this.child = child;
 
-	this.viewSizeInCells = this.viewSize.clone().divide
-	(
-		this.cellSize
-	);
+		this.viewSizeInCells = this.viewSize.clone().divide
+		(
+			this.cellSize
+		);
 
-	this._cellPos = new Coords();
-	this._drawOffset = new Coords();
-	this._drawPosWrapped = new Coords();
-	this._drawablePosToRestore = new Coords();
-}
-{
-	VisualRepeating.prototype.draw = function(universe, world, display, drawable, entity)
+		this._cellPos = new Coords();
+		this._drawOffset = new Coords();
+		this._drawPosWrapped = new Coords();
+		this._drawablePosToRestore = new Coords();
+	}
+
+	draw(universe, world, display, drawable, entity)
 	{
 		var drawPos = entity.Locatable.loc.pos;
 
@@ -59,5 +61,5 @@ function VisualRepeating(cellSize, viewSize, child)
 		}
 
 		drawPos.overwriteWith(this._drawablePosToRestore);
-	};
+	}
 }

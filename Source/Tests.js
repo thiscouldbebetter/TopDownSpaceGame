@@ -1,17 +1,14 @@
 
 // tests
 
-function Tests()
+class Tests
 {
-	// static class
-}
-{
-	Tests.run = function()
+	static run()
 	{
 		Tests.bounds();
 	}
 
-	Tests.bounds = function()
+	static bounds()
 	{
 		var bounds0 = new Bounds(new Coords(0, 0), new Coords(1, 1));
 		var bounds1 = new Bounds(new Coords(0.1, 0.1), new Coords(0.9, 0.9));
@@ -20,17 +17,17 @@ function Tests()
 
 		if (bounds0.overlapWith(bounds1) == false)
 		{
-			throw "failed"
+			throw "failed";
 		}
 
 		if (bounds0.overlapWith(bounds2) == false)
 		{
-			throw "failed"
+			throw "failed";
 		}
 
 		else if (bounds0.overlapWith(bounds3) == true)
 		{
-			throw "failed"
+			throw "failed";
 		}
 
 	}

@@ -1,9 +1,7 @@
-function Cloneable()
+
+class Cloneable
 {
-	// static class
-}
-{
-	Cloneable.cloneMany = function(cloneablesToClone)
+	static cloneMany(cloneablesToClone)
 	{
 		var returnValues = [];
 

@@ -1,13 +1,15 @@
 
-function VisualCameraProjection(camera, child)
+class VisualCameraProjection
 {
-	this.camera = camera;
-	this.child = child;
+	constructor(camera, child)
+	{
+		this.camera = camera;
+		this.child = child;
 
-	this._drawablePosToRestore = new Coords();
-}
-{
-	VisualCameraProjection.prototype.draw = function(universe, world, display, drawable, entity)
+		this._drawablePosToRestore = new Coords();
+	}
+
+	draw(universe, world, display, drawable, entity)
 	{
 		var camera = this.camera;
 		var cameraViewSizeHalf = camera.viewSizeHalf;
@@ -32,5 +34,5 @@ function VisualCameraProjection(camera, child)
 		this.child.draw(universe, world, display, drawable, entity);
 
 		drawPos.overwriteWith(this._drawablePosToRestore);
-	};
+	}
 }

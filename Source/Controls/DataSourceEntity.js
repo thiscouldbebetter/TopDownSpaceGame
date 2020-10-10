@@ -1,5 +1,8 @@
 
-function DataSourceEntity(get)
+class DataSourceEntity
 {
-	this.get = get;
+	constructor(get)
+	{
+		this.get = get;
+	}
 }

@@ -1,17 +1,18 @@
 
-function ControllableDefn(buildControlForEntity)
+class ControllableDefn
 {
-	this.buildControlForEntity = buildControlForEntity;
-}
+	constructor(buildControlForEntity)
+	{
+		this.buildControlForEntity = buildControlForEntity;
+	}
 
-{
-	ControllableDefn.prototype.initialize = function(universe, world, venue, entity)
+	initialize(universe, world, venue, entity)
 	{
 		var control = this.buildControlForEntity(entity);
 		entity.controllable = new Controllable(control);
 	}
 
-	ControllableDefn.prototype.update = function(universe, world, venue, entity)
+	update(universe, world, venue, entity)
 	{
 		entity.controllable.control.draw(universe.display);
 	}

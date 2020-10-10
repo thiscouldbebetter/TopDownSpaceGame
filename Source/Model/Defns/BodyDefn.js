@@ -1,13 +1,14 @@
 
-function BodyDefn(sizeInPixels)
+class BodyDefn
 {
-	this.sizeInPixels = sizeInPixels;
+	constructor(sizeInPixels)
+	{
+		this.sizeInPixels = sizeInPixels;
 
-	this.sizeInPixelsHalf = this.sizeInPixels.clone().divideScalar(2);
-}
+		this.sizeInPixelsHalf = this.sizeInPixels.clone().divideScalar(2);
+	}
 
-{
-	BodyDefn.prototype.initialize = function(universe, world, venue, entity)
+	initialize(universe, world, venue, entity)
 	{
 		entity.Locatable.loc.venue = venue;
 	}

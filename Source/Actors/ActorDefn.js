@@ -1,11 +1,12 @@
 
-function ActorDefn(activityDefnNameInitial)
+class ActorDefn
 {
-	this.activityDefnNameInitial = activityDefnNameInitial;
-}
+	constructor(activityDefnNameInitial)
+	{
+		this.activityDefnNameInitial = activityDefnNameInitial;
+	}
 
-{
-	ActorDefn.prototype.initialize = function(universe, world, venue, entity)
+	initialize(universe, world, venue, entity)
 	{
 		this.actions = [];
 
@@ -16,9 +17,9 @@ function ActorDefn(activityDefnNameInitial)
 		(
 			universe, world, venue, entity
 		);
-	};
+	}
 
-	ActorDefn.prototype.update = function(universe, world, venue, entity)
+	update(universe, world, venue, entity)
 	{
 		var world = universe.world;
 
@@ -35,5 +36,5 @@ function ActorDefn(activityDefnNameInitial)
 		}
 
 		entityActions.length = 0;
-	};
+	}
 }

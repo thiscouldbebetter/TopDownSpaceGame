@@ -1,13 +1,14 @@
 
-function MoverDefn(massBase, force, speedMax)
+class MoverDefn
 {
-	this.massBase = massBase;
-	this.force = force;
-	this.speedMax = speedMax;
-}
+	constructor(massBase, force, speedMax)
+	{
+		this.massBase = massBase;
+		this.force = force;
+		this.speedMax = speedMax;
+	}
 
-{
-	MoverDefn.prototype.update = function(universe, world, venue, entity)
+	update(universe, world, venue, entity)
 	{
 		var mover = entity;
 

@@ -1,16 +1,17 @@
 
-function EphemeralDefn(ticksToLive)
+class EphemeralDefn
 {
-	this.ticksToLive = ticksToLive;
-}
+	constructor(ticksToLive)
+	{
+		this.ticksToLive = ticksToLive;
+	}
 
-{
-	EphemeralDefn.prototype.initialize = function(universe, world, venue, entity)
+	initialize(universe, world, venue, entity)
 	{
 		entity.ticksToLive = entity.EphemeralDefn.ticksToLive;
 	}
 
-	EphemeralDefn.prototype.update = function(universe, world, venue, entity)
+	update(universe, world, venue, entity)
 	{
 		entity.ticksToLive--;
 		if (entity.ticksToLive <= 0)

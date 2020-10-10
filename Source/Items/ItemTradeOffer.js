@@ -1,15 +1,18 @@
-function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
-{
-	this.itemTaken = itemTaken;
-	this.itemGiven = itemGiven;
-	this.secondsToRecharge = secondsToRecharge;
 
-	this.secondLastUsed = null;
-}
+class ItemTradeOffer
 {
+	constructor(itemTaken, itemGiven, secondsToRecharge)
+	{
+		this.itemTaken = itemTaken;
+		this.itemGiven = itemGiven;
+		this.secondsToRecharge = secondsToRecharge;
+
+		this.secondLastUsed = null;
+	}
+
 	// static methods
 
-	ItemTradeOffer.random = function()
+	static random()
 	{
 		// todo
 		var returnValue = new ItemTradeOffer
@@ -24,19 +27,19 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 
 	// instance methods
 
-	ItemTradeOffer.prototype.isCharged = function(universe, world)
+	isCharged(universe, world)
 	{
 		var returnValue =
 			(this.secondLastUsed == null ? true : (this.secondsSinceLastUsed(universe, world) >= this.secondsToRecharge));
 		return returnValue;
 	}
 
-	ItemTradeOffer.prototype.secondsSinceLastUsed = function(universe, world)
+	secondsSinceLastUsed(universe, world)
 	{
 		return world.secondsSoFar(universe) - this.secondLastUsed;
 	}
 
-	ItemTradeOffer.prototype.trade = function(universe, world, entityCustomer, entityVendor)
+	trade(universe, world, entityCustomer, entityVendor)
 	{
 		if (this.secondsSinceLastUsed(universe, world) >= this.secondsToRecharge)
 		{
@@ -50,7 +53,7 @@ function ItemTradeOffer(itemTaken, itemGiven, secondsToRecharge)
 		}
 	}
 
-	ItemTradeOffer.prototype.toString = function(universe, world)
+	toString(universe, world)
 	{
 		var returnValue;
 

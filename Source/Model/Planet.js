@@ -1,8 +1,11 @@
 
-function Planet(name, color)
+class Planet
 {
-	this.name = name;
-	this.color = color;
+	constructor(name, color)
+	{
+		this.name = name;
+		this.color = color;
 
-	this.itemTradeOffer = ItemTradeOffer.random();
+		this.itemTradeOffer = ItemTradeOffer.random();
+	}
 }

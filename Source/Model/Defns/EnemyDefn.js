@@ -1,5 +1,5 @@
 
-function Enemy()
+class Enemy
 {
 	// do nothing
 }

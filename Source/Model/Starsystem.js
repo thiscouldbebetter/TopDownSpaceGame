@@ -1,27 +1,26 @@
 
-function Starsystem(name, defnName, sizeInPixels, entities)
+class Starsystem
 {
-	this.name = name;
-	this.defnName = defnName;
-	this.sizeInPixels = sizeInPixels;
-	this.entities = [];
+	constructor(name, defnName, sizeInPixels, entities)
+	{
+		this.name = name;
+		this.defnName = defnName;
+		this.sizeInPixels = sizeInPixels;
+		this.entities = [];
 
-	this.sizeInPixelsHalf = this.sizeInPixels.clone().divideScalar(2);
+		this.sizeInPixelsHalf = this.sizeInPixels.clone().divideScalar(2);
 
-	this.entitiesByPropertyName = [];
-	this.entitiesToSpawn = entities.slice();
-	this.entitiesToRemove = [];
-}
+		this.entitiesByPropertyName = [];
+		this.entitiesToSpawn = entities.slice();
+		this.entitiesToRemove = [];
+	}
 
-{
-	// instance methods
-
-	Starsystem.prototype.defn = function(world)
+	defn(world)
 	{
 		return world.defns.starsystemDefns[this.defnName];
 	}
 
-	Starsystem.prototype.initialize = function(universe)
+	initialize(universe)
 	{
 		var world = universe.world;
 		var entityDefns = world.defns.entityDefns;
@@ -91,7 +90,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		}
 	}
 
-	Starsystem.prototype.updateForTimerTick = function(universe, world)
+	updateForTimerTick(universe, world)
 	{
 		this.draw(universe, world);
 
@@ -135,7 +134,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		this.update_EntitiesToRemove(universe, world);
 	}
 
-	Starsystem.prototype.update_EntitiesToRemove = function(universe, world)
+	update_EntitiesToRemove(universe, world)
 	{
 		for (var i = 0; i < this.entitiesToRemove.length; i++)
 		{
@@ -157,7 +156,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		this.entitiesToRemove.length = 0;
 	};
 
-	Starsystem.prototype.update_EntitiesToSpawn = function(universe, world)
+	update_EntitiesToSpawn(universe, world)
 	{
 		for (var i = 0; i < this.entitiesToSpawn.length; i++)
 		{
@@ -179,7 +178,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 		this.entitiesToSpawn.length = 0;
 	};
 
-	Starsystem.prototype.update_EntitiesToSpawn_Spawn = function
+	update_EntitiesToSpawn_Spawn
 	(
 		universe, world, entity, entityProperty
 	)
@@ -205,7 +204,7 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 
 	// draw
 
-	Starsystem.prototype.draw = function(universe, world)
+	draw(universe, world)
 	{
 		var display = universe.display;
 		display.drawRectangle
@@ -224,37 +223,37 @@ function Starsystem(name, defnName, sizeInPixels, entities)
 			var drawable = entityDrawable.Drawable;
 			drawable.update(universe, world, this, entityDrawable);
 		}
-	};
+	}
 
 	// helpers
 
-	Starsystem.prototype.drawables = function()
+	drawables()
 	{
 		return this.entitiesByPropertyName[Drawable.name];
-	};
+	}
 
-	Starsystem.prototype.enemies = function()
+	enemies()
 	{
 		return this.entitiesByPropertyName[Enemy.name];
-	};
+	}
 
-	Starsystem.prototype.planets = function()
+	planets()
 	{
 		return this.entitiesByPropertyName[Planet.name];
-	};
+	}
 
-	Starsystem.prototype.players = function()
+	players()
 	{
 		return this.entitiesByPropertyName[Player.name];
-	};
+	}
 
-	Starsystem.prototype.portals = function()
+	portals()
 	{
 		return this.entitiesByPropertyName[Portal.name];
-	};
+	}
 
-	Starsystem.prototype.stars = function()
+	stars()
 	{
 		return this.entitiesByPropertyName[Star.name];
-	};
+	}
 }

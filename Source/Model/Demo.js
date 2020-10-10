@@ -1,11 +1,7 @@
 
-function Demo()
+class Demo
 {
-	// do nothing
-}
-
-{
-	Demo.prototype.actions = function()
+	actions()
 	{
 		var accelerate = new Action
 		(
@@ -135,7 +131,7 @@ function Demo()
 	}
 
 
-	Demo.prototype.worldGrid = function(universe, sizeInStarsystems)
+	worldGrid(universe, sizeInStarsystems)
 	{
 		if (sizeInStarsystems == null)
 		{
@@ -387,7 +383,7 @@ function Demo()
 		return world;
 	}
 
-	Demo.prototype.world_ItemDefns = function()
+	world_ItemDefns()
 	{
 			var returnValues =
 			[
@@ -406,7 +402,7 @@ function Demo()
 			return returnValues;
 	}
 
-	Demo.prototype.world_ActivityDefns = function()
+	world_ActivityDefns()
 	{
 		var doNothing = new ActivityDefn
 		(
@@ -534,41 +530,7 @@ function Demo()
 		return _all;
 	}
 
-	function Constraint_ConformToBounds(boxToConformTo)
-	{
-		this.boxToConformTo = boxToConformTo;
-	}
-	{
-		Constraint_ConformToBounds.prototype.constrain = function(universe, world, place, entity)
-		{
-			var entityLoc = entity.Locatable.loc;
-			entityLoc.pos.trimToRangeMinMax
-			(
-				this.boxToConformTo.min(),
-				this.boxToConformTo.max()
-			);
-		};
-	}
-
-	function Constraint_FollowEntityByName(entityToFollowName)
-	{
-		this.entityToFollowName = entityToFollowName;
-	}
-	{
-		Constraint_FollowEntityByName.prototype.constrain = function(universe, world, place, entity)
-		{
-			var entityToFollow = place.entities[this.entityToFollowName];
-			if (entityToFollow != null) // hack
-			{
-				entity.Locatable.loc.pos.overwriteWith
-				(
-					entityToFollow.Locatable.loc.pos
-				);
-			}
-		};
-	}
-
-	Demo.prototype.world_EntityDefns = function(universe)
+	world_EntityDefns(universe)
 	{
 		var imageHelper = new ImageHelper();
 		var mediaLibrary = universe.mediaLibrary;
@@ -956,7 +918,7 @@ function Demo()
 		var imageNamePrefixPlayer = "Player";
 		var imageDirectoryPlayer = imageDirectory + "Rocket/"
 
-		imagesForPlayerClockwise =
+		var imagesForPlayerClockwise =
 		[
 			new Image(imageNamePrefixPlayer + "00", imageDirectoryPlayer + "00.png"),
 			new Image(imageNamePrefixPlayer + "01", imageDirectoryPlayer + "01.png"),
@@ -1398,7 +1360,7 @@ function Demo()
 			]
 		);
 
-		var playerCollide = function(universe, world, entityThis, entityOther)
+		var playerCollide = (universe, world, entityThis, entityOther) =>
 		{
 			//return; // hack - Currently colliding with everything all the time.
 
@@ -1635,7 +1597,7 @@ function Demo()
 		return entityDefns;
 	}
 
-	Demo.prototype.world_StarsystemDefns = function()
+	world_StarsystemDefns()
 	{
 		var starsystemDefns =
 		[
@@ -1654,3 +1616,44 @@ function Demo()
 		return starsystemDefns;
 	}
 }
+
+// Constraints.
+
+class Constraint_ConformToBounds
+{
+	constructor(boxToConformTo)
+	{
+		this.boxToConformTo = boxToConformTo;
+	}
+
+	constrain(universe, world, place, entity)
+	{
+		var entityLoc = entity.Locatable.loc;
+		entityLoc.pos.trimToRangeMinMax
+		(
+			this.boxToConformTo.min(),
+			this.boxToConformTo.max()
+		);
+	}
+}
+
+class Constraint_FollowEntityByName
+{
+	constructor(entityToFollowName)
+	{
+		this.entityToFollowName = entityToFollowName;
+	}
+
+	constrain(universe, world, place, entity)
+	{
+		var entityToFollow = place.entities[this.entityToFollowName];
+		if (entityToFollow != null) // hack
+		{
+			entity.Locatable.loc.pos.overwriteWith
+			(
+				entityToFollow.Locatable.loc.pos
+			);
+		}
+	}
+}
+

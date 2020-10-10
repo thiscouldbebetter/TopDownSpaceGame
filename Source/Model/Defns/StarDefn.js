@@ -1,4 +1,5 @@
-function StarDefn()
+
+class StarDefn
 {
 	// do nothing
 }

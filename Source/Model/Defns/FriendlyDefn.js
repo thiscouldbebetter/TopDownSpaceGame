@@ -1,5 +1,5 @@
 
-function FriendlyDefn()
+class FriendlyDefn
 {
 	// do nothing
 }

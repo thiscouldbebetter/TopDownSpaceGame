@@ -1,9 +1,12 @@
-function CameraDefn(camera)
+
+class CameraDefn
 {
-	this.camera = camera;
-}
-{
-	CameraDefn.prototype.initialize = function(universe, world, venue, entity)
+	constructor(camera)
+	{
+		this.camera = camera;
+	}
+
+	initialize(universe, world, venue, entity)
 	{
 		if (entity.camera == null)
 		{

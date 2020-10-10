@@ -1,10 +1,12 @@
-function NameGenerator()
+class NameGenerator
 {
-	this.consonants = "abdfghjklmnprstvwyz";
-	this.vowels = "aeiou";
-}
-{
-	NameGenerator.prototype.generateNameWithSyllables = function(numberOfSyllables)
+	constructor()
+	{
+		this.consonants = "abdfghjklmnprstvwyz";
+		this.vowels = "aeiou";
+	}
+
+	generateNameWithSyllables(numberOfSyllables)
 	{
 		var returnValue = "";
 

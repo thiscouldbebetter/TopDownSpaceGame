@@ -1,5 +1,8 @@
 
-function Controllable(control)
+class Controllable
 {
-	this.control = control;
+	constructor(control)
+	{
+		this.control = control;
+	}
 }

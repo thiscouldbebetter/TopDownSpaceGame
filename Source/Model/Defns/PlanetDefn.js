@@ -1,5 +1,5 @@
 
-function PlanetDefn()
+class PlanetDefn
 {
 	// do nothing
 }

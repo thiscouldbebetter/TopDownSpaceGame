@@ -1,5 +1,8 @@
 
-function Body(loc)
+class Body
 {
-	this.loc = loc;
+	constructor(loc)
+	{
+		this.loc = loc;
+	}
 }

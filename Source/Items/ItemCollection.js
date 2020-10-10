@@ -1,4 +1,5 @@
-function ItemCollection()
+
+class ItemCollection
 {
 	// todo
 }

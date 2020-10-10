@@ -1,10 +1,13 @@
-function ItemContainer(items)
+
+class ItemContainer
 {
-	this.items = items;
-	this.items.addLookups( (x) => { return x.defnName; } );
-}
-{
-	ItemContainer.prototype.hasItem = function(itemToCheck)
+	constructor(items)
+	{
+		this.items = items;
+		this.items.addLookups( (x) => { return x.defnName; } );
+	}
+
+	hasItem(itemToCheck)
 	{
 		var returnValue = false;
 
@@ -20,7 +23,7 @@ function ItemContainer(items)
 		return returnValue;
 	}
 
-	ItemContainer.prototype.itemAdd = function(itemToTransfer)
+	itemAdd(itemToTransfer)
 	{
 		var itemsHeld = this.items;
 		var itemHeld = itemsHeld[itemToTransfer.defnName];
@@ -36,7 +39,7 @@ function ItemContainer(items)
 		}
 	}
 
-	ItemContainer.prototype.itemSubtract = function(itemToTransfer)
+	itemSubtract(itemToTransfer)
 	{
 		var itemsHeld = this.items;
 		var itemHeld = itemsHeld[itemToTransfer.defnName];
@@ -52,7 +55,7 @@ function ItemContainer(items)
 		}
 	}
 
-	ItemContainer.prototype.itemsAdd = function(itemsToTransfer)
+	itemsAdd(itemsToTransfer)
 	{
 		for (var i = 0; i < itemsToTransfer.length; i++)
 		{
@@ -61,7 +64,7 @@ function ItemContainer(items)
 		}
 	}
 
-	ItemContainer.prototype.itemsSubtract = function(itemsToTransfer)
+	itemsSubtract(itemsToTransfer)
 	{
 		for (var i = 0; i < itemsToTransfer.length; i++)
 		{
