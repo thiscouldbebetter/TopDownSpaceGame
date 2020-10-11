@@ -16,11 +16,11 @@ class Drawable
 	update(universe, world, venue, entity)
 	{
 		var display = universe.display;
-		var drawable = entity.Drawable;
+		var drawable = entity.drawable();
 		var visual = drawable.visual;
 		visual.draw
 		(
-			universe, world, display, null, entity
+			universe, world, venue, entity, display
 		);
 	}
 }

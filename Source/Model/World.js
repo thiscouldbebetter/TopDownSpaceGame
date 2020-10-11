@@ -1,13 +1,10 @@
 
 class World
 {
-	constructor
-	(
-		name, defns, starsystems
-	)
+	constructor(name, defn, starsystems)
 	{
 		this.name = name;
-		this.defns = defns;
+		this.defn = defn;
 		this.starsystems = starsystems.addLookupsByName();
 
 		this.timerTicksSoFar = 0;
@@ -18,7 +15,7 @@ class World
 
 	// static methods
 
-	static new(universe)
+	static create(universe)
 	{
 		return new Demo().worldGrid(universe, null);
 	}
@@ -41,6 +38,11 @@ class World
 		(
 			this.timerTicksSoFar / universe.timerHelper.ticksPerSecond
 		);
+	}
+
+	toControl()
+	{
+		return new ControlNone();
 	}
 
 	updateForTimerTick(universe)

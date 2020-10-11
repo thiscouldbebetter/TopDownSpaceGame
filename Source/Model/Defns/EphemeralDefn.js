@@ -8,7 +8,8 @@ class EphemeralDefn
 
 	initialize(universe, world, venue, entity)
 	{
-		entity.ticksToLive = entity.EphemeralDefn.ticksToLive;
+		entity.ticksToLive =
+			entity.propertyByName(EphemeralDefn.name).ticksToLive;
 	}
 
 	update(universe, world, venue, entity)

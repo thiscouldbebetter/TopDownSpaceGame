@@ -8,7 +8,7 @@ class Constrainable
 
 	update(universe, world, venue, entity)
 	{
-		var constraints = entity.Constrainable.constraints;
+		var constraints = entity.constrainable().constraints;
 		for (var i = 0; i < constraints.length; i++)
 		{
 			var constraint = constraints[i];

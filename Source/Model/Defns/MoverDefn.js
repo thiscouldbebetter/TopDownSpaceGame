@@ -13,13 +13,13 @@ class MoverDefn
 		var mover = entity;
 
 		var moverMass = 1; // todo
-		var moverLoc = mover.Locatable.loc;
+		var moverLoc = mover.locatable().loc;
 
 		var accelToAdd = moverLoc.force.clone().divideScalar(moverMass);
 		moverLoc.accel.add(accelToAdd);
 
 		moverLoc.vel.add(moverLoc.accel);
-		var moverSpeedMax = mover.MoverDefn.speedMax;
+		var moverSpeedMax = mover.propertyByName(MoverDefn.name).speedMax;
 		if (moverLoc.vel.magnitude() > moverSpeedMax)
 		{
 			moverLoc.vel.normalize().multiplyScalar(moverSpeedMax);

@@ -10,6 +10,6 @@ class BodyDefn
 
 	initialize(universe, world, venue, entity)
 	{
-		entity.Locatable.loc.venue = venue;
+		entity.locatable().loc.venue = venue;
 	}
 }

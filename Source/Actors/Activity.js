@@ -9,7 +9,7 @@ class Activity
 
 	defn(world)
 	{
-		return world.defns.activityDefns[this.defnName];
+		return world.defn.activityDefnsByName().get(this.defnName);
 	}
 
 	initialize(universe, world, place, actor)

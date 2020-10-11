@@ -80,7 +80,7 @@ class ImageHelper
 		var pixelPos = new Coords(0, 0);
 		var colorForPixel = Color.Instances()._Transparent;
 
-		var colors = Color.Instances()._All;
+		var colorsByCode = Color.Instances()._AllByCode;
 
 		for (var y = 0; y < sizeInPixels.y; y++)
 		{
@@ -92,7 +92,7 @@ class ImageHelper
 				var charForPixel = stringForPixelRow[x];
 				pixelPos.x = x * scaleFactor.x;
 
-				colorForPixel = colors[charForPixel];
+				colorForPixel = colorsByCode.get(charForPixel);
 
 				graphics.fillStyle = colorForPixel.systemColor();
 				graphics.fillRect
@@ -166,7 +166,7 @@ class ImageHelper
 		systemImage.height = canvas.height;
 		systemImage.src = imageFromCanvasURL;
 
-		var returnValue = Image.fromSystemImage(name, systemImage);
+		var returnValue = Image2.fromSystemImage(name, systemImage);
 
 		return returnValue;
 	}

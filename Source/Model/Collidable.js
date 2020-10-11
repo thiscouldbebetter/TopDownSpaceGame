@@ -40,11 +40,13 @@ class Collidable
 
 					if (doEntitiesCollide)
 					{
-						entity.Collidable.collide
+						var entityCollidable = entity.collidable();
+						entityCollidable.collide
 						(
 							universe, world, entity, entityOther
 						);
-						entityOther.Collidable.collide
+						var entityOtherCollidable = entityOther.collidable();
+						entityOtherCollidable.collide
 						(
 							universe, world, entityOther, entity
 						);
@@ -56,11 +58,11 @@ class Collidable
 
 	update_Collider(entity)
 	{
-		var collidable = entity.Collidable;
+		var collidable = entity.collidable();
 		var collider = collidable.collider;
 		var transformTranslate = new Transform_Translate
 		(
-			entity.Locatable.loc.pos.clone()
+			entity.locatable().loc.pos.clone()
 		);
 		collider.overwriteWith
 		(

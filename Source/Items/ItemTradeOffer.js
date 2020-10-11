@@ -43,7 +43,8 @@ class ItemTradeOffer
 	{
 		if (this.secondsSinceLastUsed(universe, world) >= this.secondsToRecharge)
 		{
-			var customerItemContainer = entityCustomer.ItemContainer;
+			var customerItemContainer =
+				entityCustomer.propertyByName(ItemContainer.name);
 			if (customerItemContainer.hasItem(this.itemTaken) == true)
 			{
 				customerItemContainer.itemSubtract(this.itemTaken);

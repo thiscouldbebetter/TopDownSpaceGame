@@ -9,7 +9,7 @@ class VisualCameraProjection
 		this._drawablePosToRestore = new Coords();
 	}
 
-	draw(universe, world, display, drawable, entity)
+	draw(universe, world, place, entity, display)
 	{
 		var camera = this.camera;
 		var cameraViewSizeHalf = camera.viewSizeHalf;
@@ -17,7 +17,7 @@ class VisualCameraProjection
 		var cameraPos = cameraLoc.pos;
 		var cameraOrientation = cameraLoc.orientation;
 
-		var drawPos = entity.Locatable.loc.pos;
+		var drawPos = entity.locatable().loc.pos;
 		this._drawablePosToRestore.overwriteWith(drawPos);
 
 		drawPos.subtract(cameraPos);
@@ -31,7 +31,7 @@ class VisualCameraProjection
 		}
 		drawPos.add(cameraViewSizeHalf);
 
-		this.child.draw(universe, world, display, drawable, entity);
+		this.child.draw(universe, world, place, entity, display);
 
 		drawPos.overwriteWith(this._drawablePosToRestore);
 	}

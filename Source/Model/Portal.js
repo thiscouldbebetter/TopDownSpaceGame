@@ -14,13 +14,23 @@ class Portal
 
 	initialize(universe, world, venue, entity)
 	{
-		entity.Drawable.visual = new VisualGroup
+		entity.drawable().visual = new VisualGroup
 		(
 			[
-				entity.Drawable.visual,
+				entity.drawable().visual,
 				new VisualOffset
 				(
-					new VisualText("To " + this.destinationStarsystemName, "White", "Black"),
+					new VisualText
+					(
+						DataBinding.fromContext
+						(
+							"To " + this.destinationStarsystemName,
+						),
+						false, // shouldTextContextBeReset
+						null, // fontHeight
+						Color.byName("White"),
+						Color.byName("Black")
+					),
 					new Coords(0, 20)
 				),
 			]

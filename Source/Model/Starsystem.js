@@ -17,17 +17,18 @@ class Starsystem
 
 	defn(world)
 	{
-		return world.defns.starsystemDefns[this.defnName];
+		return world.defn.starsystemDefnsByName.get(this.defnName);
 	}
 
 	initialize(universe)
 	{
 		var world = universe.world;
-		var entityDefns = world.defns.entityDefns;
+		var entityDefns = world.defn.entityDefns;
 
 		for (var i = 0; i < entityDefns.length; i++)
 		{
-			var properties = entityDefns[i].properties;
+			var entityDefn = entityDefns[i];
+			var properties = entityDefn.properties;
 
 			for (var c = 0; c < properties.length; c++)
 			{
@@ -42,34 +43,37 @@ class Starsystem
 		}
 
 		var entityDefnCamera = entityDefns["Camera"];
-		var camera = entityDefnCamera.CameraDefn.camera;
+		var camera = entityDefnCamera.propertyByName(CameraDefn.name).camera;
 		var cameraViewSizeInPixels = camera.viewSize;
 		var cameraLoc = camera.loc;
 		var cameraPos = cameraLoc.pos;
 
-		this.camera = entityDefnCamera.clone().nameAndPropertiesAdd
+		this.camera = entityDefnCamera.clone().nameSet
 		(
-			"Camera",
-			[
-				new Locatable(cameraLoc),
-				new Constrainable
-				(
-					[
-						new Constraint_FollowEntityByName("Player"),
-						new Constraint_ConformToBounds
+			"Camera"
+		).propertyAddForPlace
+		(
+			new Locatable(cameraLoc), null // place
+		).propertyAddForPlace
+		(
+			new Constrainable
+			(
+				[
+					new Constraint_FollowEntityByName("Player"),
+					new Constraint_ConformToBounds
+					(
+						new Box
 						(
-							new Box
-							(
-								cameraPos,
-								cameraViewSizeInPixels
-							)
-						),
-					]
-				),
-			]
+							cameraPos,
+							cameraViewSizeInPixels
+						)
+					),
+				]
+			),
+			null // place
 		);
 
-		this.camera.Locatable.loc.venue = this;
+		this.camera.locatable().loc.venue = this;
 
 		this.entitiesToSpawn.push(this.camera);
 
@@ -122,11 +126,14 @@ class Starsystem
 			{
 				var entity = entitiesWithProperty[b];
 
-				var property = entity[propertyName];
+				var property = entity.propertyByName(propertyName);
 
-				if (property.update != null)
+				if (property != null) // hack
 				{
-					property.update(universe, world, this, entity);
+					if (property.update != null)
+					{
+						property.update(universe, world, this, entity);
+					}
 				}
 			}
 		}
@@ -220,7 +227,7 @@ class Starsystem
 		for (var i = 0; i < drawables.length; i++)
 		{
 			var entityDrawable = drawables[i];
-			var drawable = entityDrawable.Drawable;
+			var drawable = entityDrawable.drawable();
 			drawable.update(universe, world, this, entityDrawable);
 		}
 	}

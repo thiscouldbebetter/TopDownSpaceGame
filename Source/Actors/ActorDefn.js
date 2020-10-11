@@ -23,7 +23,7 @@ class ActorDefn
 	{
 		var world = universe.world;
 
-		var actor = entity.ActorDefn;
+		var actor = entity.propertyByName(ActorDefn.name);
 		var activity = actor.activity;
 		activity.perform(universe, world, venue, entity);
 
