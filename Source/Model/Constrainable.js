@@ -1,18 +1,19 @@
 
-class Constrainable
+class Constrainable2
 {
 	constructor(constraints)
 	{
 		this.constraints = constraints;
 	}
 
-	update(universe, world, venue, entity)
+	updateForTimerTick(universeWorldPlaceEntities)
 	{
-		var constraints = entity.constrainable().constraints;
+		var entity = universeWorldPlaceEntities.entity;
+		var constraints = entity.propertyByName(Constrainable2.name).constraints;
 		for (var i = 0; i < constraints.length; i++)
 		{
 			var constraint = constraints[i];
-			constraint.constrain(universe, world, venue, entity);
+			constraint.constrain(universeWorldPlaceEntities);
 		}
 	}
 }

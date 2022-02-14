@@ -6,18 +6,21 @@ class EphemeralDefn
 		this.ticksToLive = ticksToLive;
 	}
 
-	initialize(universe, world, venue, entity)
+	initialize(universeWorldPlaceEntities)
 	{
+		var entity = universeWorldPlaceEntities.entity;
 		entity.ticksToLive =
 			entity.propertyByName(EphemeralDefn.name).ticksToLive;
 	}
 
-	update(universe, world, venue, entity)
+	updateForTimerTick(universeWorldPlaceEntities)
 	{
+		var entity = universeWorldPlaceEntities.entity;
 		entity.ticksToLive--;
 		if (entity.ticksToLive <= 0)
 		{
-			venue.entitiesToRemove.push(entity);
+			var place = universeWorldPlaceEntities.place;
+			place.entitiesToRemove.push(entity);
 		}
 	}
 }

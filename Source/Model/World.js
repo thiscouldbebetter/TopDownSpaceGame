@@ -1,11 +1,14 @@
 
-class World
+class WorldExtended
 {
 	constructor(name, defn, starsystems)
 	{
 		this.name = name;
 		this.defn = defn;
-		this.starsystems = starsystems.addLookupsByName();
+		this.starsystems = starsystems;
+
+		this.starsystemsByName =
+			ArrayHelper.addLookupsByName(this.starsystems);
 
 		this.timerTicksSoFar = 0;
 
@@ -15,7 +18,7 @@ class World
 
 	// static methods
 
-	static create(universe)
+	static create(universe, worldCreator)
 	{
 		return new Demo().worldGrid(universe, null);
 	}
@@ -32,6 +35,11 @@ class World
 		this.starsystemNext = this.starsystems[0];
 	}
 
+	placeByName(name)
+	{
+		return this.starsystemsByName.get(name);
+	}
+
 	secondsSoFar(universe)
 	{
 		return Math.round
@@ -40,23 +48,35 @@ class World
 		);
 	}
 
+	starsystemByName(name)
+	{
+		return this.starsystemsByName.get(name);
+	}
+
 	toControl()
 	{
 		return new ControlNone();
 	}
 
-	updateForTimerTick(universe)
+	toVenue()
 	{
+		return new VenueWorld(this);
+	}
+
+	updateForTimerTick(universeWorldPlaceEntities)
+	{
+		universeWorldPlaceEntities.worldSet(this);
+
 		if (this.starsystemNext != null)
 		{
-			this.starsystemNext.initialize(universe, this);
+			this.starsystemNext.initialize(universeWorldPlaceEntities);
 
 			this.starsystemCurrent = this.starsystemNext;
 
 			this.starsystemNext = null;
 		}
 
-		this.starsystemCurrent.updateForTimerTick(universe, this);
+		this.starsystemCurrent.updateForTimerTick(universeWorldPlaceEntities);
 
 		this.timerTicksSoFar++;
 	}

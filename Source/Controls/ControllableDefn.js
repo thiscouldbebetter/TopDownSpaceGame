@@ -4,16 +4,18 @@ class ControllableDefn
 	constructor(buildControlForEntity)
 	{
 		this.buildControlForEntity = buildControlForEntity;
-	}
+	} 	
 
-	initialize(universe, world, venue, entity)
+	initialize(universeWorldPlaceEntities)
 	{
+		var entity = universeWorldPlaceEntities.entity;
 		var control = this.buildControlForEntity(entity);
 		entity.controllable = new Controllable(control);
 	}
 
-	update(universe, world, venue, entity)
+	update(universeWorldPlaceEntities)
 	{
+		var universe = universeWorldPlaceEntities.universe;
 		entity.controllable.control.draw(universe.display);
 	}
 }

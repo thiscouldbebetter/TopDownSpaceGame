@@ -1,18 +1,18 @@
 
-class Starsystem
+class Starsystem extends Place
 {
 	constructor(name, defnName, sizeInPixels, entities)
 	{
-		this.name = name;
-		this.defnName = defnName;
-		this.sizeInPixels = sizeInPixels;
-		this.entities = [];
+		super
+		(
+			name,
+			defnName,
+			null, // parentName
+			sizeInPixels,
+			entities
+		)
 
-		this.sizeInPixelsHalf = this.sizeInPixels.clone().divideScalar(2);
-
-		this.entitiesByPropertyName = [];
-		this.entitiesToSpawn = entities.slice();
-		this.entitiesToRemove = [];
+		this.sizeHalf = this.size.clone().divideScalar(2);
 	}
 
 	defn(world)
@@ -20,9 +20,11 @@ class Starsystem
 		return world.defn.starsystemDefnsByName.get(this.defnName);
 	}
 
-	initialize(universe)
+	initialize(universeWorldPlaceEntities)
 	{
-		var world = universe.world;
+		var universe = universeWorldPlaceEntities.universe;
+		var world = universeWorldPlaceEntities.world;
+
 		var entityDefns = world.defn.entityDefns;
 
 		for (var i = 0; i < entityDefns.length; i++)
@@ -42,7 +44,7 @@ class Starsystem
 			}
 		}
 
-		var entityDefnCamera = entityDefns["Camera"];
+		var entityDefnCamera = world.defn.entityDefnByName("Camera");
 		var camera = entityDefnCamera.propertyByName(CameraDefn.name).camera;
 		var cameraViewSizeInPixels = camera.viewSize;
 		var cameraLoc = camera.loc;
@@ -56,7 +58,7 @@ class Starsystem
 			new Locatable(cameraLoc), null // place
 		).propertyAddForPlace
 		(
-			new Constrainable
+			new Constrainable2
 			(
 				[
 					new Constraint_FollowEntityByName("Player"),
@@ -94,132 +96,23 @@ class Starsystem
 		}
 	}
 
-	updateForTimerTick(universe, world)
+	updateForTimerTick(uwpe)
 	{
-		this.draw(universe, world);
-
-		this.update_EntitiesToSpawn(universe, world);
-
-		var propertyNames =
-		[
-			Locatable.name,
-			ActorDefn.name,
-			MoverDefn.name,
-			//Controllable.name,
-			Constrainable.name,
-			Killable.name,
-			EphemeralDefn.name,
-			Collidable.name,
-		];
-
-		var numberOfProperties = propertyNames.length;
-
-		for (var c = 0; c < numberOfProperties; c++)
-		{
-			var propertyName = propertyNames[c];
-
-			var entitiesWithProperty = this.entitiesByPropertyName[propertyName];
-
-			var numberOfEntitiesWithProperty = entitiesWithProperty.length;
-
-			for (var b = 0; b < numberOfEntitiesWithProperty; b++)
-			{
-				var entity = entitiesWithProperty[b];
-
-				var property = entity.propertyByName(propertyName);
-
-				if (property != null) // hack
-				{
-					if (property.update != null)
-					{
-						property.update(universe, world, this, entity);
-					}
-				}
-			}
-		}
-
-		this.update_EntitiesToRemove(universe, world);
-	}
-
-	update_EntitiesToRemove(universe, world)
-	{
-		for (var i = 0; i < this.entitiesToRemove.length; i++)
-		{
-			var entityToRemove = this.entitiesToRemove[i];
-
-			this.entities.remove(entityToRemove);
-			delete this.entities[entityToRemove.name];
-
-			var entityProperties = entityToRemove.properties;
-			for (var c = 0; c < entityProperties.length; c++)
-			{
-				var entityProperty = entityProperties[c];
-				var entityPropertyName = entityProperty.constructor.name;
-				var entitiesForProperty = this.entitiesByPropertyName[entityPropertyName];
-				entitiesForProperty.remove(entityToRemove);
-			}
-		}
-
-		this.entitiesToRemove.length = 0;
-	};
-
-	update_EntitiesToSpawn(universe, world)
-	{
-		for (var i = 0; i < this.entitiesToSpawn.length; i++)
-		{
-			var entityToSpawn = this.entitiesToSpawn[i];
-
-			this.entities.push(entityToSpawn);
-			this.entities[entityToSpawn.name] = entityToSpawn;
-
-			var entityProperties = entityToSpawn.properties;
-			for (var c = 0; c < entityProperties.length; c++)
-			{
-				this.update_EntitiesToSpawn_Spawn
-				(
-					universe, world, entityToSpawn, entityProperties[c]
-				);
-			}
-		}
-
-		this.entitiesToSpawn.length = 0;
-	};
-
-	update_EntitiesToSpawn_Spawn
-	(
-		universe, world, entity, entityProperty
-	)
-	{
-		var entityPropertyName = entityProperty.constructor.name;
-		var entitiesForPropertyName = this.entitiesByPropertyName[entityPropertyName];
-		if (entitiesForPropertyName == null)
-		{
-			entitiesForPropertyName = [];
-			this.entitiesByPropertyName[entityPropertyName] = entitiesForPropertyName;
-		}
-
-		if (entitiesForPropertyName.contains(entity) == false)
-		{
-			entitiesForPropertyName.push(entity);
-		}
-
-		if (entityProperty.initialize != null)
-		{
-			entityProperty.initialize(universe, world, this, entity);
-		}
+		this.draw(uwpe);
+		super.updateForTimerTick(uwpe);
 	}
 
 	// draw
 
-	draw(universe, world)
+	draw(universeWorldPlaceEntities)
 	{
+		var universe = universeWorldPlaceEntities.universe;
+
 		var display = universe.display;
-		display.drawRectangle
+		display.drawBackground
 		(
-			Coords.Instances().Zeroes,
-			this.sizeInPixels,
-			"rgb(32, 0, 32)", // dark purple
-			"Black"
+			Color.Instances().VioletEighth, // dark purple
+			Color.Instances().Black
 		);
 
 		var drawables = this.drawables();
@@ -227,40 +120,36 @@ class Starsystem
 		for (var i = 0; i < drawables.length; i++)
 		{
 			var entityDrawable = drawables[i];
+			universeWorldPlaceEntities.entitySet(entityDrawable);
 			var drawable = entityDrawable.drawable();
-			drawable.update(universe, world, this, entityDrawable);
+			drawable.updateForTimerTick(universeWorldPlaceEntities);
 		}
 	}
 
 	// helpers
 
-	drawables()
-	{
-		return this.entitiesByPropertyName[Drawable.name];
-	}
-
 	enemies()
 	{
-		return this.entitiesByPropertyName[Enemy.name];
+		return this.entitiesByPropertyName(Enemy.name);
 	}
 
 	planets()
 	{
-		return this.entitiesByPropertyName[Planet.name];
+		return this.entitiesByPropertyName(Planet.name);
 	}
 
 	players()
 	{
-		return this.entitiesByPropertyName[Player.name];
+		return this.entitiesByPropertyName(Player.name);
 	}
 
 	portals()
 	{
-		return this.entitiesByPropertyName[Portal.name];
+		return this.entitiesByPropertyName(Portal.name);
 	}
 
 	stars()
 	{
-		return this.entitiesByPropertyName[Star.name];
+		return this.entitiesByPropertyName(Star.name);
 	}
 }

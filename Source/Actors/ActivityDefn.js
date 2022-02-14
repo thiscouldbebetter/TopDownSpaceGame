@@ -1,5 +1,5 @@
 
-class ActivityDefn
+class ActivityDefn2
 {
 	constructor(name, initialize, perform)
 	{

@@ -4,7 +4,7 @@ class ItemContainer
 	constructor(items)
 	{
 		this.items = items;
-		this.items.addLookups( (x) => { return x.defnName; } );
+		this.itemsByDefnName = ArrayHelper.addLookups(this.items, (x) => { return x.defnName; } );
 	}
 
 	hasItem(itemToCheck)
@@ -37,6 +37,11 @@ class ItemContainer
 		{
 			itemHeld.quantity += itemToTransfer.quantity;
 		}
+	}
+
+	itemByDefnName(defnName)
+	{
+		return this.itemsByDefnName.get(defnName);
 	}
 
 	itemSubtract(itemToTransfer)

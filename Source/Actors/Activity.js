@@ -1,5 +1,5 @@
 
-class Activity
+class Activity2
 {
 	constructor(defnName, target)
 	{
@@ -12,14 +12,16 @@ class Activity
 		return world.defn.activityDefnsByName().get(this.defnName);
 	}
 
-	initialize(universe, world, place, actor)
+	initialize(universeWorldPlaceEntities)
 	{
-		this.defn(world).initialize(universe, world, place, actor, this);
+		var world = universeWorldPlaceEntities.world;
+		this.defn(world).initialize(universeWorldPlaceEntities);
 		return this;
 	}
 
-	perform(universe, world, place, actor)
+	perform(universeWorldPlaceEntities)
 	{
-		this.defn(world).perform(universe, world, place, actor, this);
+		var world = universeWorldPlaceEntities.world;
+		this.defn(world).perform(universeWorldPlaceEntities);
 	}
 }

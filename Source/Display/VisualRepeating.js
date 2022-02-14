@@ -18,8 +18,10 @@ class VisualRepeating
 		this._drawablePosToRestore = new Coords();
 	}
 
-	draw(universe, world, place, entity, display)
+	draw(universeWorldPlaceEntities, display)
 	{
+		var entity = universeWorldPlaceEntities.entity;
+
 		var drawPos = entity.locatable().loc.pos;
 
 		this._drawablePosToRestore.overwriteWith(drawPos);
@@ -55,7 +57,7 @@ class VisualRepeating
 						drawPosWrapped
 					);
 
-					this.child.draw(universe, world, place, entity, display);
+					this.child.draw(universeWorldPlaceEntities, display);
 				}
 			}
 		}

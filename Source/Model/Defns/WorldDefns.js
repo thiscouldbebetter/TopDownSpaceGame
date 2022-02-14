@@ -6,14 +6,15 @@ class WorldDefns
 		colors, itemDefns, actions, activityDefns, entityDefns, starsystemDefns
 	)
 	{
-		this.colors = colors.addLookupsByName();
+		this.colors = colors;
+		this.colorsByName = ArrayHelper.addLookupsByName(this.colors);
 
 		this.itemDefns = itemDefns;
 		this._itemDefnsByName =
 			ArrayHelper.addLookupsByName(this.itemDefns);
 
-		this.actions = actions.addLookupsByName();
-		this._actionDefnsByName =
+		this.actions = actions;
+		this._actionsByName =
 			ArrayHelper.addLookupsByName(this.actions);
 
 		this.activityDefns = activityDefns;
@@ -29,11 +30,13 @@ class WorldDefns
 			ArrayHelper.addLookupsByName(this.starsystemDefns);
 	}
 
-	actionDefnsByName() { return this._actionDefnsByName; }
+	actionByName(name) { return this._actionsByName.get(name); }
 
 	activityDefnsByName() { return this._activityDefnsByName; }
 
-	itemDefnsByName() { return this._itemDefnsByName; }
+	itemDefnByName(name) { return this._itemDefnsByName.get(name); }
+
+	entityDefnByName(name) { return this._entityDefnsByName.get(name); }
 
 	entityDefnsByName() { return this._entityDefnsByName; }
 }

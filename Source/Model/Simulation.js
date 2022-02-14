@@ -10,21 +10,26 @@ class Simulation
 			[ displaySizeInPixels ],
 			"Font",
 			10, // fontHeightInPixels
-			"Gray", "White" // colorFore, colorBack
+			Color.byName("Gray"),
+			Color.byName("White") // colorFore, colorBack
 		);
 
 		var mediaLibrary = new MediaLibrary
 		(
+			"../Content",
+
 			// images
 			[
 				new Image2("Opening", "../Content/Images/Opening.png"),
+				new Image2("Producer", "../Content/Images/Producer.png"),
 				new Image2("Title", "../Content/Images/Title.png"),
 			],
 			// sounds
 			[
-				new Sound("Sound", "Framework/Content/Audio/Effects/Sound.wav", false),
-				new Sound("Music_Music", "Framework/Content/Audio/Music/Music.mp3", true),
-				new Sound("Music_Title", "Framework/Content/Audio/Music/Music.mp3", true),
+				new SoundFromFile("Sound", "Framework/Content/Audio/Effects/Sound.wav", false),
+				new SoundFromFile("Music_Music", "Framework/Content/Audio/Music/Music.mp3", true),
+				new SoundFromFile("Music_Producer", "Framework/Content/Audio/Music/Music.mp3", true),
+				new SoundFromFile("Music_Title", "Framework/Content/Audio/Music/Music.mp3", true),
 			],
 			// videos
 			[
@@ -38,15 +43,20 @@ class Simulation
 			[]
 		);
 
+		var worldCreator = 	WorldCreator.fromWorldCreate
+		(
+			WorldExtended.create
+		);
+
 		var universe = Universe.create
 		(
 			"TopDownSpaceGame",
-			"0.0.0", // version
+			"0.0.0-20220213", // version
 			new TimerHelper(20),
 			display,
 			mediaLibrary,
-			ControlStyle.Instances().Default,
-			null // world
+			ControlBuilder.default(),
+			worldCreator
 		);
 		universe.initialize
 		(

@@ -1,5 +1,5 @@
 
-class Portal
+class Portal2
 {
 	constructor(destinationStarsystemName, destinationPos, color)
 	{
@@ -12,8 +12,10 @@ class Portal
 		return world.starsystems[this.destinationStarsystemName];
 	}
 
-	initialize(universe, world, venue, entity)
+	initialize(universeWorldPlaceEntities)
 	{
+		var entity = universeWorldPlaceEntities.entity;
+
 		entity.drawable().visual = new VisualGroup
 		(
 			[

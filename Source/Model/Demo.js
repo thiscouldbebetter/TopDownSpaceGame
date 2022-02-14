@@ -6,10 +6,13 @@ class Demo
 		var accelerate = new Action
 		(
 			"Accelerate",
-			(world, actor) =>
+			(universeWorldPlaceEntities) =>
 			{
+				var actor = universeWorldPlaceEntities.entity;
+
 				var fuelUsedByAcceleration = 1;
-				var itemFuel = actor.propertyByName(ItemContainer.name).items["Fuel"];
+				var itemContainer = actor.propertyByName(ItemContainer.name);
+				var itemFuel = itemContainer.itemByDefnName("Fuel");
 
 				if (itemFuel.quantity >= fuelUsedByAcceleration)
 				{
@@ -35,17 +38,20 @@ class Demo
 		var fire = new Action
 		(
 			"Fire",
-			(world, actor) =>
+			(universeWorldPlaceEntities) =>
 			{
-				var itemFuel = actor.propertyByName(ItemContainer.name).items["Fuel"];
+				var actor = universeWorldPlaceEntities.entity;
+
+				var itemContainer = actor.propertyByName(ItemContainer.name);
+				var itemFuel = itemContainer.itemByDefnName("Fuel");
 				var fuelConsumed = 10;
 				if (itemFuel.quantity >= fuelConsumed)
 				{
 					itemFuel.quantity -= fuelConsumed;
 
-					var venue = actor.locatable().loc.venue;
+					var world = universeWorldPlaceEntities.world;
 					var entityDefnProjectile =
-						world.defn.entityDefnsByName().get("Projectile");
+						world.defn.entityDefnByName("Projectile");
 
 					var entityToSpawn = entityDefnProjectile.clone().nameSet
 					(
@@ -61,7 +67,8 @@ class Demo
 						entityDefnProjectile.propertyByName(MoverDefn.name).speedMax
 					);
 
-					venue.entitiesToSpawn.push(entityToSpawn);
+					var place = universeWorldPlaceEntities.place;
+					place.entitiesToSpawn.push(entityToSpawn);
 				}
 			}
 		);
@@ -69,8 +76,10 @@ class Demo
 		var turnLeft = new Action
 		(
 			"TurnLeft",
-			(world, actor) =>
+			(universeWorldPlaceEntities) =>
 			{
+				var actor = universeWorldPlaceEntities.entity;
+
 				var actorLoc = actor.locatable().loc;
 				var actorOrientation = actorLoc.orientation;
 
@@ -96,8 +105,10 @@ class Demo
 		var turnRight = new Action
 		(
 			"TurnRight",
-			(world, actor) =>
+			(universeWorldPlaceEntities) =>
 			{
+				var actor = universeWorldPlaceEntities.entity;
+
 				var actorLoc = actor.locatable().loc;
 				var actorOrientation = actorLoc.orientation;
 
@@ -150,6 +161,7 @@ class Demo
 		var colors = Color.Instances()._All;
 
 		var entityDefns = this.world_EntityDefns(universe);
+		var entityDefnsByName = ArrayHelper.addLookupsByName(entityDefns);
 
 		var starsystemDefns = this.world_StarsystemDefns();
 
@@ -184,14 +196,14 @@ class Demo
 					// entities
 					[
 						// background
-						entityDefns["Background"].clone().nameSet("Background").propertyAddForPlace
+						entityDefnsByName.get("Background").clone().nameSet("Background").propertyAddForPlace
 						(
 							new Locatable(new Disposition( new Coords(0, 0, 0) ) ),
 							null // place
 						),
 
 						// sun
-						entityDefns["Sun"].clone().nameSet("Sun").propertyAddForPlace
+						entityDefnsByName.get("Sun").clone().nameSet("Sun").propertyAddForPlace
 						(
 							new Locatable(new Disposition(starsystemSizeInPixelsHalf.clone())),
 							null // place
@@ -207,13 +219,13 @@ class Demo
 
 						// portals
 
-						entityDefns["PortalRed"].clone().nameSet("PortalWest").propertyAddForPlace
+						entityDefnsByName.get("PortalRed").clone().nameSet("PortalWest").propertyAddForPlace
 						(
 							new Locatable(new Disposition(new Coords(.05 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
 							null // place
 						).propertyAddForPlace
 						(
-							new Portal
+							new Portal2
 							(
 								starsystemNamePrefix + starsystemPosWest.toString(),
 								new Coords(.9 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y),
@@ -222,13 +234,13 @@ class Demo
 							null
 						),
 
-						entityDefns["PortalGreen"].clone().nameSet("portalEast").propertyAddForPlace
+						entityDefnsByName.get("PortalGreen").clone().nameSet("portalEast").propertyAddForPlace
 						(
 							new Locatable(new Disposition(new Coords(.95 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y))),
 							null // place
 						).propertyAddForPlace
 						(
-							new Portal
+							new Portal2
 							(
 								starsystemNamePrefix + starsystemPosEast.toString(),
 								new Coords(.1 * starsystemSizeInPixels.x, starsystemSizeInPixelsHalf.y),
@@ -237,13 +249,13 @@ class Demo
 							null // place
 						),
 
-						entityDefns["PortalBlue"].clone().nameSet("PortalNorth").propertyAddForPlace
+						entityDefnsByName.get("PortalBlue").clone().nameSet("PortalNorth").propertyAddForPlace
 						(
 							new Locatable(new Disposition(new Coords(starsystemSizeInPixelsHalf.x, .05 * starsystemSizeInPixels.y))),
 							null // place
 						).propertyAddForPlace
 						(
-							new Portal
+							new Portal2
 							(
 								starsystemNamePrefix + starsystemPosNorth.toString(),
 								new Coords(starsystemSizeInPixelsHalf.x, .9 * starsystemSizeInPixels.y),
@@ -252,7 +264,7 @@ class Demo
 							null // place
 						),
 
-						entityDefns["PortalViolet"].clone().nameSet("PortalEast").propertyAddForPlace
+						entityDefnsByName.get("PortalViolet").clone().nameSet("PortalEast").propertyAddForPlace
 						(
 							new Locatable
 							(
@@ -261,7 +273,7 @@ class Demo
 							null // place
 						).propertyAddForPlace
 						(
-							new Portal
+							new Portal2
 							(
 								starsystemNamePrefix + starsystemPosSouth.toString(),
 								new Coords(starsystemSizeInPixelsHalf.x, .1 * starsystemSizeInPixels.y),
@@ -279,14 +291,14 @@ class Demo
 					numberOfPlanetsMin
 					+ Math.floor(Math.random() * numberOfPlanetsRange);
 
-				var entityDefnPlanet = entityDefns["Planet"];
+				var entityDefnPlanet = entityDefnsByName.get(Planet.name);
 
 				for (var p = 0; p < numberOfPlanets; p++)
 				{
 					var pos = new Coords().randomize().multiply(starsystemSizeInPixels).round();
 					var entityPlanet = entityDefnPlanet.clone().nameSet
 					(
-						"Planet" + p
+						Planet.name + p
 					).propertyAddForPlace
 					(
 						new Locatable(new Disposition(pos)), null // place
@@ -309,7 +321,7 @@ class Demo
 						numberOfEnemiesMin
 						+ Math.floor(Math.random() * numberOfEnemiesRange);
 
-				var entityDefnEnemy = entityDefns["Enemy"];
+				var entityDefnEnemy = entityDefnsByName.get("Enemy");
 				for (var e = 0; e < numberOfEnemies; e++)
 				{
 					var pos = new Coords().randomize().multiply
@@ -329,7 +341,7 @@ class Demo
 				}
 
 				var numberOfItemCollections = 1;
-				var entityDefnItemCollection = entityDefns["ItemCollection"];
+				var entityDefnItemCollection = entityDefnsByName.get("ItemCollection");
 				for (var c = 0; c < numberOfItemCollections; c++)
 				{
 					var pos = new Coords().randomize().multiply
@@ -350,7 +362,7 @@ class Demo
 
 				if (starsystemPos.x == 0 && starsystemPos.y == 0)
 				{
-					var entityPlayer = entityDefns["Player"].clone().nameSet
+					var entityPlayer = entityDefnsByName.get("Player").clone().nameSet
 					(
 						"Player"
 					).propertyAddForPlace
@@ -362,7 +374,7 @@ class Demo
 
 					// friendlies
 
-					var entityFriendly = entityDefns["Friendly"].clone().nameSet
+					var entityFriendly = entityDefnsByName.get("Friendly").clone().nameSet
 					(
 						"Friendly0"
 					).propertyAddForPlace
@@ -389,7 +401,7 @@ class Demo
 			starsystemDefns
 		);
 
-		var world = new World
+		var world = new WorldExtended
 		(
 			"WorldGrid" + sizeInStarsystems.toString(),
 			defns,
@@ -413,45 +425,50 @@ class Demo
 				new ItemDefn("Science", "S"),
 			];
 
-			returnValues.addLookupsByName();
+			ArrayHelper.addLookupsByName(returnValues);
 
 			return returnValues;
 	}
 
 	world_ActivityDefns()
 	{
-		var doNothing = new ActivityDefn
+		var doNothing = new ActivityDefn2
 		(
 			"DoNothing",
 			// initialize
-			function(universe, world, actor, activity)
+			(universeWorldPlaceEntities) =>
 			{
 				// do nothing
 			},
 			// perform
-			function(universe, world, actor, activity)
+			(universeWorldPlaceEntities) =>
 			{
 				// do nothing
 			}
 		);
 
-		var moveRandomly = new ActivityDefn
+		var moveRandomly = new ActivityDefn2
 		(
 			"MoveRandomly",
 
 			// initialize
-			function(universe, world, place, actor, activity) {},
+			(universeWorldPlaceEntities) => {},
 
 			// perform
-			function(universe, world, place, actor, activity)
+			(universeWorldPlaceEntities) =>
 			{
+				var world = universeWorldPlaceEntities.world;
+				var actor = universeWorldPlaceEntities.entity;
+
 				var actorLoc = actor.locatable().loc;
 				var actorPos = actorLoc.pos;
 
+				var activity = actor.propertyByName(ActorDefn.name).activity;
+
 				if (activity.target == null)
 				{
-					var actorStarsystem = actorLoc.venue;
-					var starsystemSizeInPixels = actorStarsystem.sizeInPixels;
+					var actorStarsystem = actorLoc.place(world);
+					var starsystemSizeInPixels = actorStarsystem.size;
 
 					var newTarget = new Coords
 					(
@@ -501,29 +518,35 @@ class Demo
 			}
 		);
 
-		var userInputAccept = new ActivityDefn
+		var userInputAccept = new ActivityDefn2
 		(
 			"UserInputAccept",
 
-			(universe, world, place, actor, activity) => // initialize
+			(universeWorldPlaceEntities) =>
 			{},
 
-			(universe, world, place, actor, activity) => // perform
+			(universeWorldPlaceEntities) =>
 			{
-				var inputHelper = universe.inputHelper
+				var universe = universeWorldPlaceEntities.universe;
+				var actor = universeWorldPlaceEntities.entity;
+
+				var inputHelper = universe.inputHelper;
 				var inputsActive = inputHelper.inputsActive();
 				var actionsFromActor = actor.propertyByName(ActorDefn.name).actions;
 				var world = universe.world;
 				var starsystemCurrent = world.starsystemCurrent;
 				var starsystemDefn = starsystemCurrent.defn(world);
-				var actionToInputsMappings = starsystemDefn.actionToInputsMappings;
+				var actionToInputsMappingsByInputName =
+					starsystemDefn.actionToInputsMappingsByInputName;
 
 				for (var i = 0; i < inputsActive.length; i++)
 				{
 					var inputActiveName = inputsActive[i].name;
 					if (inputActiveName.startsWith("Mouse") == false)
 					{
-						var mapping = actionToInputsMappings[inputActiveName];
+						var mapping =
+							actionToInputsMappingsByInputName.get(inputActiveName);
+
 						if (mapping != null)
 						{
 							var action = mapping.action(universe);
@@ -541,7 +564,7 @@ class Demo
 			userInputAccept,
 		];
 
-		_all.addLookupsByName();
+		// ArrayHelper.addLookupsByName(_all);
 
 		return _all;
 	}
@@ -956,6 +979,8 @@ class Demo
 
 		mediaLibrary.imagesAdd(imagesForPlayerClockwise);
 
+		mediaLibrary.waitForItemsAllToLoad(() => {});
+
 		var ticksPerAnimationFrame = 2;
 
 		var camera = new Camera
@@ -982,9 +1007,9 @@ class Demo
 
 			// properties
 			[
-				new Animatable(),
+				new Animatable2(),
 				new BodyDefn(itemSizeInPixels), // sizeInPixels
-				new Collidable
+				new Collidable2
 				(
 					new Box(new Coords(0, 0, 0), itemSizeInPixels),
 					[], // entityDefnNameToCollideWith
@@ -1009,7 +1034,7 @@ class Demo
 				),
 				new ItemCollection(),
 				new ItemContainer([ new Item("Fuel", 100) ]), // hack
-				new Killable(1), // integrityMax
+				new Killable2(1), // integrityMax
 			]
 		);
 
@@ -1021,7 +1046,7 @@ class Demo
 
 			// properties
 			[
-				new Killable(1), // integrityMax
+				new Killable2(1), // integrityMax
 				new EphemeralDefn(16), // ticksToLive
 				new BodyDefn(projectileSizeInPixels),
 				new MoverDefn(1, 1, 16), // mass, force, speedMax
@@ -1033,19 +1058,22 @@ class Demo
 						new VisualImageFromLibrary(imageMoverProjectile.name)
 					),
 				),
-				new ProjectileDefn(),
-				new Collidable
+				new ProjectileDefn(1),
+				new Collidable2
 				(
 					new Box(new Coords(0, 0, 0), projectileSizeInPixels),
 					[ Enemy.name ],
-					function collide(world, entityThis, entityOther)
+					(universeWorldPlaceEntities) =>
 					{
-						var enemy = entityOther.Enemy;
+						var entityThis = universeWorldPlaceEntities.entity;
+						var entityOther = universeWorldPlaceEntities.entity2;
+						var enemy = entityOther.propertyByName(Enemy.name);
 						if (enemy != null)
 						{
-							entityOther.killable().integrity -=
-								entityThis.propertyByName(Projectile.name).damage;
-							entityThis.killable().integrity = 0;
+							var damage = entityThis.propertyByName(ProjectileDefn.name).damage;
+							entityOther.propertyByName(Killable2.name).integrity -=
+								damage;
+							entityThis.propertyByName(Killable2.name).integrity = 0;
 						}
 					}
 				),
@@ -1058,9 +1086,9 @@ class Demo
 		(
 			"Planet",
 			[
-				new Animatable(),
+				new Animatable2(),
 				new BodyDefn(planetSizeInPixels),
-				new Collidable
+				new Collidable2
 				(
 					new Box(new Coords(0, 0, 0), planetSizeInPixels),
 					[],
@@ -1092,7 +1120,6 @@ class Demo
 										(uwpee) =>
 											uwpee.entity.propertyByName(Planet.name).name
 									),
-									true, // shouldTextContextBeReset
 									null, // fontHeight
 									Color.byName("White"),
 									Color.byName("Black")
@@ -1117,7 +1144,6 @@ class Demo
 											return tradeOfferAsString
 										}
 									),
-									true, // shouldTextContextBeReset
 									null, // fontHeight
 									Color.byName("White"),
 									Color.byName("Black")
@@ -1148,9 +1174,9 @@ class Demo
 			(
 				entityDefnName,
 				[
-					new Animatable(),
+					new Animatable2(),
 					new BodyDefn(portalSizeInPixels), // sizeInPixels
-					new Collidable
+					new Collidable2
 					(
 						new Box(new Coords(0, 0, 0), portalSizeInPixels),
 						[],
@@ -1280,7 +1306,7 @@ class Demo
 		(
 			"Sun",
 			[
-				new Animatable(),
+				new Animatable2(),
 				new BodyDefn(sunSizeInPixels), // sizeInPixels
 				new Drawable
 				(
@@ -1308,7 +1334,6 @@ class Demo
 										(uwpee) =>
 											uwpee.entity.propertyByName(Star.name).name
 									),
-									true, // shouldTextContextBeReset
 									null, // fontHeight
 									Color.byName("White"),
 									Color.byName("Black")
@@ -1328,7 +1353,7 @@ class Demo
 			"Friendly",
 			[
 				new ActorDefn("DoNothing"),
-				new Animatable(),
+				new Animatable2(),
 				new BodyDefn(friendlySizeInPixels), // sizeInPixels
 				new Drawable
 				(
@@ -1348,7 +1373,7 @@ class Demo
 					)
 				),
 				new FriendlyDefn(),
-				new Killable(1), // integrityMax
+				new Killable2(1), // integrityMax
 				new MoverDefn(1, 1, 4) // mass, forcePerTick, speedMax
 			]
 		);
@@ -1360,9 +1385,9 @@ class Demo
 			"Enemy",
 			[
 				new ActorDefn("MoveRandomly"),
-				new Animatable(),
+				new Animatable2(),
 				new BodyDefn(enemySize),
-				new Collidable
+				new Collidable2
 				(
 					new Box(new Coords(0, 0, 0), enemySize),
 					[ Player.name ],
@@ -1389,18 +1414,18 @@ class Demo
 						)
 					)
 				),
-				new Killable(1), // integrityMax
+				new Killable2(1), // integrityMax
 				new Enemy(),
 				new MoverDefn(1, 1, 2), // mass, forcePerTick, speedMax
 			]
 		);
 
-		var playerCollide = (universe, world, entityThis, entityOther) =>
+		var playerCollide = (universeWorldPlaceEntities) =>
 		{
-			//return; // hack - Currently colliding with everything all the time.
-
-			var player = entityThis;
-			var starsystem = player.locatable().loc.venue;
+			var world = universeWorldPlaceEntities.world;
+			var starsystem = universeWorldPlaceEntities.place;
+			var player = universeWorldPlaceEntities.entity;
+			var entityOther = universeWorldPlaceEntities.entity2;
 
 			if (entityOther.propertyByName(ItemCollection.name) != null)
 			{
@@ -1411,7 +1436,7 @@ class Demo
 			}
 			else if (entityOther.propertyByName(Enemy.name) != null)
 			{
-				player.killable().integrity = 0;
+				player.propertyByName(Killable2.name).integrity = 0;
 
 				var venueMessage = new VenueMessage
 				(
@@ -1439,24 +1464,25 @@ class Demo
 					itemTradeOffer.trade(universe, world, player, planet);
 				}
 			}
-			else if (entityOther.portal() != null)
+			else if (entityOther.propertyByName(Portal2.name) != null)
 			{
 				starsystem.entitiesToRemove.push(player);
 
-				var portal = entityOther.portal();
+				var portal = entityOther.propertyByName(Portal2.name);
 
-				var itemFuel = player.propertyByName(ItemContainer.name).items["Fuel"];
+				var itemContainer = player.propertyByName(ItemContainer.name);
+				var itemFuel = itemContainer.itemByDefnName("Fuel");
 				var fuelUsedByPortal = 1000;
 				if (itemFuel.quantity >= fuelUsedByPortal)
 				{
 					itemFuel.quantity -= fuelUsedByPortal;
 
 					var destinationStarsystemName = portal.destinationStarsystemName;
-					var starsystems = world.starsystems;
-					var destinationStarsystem = starsystems[destinationStarsystemName];
+					var destinationStarsystem =
+						world.starsystemByName(destinationStarsystemName);
 
 					destinationStarsystem.entitiesToSpawn.push(player);
-					entityThis.locatable().loc.pos.overwriteWith(portal.destinationPos);
+					player.locatable().loc.pos.overwriteWith(portal.destinationPos);
 					universe.world.starsystemNext = destinationStarsystem;
 				}
 			}
@@ -1472,10 +1498,10 @@ class Demo
 			[
 				new ActorDefn("UserInputAccept"),
 				new BodyDefn(playerSizeInPixels),
-				new Collidable
+				new Collidable2
 				(
 					new Box( new Coords(0, 0, 0), playerSizeInPixels),
-					[ ItemCollection.name, Enemy.name, Planet.name, Portal.name ],
+					[ ItemCollection.name, Enemy.name, Planet.name, Portal2.name ],
 					playerCollide
 				),
 				new Drawable
@@ -1503,7 +1529,7 @@ class Demo
 					new Item("Food", 100000),
 					new Item("Fuel", 100000),
 				]),
-				new Killable(1), // integrityMax
+				new Killable2(1), // integrityMax
 				new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
 				new Player(),
 				new ControllableDefn
@@ -1533,7 +1559,7 @@ class Demo
 								(
 									(entity) =>
 									{
-										var killable = entity.propertyByName(Killable.name);
+										var killable = entity.propertyByName(Killable2.name);
 										var returnValue =
 											"HP: "
 											+ killable.integrity
@@ -1624,8 +1650,6 @@ class Demo
 			entityDefnPlayer,
 		];
 
-		entityDefns.addLookupsByName();
-
 		return entityDefns;
 	}
 
@@ -1658,8 +1682,9 @@ class Constraint_ConformToBounds
 		this.boxToConformTo = boxToConformTo;
 	}
 
-	constrain(universe, world, place, entity)
+	constrain(universeWorldPlaceEntities)
 	{
+		var entity = universeWorldPlaceEntities.entity;
 		var entityLoc = entity.locatable().loc;
 		entityLoc.pos.trimToRangeMinMax
 		(
@@ -1676,9 +1701,12 @@ class Constraint_FollowEntityByName
 		this.entityToFollowName = entityToFollowName;
 	}
 
-	constrain(universe, world, place, entity)
+	constrain(universeWorldPlaceEntities)
 	{
-		var entityToFollow = place.entities[this.entityToFollowName];
+		var place = universeWorldPlaceEntities.place;
+		var entity = universeWorldPlaceEntities.entity;
+
+		var entityToFollow = place.entityByName(this.entityToFollowName);
 		if (entityToFollow != null) // hack
 		{
 			entity.locatable().loc.pos.overwriteWith

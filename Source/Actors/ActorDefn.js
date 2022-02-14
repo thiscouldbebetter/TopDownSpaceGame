@@ -6,33 +6,33 @@ class ActorDefn
 		this.activityDefnNameInitial = activityDefnNameInitial;
 	}
 
-	initialize(universe, world, venue, entity)
+	initialize(universeWorldPlaceEntities)
 	{
 		this.actions = [];
 
-		this.activity = new Activity
+		this.activity = new Activity2
 		(
 			this.activityDefnNameInitial
 		).initialize
 		(
-			universe, world, venue, entity
+			universeWorldPlaceEntities
 		);
 	}
 
-	update(universe, world, venue, entity)
+	updateForTimerTick(universeWorldPlaceEntities)
 	{
-		var world = universe.world;
+		var entity = universeWorldPlaceEntities.entity;
 
 		var actor = entity.propertyByName(ActorDefn.name);
 		var activity = actor.activity;
-		activity.perform(universe, world, venue, entity);
+		activity.perform(universeWorldPlaceEntities);
 
 		var entityActions = actor.actions;
 
 		for (var a = 0; a < entityActions.length; a++)
 		{
 			var action = entityActions[a];
-			action.perform(world, entity);
+			action.perform(universeWorldPlaceEntities);
 		}
 
 		entityActions.length = 0;

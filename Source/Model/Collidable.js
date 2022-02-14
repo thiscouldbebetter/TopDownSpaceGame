@@ -1,5 +1,5 @@
 
-class Collidable
+class Collidable2
 {
 	constructor(colliderAtRest, propertyNamesCollidedWith, collide)
 	{
@@ -10,28 +10,35 @@ class Collidable
 		this.collider = this.colliderAtRest.clone();
 	}
 
-	initialize(universe, world, venue, entity)
+	initialize(universeWorldPlaceEntities)
 	{
-		this.update_Collider(entity);
+		this.update_Collider(universeWorldPlaceEntities);
 	}
 
-	update(universe, world, venue, entity)
+	updateForTimerTick(universeWorldPlaceEntities)
 	{
+		var universe = universeWorldPlaceEntities.universe;
+		var place = universeWorldPlaceEntities.place;
+		var entity = universeWorldPlaceEntities.entity;
+
 		var collisionHelper = universe.collisionHelper;
 
-		var colliderThis = this.update_Collider(entity);
+		var colliderThis = this.update_Collider(universeWorldPlaceEntities);
 
 		for (var i = 0; i < this.propertyNamesCollidedWith.length; i++)
 		{
 			var propertyName = this.propertyNamesCollidedWith[i];
-			var entitiesToCollideWith = venue.entitiesByPropertyName[propertyName];
+			var entitiesToCollideWith = place.entitiesByPropertyName(propertyName);
 
 			for (var j = 0; j < entitiesToCollideWith.length; j++)
 			{
 				var entityOther = entitiesToCollideWith[j];
 				if (entityOther != entity)
 				{
-					var colliderOther = this.update_Collider(entityOther);
+					universeWorldPlaceEntities.entity2Set(entityOther);
+					universeWorldPlaceEntities.entitiesSwap();
+					var colliderOther = this.update_Collider(universeWorldPlaceEntities);
+					universeWorldPlaceEntities.entitiesSwap();
 
 					var doEntitiesCollide = collisionHelper.doCollidersCollide
 					(
@@ -40,25 +47,28 @@ class Collidable
 
 					if (doEntitiesCollide)
 					{
-						var entityCollidable = entity.collidable();
+						var entityCollidable = entity.propertyByName(Collidable2.name);
 						entityCollidable.collide
 						(
-							universe, world, entity, entityOther
+							universeWorldPlaceEntities
 						);
-						var entityOtherCollidable = entityOther.collidable();
+						var entityOtherCollidable = entityOther.propertyByName(Collidable2.name);
 						entityOtherCollidable.collide
 						(
-							universe, world, entityOther, entity
+							universeWorldPlaceEntities.entitiesSwap()
 						);
+						universeWorldPlaceEntities.entitiesSwap();
 					}
 				}
 			}
 		}
 	}
 
-	update_Collider(entity)
+	update_Collider(universeWorldPlaceEntities)
 	{
-		var collidable = entity.collidable();
+		var entity = universeWorldPlaceEntities.entity;
+
+		var collidable = entity.propertyByName(Collidable2.name);
 		var collider = collidable.collider;
 		var transformTranslate = new Transform_Translate
 		(

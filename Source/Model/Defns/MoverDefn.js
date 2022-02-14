@@ -8,9 +8,10 @@ class MoverDefn
 		this.speedMax = speedMax;
 	}
 
-	update(universe, world, venue, entity)
+	updateForTimerTick(universeWorldPlaceEntities)
 	{
-		var mover = entity;
+		var place = universeWorldPlaceEntities.place;
+		var mover = universeWorldPlaceEntities.entity;
 
 		var moverMass = 1; // todo
 		var moverLoc = mover.locatable().loc;
@@ -27,7 +28,7 @@ class MoverDefn
 
 		moverLoc.pos.add(moverLoc.vel);
 
-		moverLoc.pos.trimToRangeMax(venue.sizeInPixels);
+		moverLoc.pos.trimToRangeMax(place.size);
 
 		moverLoc.accel.clear();
 		moverLoc.force.clear();

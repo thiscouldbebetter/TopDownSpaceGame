@@ -8,8 +8,9 @@ class BodyDefn
 		this.sizeInPixelsHalf = this.sizeInPixels.clone().divideScalar(2);
 	}
 
-	initialize(universe, world, venue, entity)
+	initialize(universeWorldPlaceEntities)
 	{
-		entity.locatable().loc.venue = venue;
+		var entity = universeWorldPlaceEntities.entity;
+		entity.locatable().loc.placeName = universeWorldPlaceEntities.place.name;
 	}
 }

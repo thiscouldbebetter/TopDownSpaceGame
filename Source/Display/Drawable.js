@@ -1,5 +1,5 @@
 
-class Drawable
+class Drawable2
 {
 	constructor(visual)
 	{
@@ -13,14 +13,17 @@ class Drawable
 		// Do nothing.
 	}
 
-	update(universe, world, venue, entity)
+	update(universeWorldPlaceEntities)
 	{
+		var universe = universeWorldPlaceEntities.universe;
+		var entity = universeWorldPlaceEntities.entity;
+
 		var display = universe.display;
 		var drawable = entity.drawable();
 		var visual = drawable.visual;
 		visual.draw
 		(
-			universe, world, venue, entity, display
+			universeWorldPlaceEntities, display
 		);
 	}
 }
