@@ -23,6 +23,7 @@
 <script type="text/javascript" src="Framework/Source/Controls/ControlStyle.js"></script>
 <script type="text/javascript" src="Framework/Source/Controls/ControlTextBox.js"></script>
 <script type="text/javascript" src="Framework/Source/Controls/ControlVisual.js"></script>
+<script type="text/javascript" src="Framework/Source/Controls/Controllable.js"></script>
 <script type="text/javascript" src="Framework/Source/Controls/DataBinding.js"></script>
 <script type="text/javascript" src="Framework/Source/Controls/VenueControls.js"></script>
 <script type="text/javascript" src="Framework/Source/Controls/VenueMessage.js"></script>
@@ -97,16 +98,32 @@
 <script type="text/javascript" src="Framework/Source/Model/Universe.js"></script>
 <script type="text/javascript" src="Framework/Source/Model/UniverseWorldPlaceEntities.js"></script>
 <script type="text/javascript" src="Framework/Source/Model/VenueWorld.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/World.js"></script>
 <script type="text/javascript" src="Framework/Source/Model/WorldCreator.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/WorldDefn.js"></script>
 
 <script type="text/javascript" src="Framework/Source/Model/Actors/Action.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Actors/Activity.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Actors/ActivityDefn.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Actors/Actor.js"></script>
+
+<script type="text/javascript" src="Framework/Source/Model/Combat/Killable.js"></script>
 
 <script type="text/javascript" src="Framework/Source/Model/Items/Item.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Items/ItemContainer.js"></script>
 <script type="text/javascript" src="Framework/Source/Model/Items/ItemDefn.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Items/ItemHolder.js"></script>
 
+<script type="text/javascript" src="Framework/Source/Model/Mortality/Ephemeral.js"></script>
+
+<script type="text/javascript" src="Framework/Source/Model/Physics/Boundable.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Physics/Collidable.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Physics/Constrainable.js"></script>
 <script type="text/javascript" src="Framework/Source/Model/Physics/Locatable.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Physics/Movable.js"></script>
 
 <script type="text/javascript" src="Framework/Source/Model/Places/Place.js"></script>
+<script type="text/javascript" src="Framework/Source/Model/Places/PlaceDefn.js"></script>
 
 <script type="text/javascript" src="Framework/Source/Profiles/Profile.js"></script>
 
@@ -131,30 +148,14 @@
 
 <!-- Local classes. -->
 
-<script type="text/javascript" src="Actors/Activity.js"></script>
-<script type="text/javascript" src="Actors/ActivityDefn.js"></script>
-<script type="text/javascript" src="Actors/ActorDefn.js"></script>
-
-<script type="text/javascript" src="Controls/ControlText.js"></script>
-<script type="text/javascript" src="Controls/Controllable.js"></script>
-<script type="text/javascript" src="Controls/ControllableDefn.js"></script>
-<script type="text/javascript" src="Controls/DataSourceEntity.js"></script>
-
 <script type="text/javascript" src="Display/CameraDefn.js"></script>
-<script type="text/javascript" src="Display/Drawable.js"></script>
 <script type="text/javascript" src="Display/ImageHelper.js"></script>
 <script type="text/javascript" src="Display/VisualCameraProjection.js"></script>
 <script type="text/javascript" src="Display/VisualRepeating.js"></script>
 
-<script type="text/javascript" src="Items/ItemCollection.js"></script>
-<script type="text/javascript" src="Items/ItemContainer.js"></script>
 <script type="text/javascript" src="Items/ItemTradeOffer.js"></script>
 
-<script type="text/javascript" src="Model/Cloneable.js"></script>
-<script type="text/javascript" src="Model/Collidable.js"></script>
-<script type="text/javascript" src="Model/Constrainable.js"></script>
 <script type="text/javascript" src="Model/Demo.js"></script>
-<script type="text/javascript" src="Model/Killable.js"></script>
 <script type="text/javascript" src="Model/Planet.js"></script>
 <script type="text/javascript" src="Model/Player.js"></script>
 <script type="text/javascript" src="Model/Portal.js"></script>
@@ -165,7 +166,6 @@
 
 <script type="text/javascript" src="Model/Defns/BodyDefn.js"></script>
 <script type="text/javascript" src="Model/Defns/EnemyDefn.js"></script>
-<script type="text/javascript" src="Model/Defns/EphemeralDefn.js"></script>
 <script type="text/javascript" src="Model/Defns/FriendlyDefn.js"></script>
 <script type="text/javascript" src="Model/Defns/MoverDefn.js"></script>
 <script type="text/javascript" src="Model/Defns/PlanetDefn.js"></script>

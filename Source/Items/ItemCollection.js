@@ -1,5 +1,0 @@
-
-class ItemCollection
-{
-	// todo
-}
