@@ -15,5 +15,6 @@ class CameraDefn {
     // EntityPropertyBase.
     finalize(uwpe) { }
     equals(other) { return false; }
+    propertyName() { return CameraDefn.name; }
     updateForTimerTick(uwpe) { }
 }

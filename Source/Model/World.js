@@ -1,8 +1,7 @@
 "use strict";
 class WorldExtended extends World {
     constructor(name, defn, starsystems) {
-        super(name, DateTime.now(), defn, starsystems // places
-        );
+        super(name, DateTime.now(), defn, (name) => starsystems.find(x => x.name == name), starsystems[0].name);
         this.starsystems = starsystems;
         this.starsystemsByName =
             ArrayHelper.addLookupsByName(this.starsystems);

@@ -24,9 +24,10 @@ class MoverDefn implements EntityPropertyBase
 
 	// EntityPropertyBase.
 
+	equals(other: MoverDefn): boolean { return false; }
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	initialize(uwpe: UniverseWorldPlaceEntities): void {}
-	equals(other: MoverDefn): boolean { return false; }
+	propertyName(): string { return MoverDefn.name; }
 
 	updateForTimerTick(universeWorldPlaceEntities: UniverseWorldPlaceEntities): void
 	{
@@ -48,7 +49,7 @@ class MoverDefn implements EntityPropertyBase
 
 		moverLoc.pos.add(moverLoc.vel);
 
-		moverLoc.pos.trimToRangeMax(place.size);
+		moverLoc.pos.trimToRangeMax(place.size() );
 
 		moverLoc.accel.clear();
 		moverLoc.force.clear();

@@ -21,9 +21,10 @@ class Planet implements EntityPropertyBase
 
 	// EntityPropertyBase.
 
+	equals(other: Planet): boolean { return false; }
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	initialize(uwpe: UniverseWorldPlaceEntities): void {}
-	equals(other: Planet): boolean { return false; }
+	propertyName(): string { return Planet.name; }
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 
 }

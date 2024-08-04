@@ -8,8 +8,9 @@ class PlanetDefn implements EntityPropertyBase
 
 	// EntityPropertyBase.
 
+	equals(other: PlanetDefn): boolean { return false; }
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	initialize(uwpe: UniverseWorldPlaceEntities): void {}
-	equals(other: PlanetDefn): boolean { return false; }
+	propertyName(): string { return PlanetDefn.name; }
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 }

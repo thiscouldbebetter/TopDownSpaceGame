@@ -25,12 +25,9 @@ class WorldDefnExtended extends WorldDefn
 	{
 		super
 		(
-			null, // actions
-			null, // activityDefns
-			entityDefns, // entityDefns
-			null, // itemDefns
-			null, // placeDefns
-			null, // skills
+			[
+				entityDefns // entityDefns
+			]
 		);
 
 		this.colors = colors;

@@ -5,13 +5,17 @@ class Simulation
 	{
 		var displaySizeInPixels = new Coords(400, 300, 1);
 
+		var colors = Color.Instances();
+
 		var display = new Display2D
 		(
 			[ displaySizeInPixels ],
-			"Font",
-			10, // fontHeightInPixels
-			Color.byName("Gray"),
-			Color.byName("White"), // colorFore, colorBack
+			new FontNameAndHeight
+			(
+				"Font", 10
+			),
+			colors.Gray,
+			colors.White, // colorFore, colorBack
 			false // isInvisible
 		);
 
@@ -21,9 +25,9 @@ class Simulation
 
 			// images
 			[
-				new Image2("Opening", "../Content/Images/Opening.png"),
-				new Image2("Producer", "../Content/Images/Producer.png"),
-				new Image2("Title", "../Content/Images/Title.png"),
+				new Image2("Titles_Opening", "../Content/Images/Titles/Opening.png"),
+				new Image2("Titles_Producer", "../Content/Images/Titles/Producer.png"),
+				new Image2("Titles_Title", "../Content/Images/Titles/Title.png"),
 			],
 			// sounds
 			[
@@ -52,9 +56,10 @@ class Simulation
 		var universe = Universe.create
 		(
 			"TopDownSpaceGame",
-			"0.0.0-20220213", // version
+			"0.0.0-20240804", // version
 			new TimerHelper(20),
 			display,
+			new SoundHelperLive(),
 			mediaLibrary,
 			ControlBuilder.default(),
 			worldCreator

@@ -28,23 +28,25 @@ class Portal2 implements EntityPropertyBase
 	{
 		var entity = universeWorldPlaceEntities.entity;
 
+		var colors = Color.Instances();
+
 		entity.drawable().visual = new VisualGroup
 		(
 			[
 				entity.drawable().visual,
 				new VisualOffset
 				(
+					Coords.fromXY(0, 20),
 					new VisualText
 					(
 						DataBinding.fromContext
 						(
 							"To " + this.destinationStarsystemName,
 						),
-						null, // fontHeight
-						Color.byName("White"),
-						Color.byName("Black")
-					),
-					Coords.fromXY(0, 20)
+						null, // font,
+						colors.White,
+						colors.Black
+					)
 				),
 			]
 		);
@@ -52,8 +54,9 @@ class Portal2 implements EntityPropertyBase
 
 	// EntityPropertyBase.
 
-	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	equals(other: Star): boolean { return false; }
+	finalize(uwpe: UniverseWorldPlaceEntities): void {}
+	propertyName(): string { return Portal2.name; }
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 
 }

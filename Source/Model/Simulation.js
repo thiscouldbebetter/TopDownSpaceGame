@@ -2,16 +2,16 @@
 class Simulation {
     main() {
         var displaySizeInPixels = new Coords(400, 300, 1);
-        var display = new Display2D([displaySizeInPixels], "Font", 10, // fontHeightInPixels
-        Color.byName("Gray"), Color.byName("White"), // colorFore, colorBack
+        var colors = Color.Instances();
+        var display = new Display2D([displaySizeInPixels], new FontNameAndHeight("Font", 10), colors.Gray, colors.White, // colorFore, colorBack
         false // isInvisible
         );
         var mediaLibrary = new MediaLibrary("../Content", 
         // images
         [
-            new Image2("Opening", "../Content/Images/Opening.png"),
-            new Image2("Producer", "../Content/Images/Producer.png"),
-            new Image2("Title", "../Content/Images/Title.png"),
+            new Image2("Titles_Opening", "../Content/Images/Titles/Opening.png"),
+            new Image2("Titles_Producer", "../Content/Images/Titles/Producer.png"),
+            new Image2("Titles_Title", "../Content/Images/Titles/Title.png"),
         ], 
         // sounds
         [
@@ -31,8 +31,8 @@ class Simulation {
         // textStrings
         []);
         var worldCreator = WorldCreator.fromWorldCreate(WorldExtended.create);
-        var universe = Universe.create("TopDownSpaceGame", "0.0.0-20220213", // version
-        new TimerHelper(20), display, mediaLibrary, ControlBuilder.default(), worldCreator);
+        var universe = Universe.create("TopDownSpaceGame", "0.0.0-20240804", // version
+        new TimerHelper(20), display, new SoundHelperLive(), mediaLibrary, ControlBuilder.default(), worldCreator);
         universe.initialize(x => x.start());
     }
 }

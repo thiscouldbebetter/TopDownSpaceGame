@@ -4,8 +4,9 @@ class FriendlyDefn {
         return entity.propertyByName(FriendlyDefn.name);
     }
     // EntityPropertyBase.
+    equals(other) { return false; }
     finalize(uwpe) { }
     initialize(uwpe) { }
-    equals(other) { return false; }
+    propertyName() { return FriendlyDefn.name; }
     updateForTimerTick(uwpe) { }
 }

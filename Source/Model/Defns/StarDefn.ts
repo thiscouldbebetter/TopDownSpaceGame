@@ -8,9 +8,10 @@ class StarDefn implements EntityPropertyBase
 
 	// EntityPropertyBase.
 
+	equals(other: StarDefn): boolean { return false; }
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	initialize(uwpe: UniverseWorldPlaceEntities): void {}
-	equals(other: StarDefn): boolean { return false; }
+	propertyName(): string { return StarDefn.name; }
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 
 }

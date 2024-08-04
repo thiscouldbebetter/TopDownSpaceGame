@@ -1,5 +1,5 @@
 
-class PortalDefn
+class PortalDefn implements EntityPropertyBase
 {
 	colorName: string;
 
@@ -15,9 +15,10 @@ class PortalDefn
 
 	// EntityPropertyBase.
 
+	equals(other: PortalDefn): boolean { return false; }
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	initialize(uwpe: UniverseWorldPlaceEntities): void {}
-	equals(other: PortalDefn): boolean { return false; }
+	propertyName(): string { return PortalDefn.name; }
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 
 }

@@ -1,5 +1,8 @@
 "use strict";
 import gf = ThisCouldBeBetter.GameFramework;
+
+import MapOfCells = gf.MapOfCells;
+
 import Action = gf.Action;
 import ActionToInputsMapping = gf.ActionToInputsMapping;
 import Activity = gf.Activity;
@@ -30,6 +33,7 @@ import Ephemeral = gf.Ephemeral;
 import Entity = gf.Entity;
 import EntityPropertyBase = gf.EntityPropertyBase;
 import Font = gf.Font;
+import FontNameAndHeight = gf.FontNameAndHeight;
 import Image2 = gf.Image2;
 import Item = gf.Item;
 import ItemContainer = gf.ItemContainer;
@@ -40,8 +44,10 @@ import Locatable = gf.Locatable;
 import MediaLibrary = gf.MediaLibrary;
 import Movable = gf.Movable;
 import Place = gf.Place;
+import PlaceBase = gf.PlaceBase;
 import PlaceDefn = gf.PlaceDefn;
 import SoundFromFile = gf.SoundFromFile;
+import SoundHelperLive = gf.SoundHelperLive;
 import TimerHelper = gf.TimerHelper;
 import Transform = gf.Transform;
 import TransformBase = gf.TransformBase;

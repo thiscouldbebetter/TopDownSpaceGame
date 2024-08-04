@@ -1,9 +1,9 @@
 "use strict";
-class Starsystem extends Place {
+class Starsystem extends PlaceBase {
     constructor(name, defnName, sizeInPixels, entities) {
         super(name, defnName, null, // parentName
         sizeInPixels, entities);
-        this.sizeHalf = this.size.clone().divideScalar(2);
+        this.sizeHalf = this.size().clone().divideScalar(2);
     }
     defn(world) {
         return world.defn.starsystemDefnByName(this.defnName);
@@ -38,8 +38,9 @@ class Starsystem extends Place {
         camera2.locatable().loc.placeName = this.name;
         this.camera = () => camera2;
         this.entitiesToSpawn.push(camera2);
-        for (var b = 0; b < this.entities.length; b++) {
-            var entity = this.entities[b];
+        var entities = this.entitiesAll();
+        for (var b = 0; b < entities.length; b++) {
+            var entity = entities[b];
             var entityProperties = entity.properties;
             for (var c = 0; c < entityProperties.length; c++) {
                 var entityProperty = entityProperties[c];

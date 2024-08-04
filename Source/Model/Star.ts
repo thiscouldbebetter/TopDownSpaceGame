@@ -17,8 +17,9 @@ class Star implements EntityPropertyBase
 
 	// EntityPropertyBase.
 
+	equals(other: Star): boolean { return false; }
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	initialize(uwpe: UniverseWorldPlaceEntities): void {}
-	equals(other: Star): boolean { return false; }
+	propertyName(): string { return Star.name; }
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 }

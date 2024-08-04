@@ -9,9 +9,10 @@ class MoverDefn {
         return entity.propertyByName(MoverDefn.name);
     }
     // EntityPropertyBase.
+    equals(other) { return false; }
     finalize(uwpe) { }
     initialize(uwpe) { }
-    equals(other) { return false; }
+    propertyName() { return MoverDefn.name; }
     updateForTimerTick(universeWorldPlaceEntities) {
         var place = universeWorldPlaceEntities.place;
         var mover = universeWorldPlaceEntities.entity;
@@ -25,7 +26,7 @@ class MoverDefn {
             moverLoc.vel.normalize().multiplyScalar(moverSpeedMax);
         }
         moverLoc.pos.add(moverLoc.vel);
-        moverLoc.pos.trimToRangeMax(place.size);
+        moverLoc.pos.trimToRangeMax(place.size());
         moverLoc.accel.clear();
         moverLoc.force.clear();
     }

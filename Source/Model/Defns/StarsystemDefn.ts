@@ -18,7 +18,7 @@ class StarsystemDefn extends PlaceDefn
 			null, // soundForMusicName: string,
 			null, // actions: Action[],
 			null, // actionToInputsMappings: ActionToInputsMapping[],
-			null, // propertyNamesToProcess: string[],
+			StarsystemDefn.propertyNamesToProcess(),
 			null, // placeInitialize: (uwpe: UniverseWorldPlaceEntities) => void,
 			null // placeFinalize: (uwpe: UniverseWorldPlaceEntities) => void
 		);
@@ -30,8 +30,11 @@ class StarsystemDefn extends PlaceDefn
 			this.actionToInputsMappings,
 			(x) => { return x.inputNames; }
 		);
+	}
 
-		this.propertyNamesToProcess =
+	static propertyNamesToProcess(): string[]
+	{
+		var returnNames =
 		[
 			Locatable.name,
 			Actor.name,
@@ -41,5 +44,7 @@ class StarsystemDefn extends PlaceDefn
 			Ephemeral.name,
 			Collidable.name,
 		];
+
+		return returnNames;
 	}
 }

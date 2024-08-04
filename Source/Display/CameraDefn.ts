@@ -27,6 +27,7 @@ class CameraDefn implements EntityPropertyBase
 
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	equals(other: CameraDefn): boolean { return false; }
+	propertyName(): string { return CameraDefn.name; } 
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 
 }

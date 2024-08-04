@@ -7,5 +7,6 @@ class Enemy {
     finalize(uwpe) { }
     initialize(uwpe) { }
     equals(other) { return false; }
+    propertyName() { return Enemy.name; }
     updateForTimerTick(uwpe) { }
 }

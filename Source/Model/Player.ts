@@ -8,8 +8,9 @@ class Player
 
 	// EntityPropertyBase.
 
+	equals(other: Player): boolean { return false; }
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	initialize(uwpe: UniverseWorldPlaceEntities): void {}
-	equals(other: Player): boolean { return false; }
+	propertyName(): string { return Player.name; }
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 }

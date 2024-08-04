@@ -1,12 +1,9 @@
 "use strict";
 class WorldDefnExtended extends WorldDefn {
     constructor(colors, itemDefns, actions, activityDefns, entityDefns, starsystemDefns) {
-        super(null, // actions
-        null, // activityDefns
-        entityDefns, // entityDefns
-        null, // itemDefns
-        null, // placeDefns
-        null);
+        super([
+            entityDefns // entityDefns
+        ]);
         this.colors = colors;
         this.colorsByName = ArrayHelper.addLookupsByName(this.colors);
         this.itemDefns = itemDefns;

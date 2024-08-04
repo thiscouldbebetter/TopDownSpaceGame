@@ -4,8 +4,9 @@ class Player {
         return entity.propertyByName(Player.name);
     }
     // EntityPropertyBase.
+    equals(other) { return false; }
     finalize(uwpe) { }
     initialize(uwpe) { }
-    equals(other) { return false; }
+    propertyName() { return Player.name; }
     updateForTimerTick(uwpe) { }
 }

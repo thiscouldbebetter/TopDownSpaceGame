@@ -14,6 +14,23 @@ class Demo {
                 ));
             }
         });
+        var decelerate = new Action("Decelerate", (universeWorldPlaceEntities) => {
+            var actor = universeWorldPlaceEntities.entity;
+            var fuelUsedByAcceleration = 1;
+            var itemHolder = actor.itemHolder();
+            var itemFuel = itemHolder.itemsByDefnName("Fuel")[0];
+            if (itemFuel.quantity >= fuelUsedByAcceleration) {
+                itemFuel.quantity -= fuelUsedByAcceleration;
+                var actorLoc = actor.locatable().loc;
+                var actorVel = actorLoc.vel;
+                actorVel.multiplyScalar(.95);
+                var actorSpeed = actorVel.magnitude();
+                var actorSpeedMin = 0.1;
+                if (actorSpeed < actorSpeedMin) {
+                    actorVel.clear();
+                }
+            }
+        });
         var fire = new Action("Fire", (universeWorldPlaceEntities) => {
             var actor = universeWorldPlaceEntities.entity;
             var itemHolder = actor.itemHolder();
@@ -29,7 +46,7 @@ class Demo {
                 entityToSpawn.locatable().loc.vel =
                     forward.clone().normalize().multiplyScalar(MoverDefn.fromEntity(entityDefnProjectile).speedMax);
                 var place = universeWorldPlaceEntities.place;
-                place.entitiesToSpawn.push(entityToSpawn);
+                place.entityToSpawnAdd(entityToSpawn);
             }
         });
         var turnLeft = new Action("TurnLeft", (universeWorldPlaceEntities) => {
@@ -48,6 +65,7 @@ class Demo {
         });
         var actions = [
             accelerate,
+            decelerate,
             fire,
             turnLeft,
             turnRight,
@@ -180,7 +198,7 @@ class Demo {
             var activity = actor.actor().activity;
             if (activity.targetEntity() == null) {
                 var actorStarsystem = actorLoc.place(world);
-                var starsystemSizeInPixels = actorStarsystem.size;
+                var starsystemSizeInPixels = actorStarsystem.size();
                 var newTargetPos = Coords.fromXY(Math.floor(Math.random() * starsystemSizeInPixels.x), Math.floor(Math.random() * starsystemSizeInPixels.y));
                 var newTarget = new Entity("Target", [Locatable.fromPos(newTargetPos)]);
                 activity.targetEntitySet(newTarget);
@@ -618,7 +636,7 @@ class Demo {
         // properties
         [
             Animatable2.default(),
-            new BodyDefn(itemSizeInPixels),
+            new BodyDefn(itemSizeInPixels), // sizeInPixels
             Collidable.from3(new Box(Coords.zeroes(), itemSizeInPixels), [], // entityDefnNameToCollideWith
             function () { } // collide
             ),
@@ -629,7 +647,7 @@ class Demo {
             new ItemContainer(),
             ItemHolder.fromItems([
                 new Item("Fuel", 100)
-            ]),
+            ]), // hack
             Killable.fromIntegrityMax(1)
         ]);
         var projectileSizeInPixels = new Coords(3, 3, 1);
@@ -649,13 +667,14 @@ class Demo {
                 }
             }),
             Drawable.fromVisual(new VisualCameraProjection(camera, new VisualImageFromLibrary(imageMoverProjectile.name))),
-            new Ephemeral(16, null),
+            new Ephemeral(16, null), // ticksToLive
             Killable.fromIntegrityMax(1),
             Movable.default(),
-            new MoverDefn(1, 1, 16),
+            new MoverDefn(1, 1, 16), // mass, force, speedMax
             new ProjectileDefn(1),
         ]);
         var planetSizeInPixels = new Coords(32, 32, 1);
+        var colors = Color.Instances();
         var entityDefnPlanet = new Entity("Planet", [
             Animatable2.default(),
             new BodyDefn(planetSizeInPixels),
@@ -665,9 +684,9 @@ class Demo {
                 [ticksPerAnimationFrame * 8], VisualImageScaled.manyFromSizeAndVisuals(planetSizeInPixels, imagesForPlanet.map(x => new VisualImageImmediate(x, false) // isScaled
                 )), true // isRepeating
                 ),
-                new VisualOffset(new VisualText(DataBinding.fromGet((uwpee) => Planet.fromEntity(uwpee.entity).name), null, // fontHeight
-                Color.byName("White"), Color.byName("Black")), Coords.fromXY(0, 20)),
-                new VisualOffset(new VisualText(DataBinding.fromGet((uwpee) => {
+                new VisualOffset(Coords.fromXY(0, 20), new VisualText(DataBinding.fromGet((uwpee) => Planet.fromEntity(uwpee.entity).name), null, // fontHeight
+                colors.White, colors.Black)),
+                new VisualOffset(Coords.fromXY(0, 30), new VisualText(DataBinding.fromGet((uwpee) => {
                     var entity = uwpee.entity;
                     var universe = uwpee.universe;
                     var world = uwpee.world;
@@ -676,7 +695,7 @@ class Demo {
                     var tradeOfferAsString = tradeOffer.toString(universe, world);
                     return tradeOfferAsString;
                 }), null, // fontHeight
-                Color.byName("White"), Color.byName("Black")), Coords.fromXY(0, 30)),
+                colors.White, colors.Black)),
             ]))),
             new PlanetDefn(),
         ]);
@@ -688,7 +707,7 @@ class Demo {
             var portalSizeInPixels = new Coords(19, 19, 1);
             var entityDefnPortal = new Entity(entityDefnName, [
                 Animatable2.default(),
-                new BodyDefn(portalSizeInPixels),
+                new BodyDefn(portalSizeInPixels), // sizeInPixels
                 Collidable.from3(new Box(new Coords(0, 0, 0), portalSizeInPixels), [], () => { } // collide
                 ),
                 Drawable.fromVisual(new VisualCameraProjection(camera, new VisualAnimation(null, // name
@@ -725,25 +744,26 @@ class Demo {
         1);
         var entityDefnBackground = new Entity("Background", [
             Drawable.fromVisual(new VisualGroup([
-                new VisualOffset(new VisualCameraProjection(camera, new VisualRepeating(backgroundCellSize, backgroundViewSize, new VisualGroup([
+                new VisualOffset(new Coords(0, 0, 2), // offset
+                new VisualCameraProjection(camera, new VisualRepeating(backgroundCellSize, backgroundViewSize, new VisualGroup([
                     visualImageBackgroundLayer0,
-                    new VisualOffset(visualImageBackgroundLayer0, Coords.fromXY(backgroundCellSize.x / 3, backgroundCellSize.y / 4)),
-                ]))), new Coords(0, 0, 2)),
-                new VisualOffset(new VisualCameraProjection(camera, new VisualRepeating(backgroundCellSize, backgroundViewSize, visualImageBackgroundLayer1)), new Coords(0, 0, 4) // offset
-                ),
+                    new VisualOffset(Coords.fromXY(backgroundCellSize.x / 3, backgroundCellSize.y / 4), visualImageBackgroundLayer0),
+                ])))),
+                new VisualOffset(new Coords(0, 0, 4), // offset
+                new VisualCameraProjection(camera, new VisualRepeating(backgroundCellSize, backgroundViewSize, visualImageBackgroundLayer1))),
             ]))
         ]);
         var sunSizeInPixels = new Coords(40, 40, 1);
         var entityDefnSun = new Entity("Sun", [
             Animatable2.default(),
-            new BodyDefn(sunSizeInPixels),
+            new BodyDefn(sunSizeInPixels), // sizeInPixels
             Drawable.fromVisual(new VisualCameraProjection(camera, new VisualGroup([
                 new VisualAnimation(null, // name
                 [ticksPerAnimationFrame], VisualImageScaled.manyFromSizeAndVisuals(sunSizeInPixels, imagesForSun.map(x => new VisualImageImmediate(x, false)) // isScaled
                 ), true // isRepeating
                 ),
-                new VisualOffset(new VisualText(DataBinding.fromGet((uwpee) => uwpee.entity.propertyByName(Star.name).name), null, // fontHeight
-                Color.byName("White"), Color.byName("Black")), Coords.fromXY(0, 20)),
+                new VisualOffset(Coords.fromXY(0, 20), new VisualText(DataBinding.fromGet((uwpee) => uwpee.entity.propertyByName(Star.name).name), null, // fontHeight
+                colors.White, colors.Black)),
             ]))),
             new StarDefn(),
         ]);
@@ -751,13 +771,13 @@ class Demo {
         var entityDefnFriendly = new Entity("Friendly", [
             new Actor(Activity.fromDefnName("DoNothing")),
             Animatable2.default(),
-            new BodyDefn(friendlySizeInPixels),
+            new BodyDefn(friendlySizeInPixels), // sizeInPixels
             Drawable.fromVisual(new VisualCameraProjection(camera, new VisualAnimation(null, // name
             [ticksPerAnimationFrame], VisualImageScaled.manyFromSizeAndVisuals(friendlySizeInPixels, imagesFriendly.map(x => new VisualImageImmediate(x, false)) // isScaled
             ), true // isRepeating
             ))),
             new FriendlyDefn(),
-            Killable.fromIntegrityMax(1),
+            Killable.fromIntegrityMax(1), // integrityMax
             new MoverDefn(1, 1, 4) // mass, forcePerTick, speedMax
         ]);
         var enemySize = new Coords(32, 32, 1);
@@ -776,7 +796,7 @@ class Demo {
             ), true // isRepeating
             ))),
             new Enemy(),
-            Killable.fromIntegrityMax(1),
+            Killable.fromIntegrityMax(1), // integrityMax
             Movable.default(),
             new MoverDefn(1, 1, 2), // mass, forcePerTick, speedMax
         ]);
@@ -787,7 +807,7 @@ class Demo {
             var entityOther = universeWorldPlaceEntities.entity2;
             if (entityOther.propertyByName(ItemContainer.name) != null) {
                 var itemCollection = entityOther;
-                starsystem.entitiesToRemove.push(itemCollection);
+                starsystem.entityToRemoveAdd(itemCollection);
                 var itemsToTransfer = itemCollection.itemHolder().items;
                 player.itemHolder().itemsAdd(itemsToTransfer);
             }
@@ -795,13 +815,13 @@ class Demo {
                 player.killable().integrity = 0;
                 var venueMessage = new VenueMessage(DataBinding.fromContext("You lose!"), () => // acknowledge
                  {
-                    universe.venueNext = VenueFader.fromVenueTo(new VenueControls(universe.controlBuilder.title(universe, null), // size
+                    universe.venueNextSet(VenueFader.fromVenueTo(new VenueControls(universe.controlBuilder.title(universe, null), // size
                     false // ignoreInputs
-                    ));
-                }, universe.venueCurrent, // venuePrev
+                    )));
+                }, universe.venueCurrent(), // venuePrev
                 universe.display.sizeDefault().clone().half(), false // showMessageOnly
                 );
-                universe.venueNext = venueMessage;
+                universe.venueNextSet(venueMessage);
             }
             else if (Planet.fromEntity(entityOther) != null) {
                 var planet = entityOther;
@@ -811,7 +831,7 @@ class Demo {
                 }
             }
             else if (Portal2.fromEntity(entityOther) != null) {
-                starsystem.entitiesToRemove.push(player);
+                starsystem.entityToRemoveAdd(player);
                 var portal = Portal2.fromEntity(entityOther);
                 var itemHolder = player.itemHolder();
                 var itemFuel = itemHolder.itemsByDefnName("Fuel")[0];
@@ -829,6 +849,7 @@ class Demo {
         var gridSpacing = 8;
         var playerSizeInPixels = new Coords(32, 32, 1);
         var fontHeight = 10;
+        var font = FontNameAndHeight.fromHeightInPixels(fontHeight);
         var entityDefnPlayer = new Entity("Player", [
             new Actor(Activity.fromDefnName("UserInputAccept")),
             new BodyDefn(playerSizeInPixels),
@@ -843,16 +864,16 @@ class Demo {
             ]),
             Killable.fromIntegrityMax(1),
             Movable.default(),
-            new MoverDefn(1, 2, 8),
+            new MoverDefn(1, 2, 8), // mass, forcePerTick, speedMax
             new Player(),
             new Controllable(
             // buildControlForEntity
             (uwpe) => {
                 var children = [
                     ControlLabel.fromPosHeightAndText(Coords.fromXY(1, 1).multiplyScalar(gridSpacing), // pos
-                    fontHeight, DataBinding.fromGet((uwpe2) => uwpe2.entity.name)),
+                    font, DataBinding.fromGet((uwpe2) => uwpe2.entity.name)),
                     ControlLabel.fromPosHeightAndText(Coords.fromXY(1, 2).multiplyScalar(gridSpacing), // pos
-                    fontHeight, DataBinding.fromGet((uwpe2) => {
+                    font, DataBinding.fromGet((uwpe2) => {
                         var killable = uwpe2.entity.killable();
                         var returnValue = "HP: "
                             + killable.integrity
@@ -861,13 +882,13 @@ class Demo {
                         return returnValue;
                     })),
                     ControlLabel.fromPosHeightAndText(Coords.fromXY(1, 3).multiplyScalar(gridSpacing), // pos
-                    fontHeight, DataBinding.fromGet((uwpe2) => uwpe2.entity.locatable().loc.toString())),
+                    font, DataBinding.fromGet((uwpe2) => uwpe2.entity.locatable().loc.toString())),
                 ];
                 var items = uwpe.entity.itemHolder().items;
                 for (var i = 0; i < items.length; i++) {
                     var item = items[i];
                     var controlForItem = ControlLabel.fromPosHeightAndText(Coords.fromXY(1, 4 + i).multiplyScalar(gridSpacing), // pos
-                    fontHeight, DataBinding.fromContextAndGet(item, (item) => item.defnName + ": " + item.quantity));
+                    font, DataBinding.fromContextAndGet(item, (item) => item.defnName + ": " + item.quantity));
                     children.push(controlForItem);
                 }
                 // hack
@@ -898,6 +919,7 @@ class Demo {
                 new ActionToInputsMapping("Accelerate", ["w"], false),
                 new ActionToInputsMapping("TurnLeft", ["a"], false),
                 new ActionToInputsMapping("TurnRight", ["d"], false),
+                new ActionToInputsMapping("Decelerate", ["s"], false),
                 new ActionToInputsMapping("Fire", ["f"], true),
             ]),
         ];

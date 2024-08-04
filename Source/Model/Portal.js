@@ -12,14 +12,16 @@ class Portal2 {
     }
     initialize(universeWorldPlaceEntities) {
         var entity = universeWorldPlaceEntities.entity;
+        var colors = Color.Instances();
         entity.drawable().visual = new VisualGroup([
             entity.drawable().visual,
-            new VisualOffset(new VisualText(DataBinding.fromContext("To " + this.destinationStarsystemName), null, // fontHeight
-            Color.byName("White"), Color.byName("Black")), Coords.fromXY(0, 20)),
+            new VisualOffset(Coords.fromXY(0, 20), new VisualText(DataBinding.fromContext("To " + this.destinationStarsystemName), null, // font,
+            colors.White, colors.Black)),
         ]);
     }
     // EntityPropertyBase.
-    finalize(uwpe) { }
     equals(other) { return false; }
+    finalize(uwpe) { }
+    propertyName() { return Portal2.name; }
     updateForTimerTick(uwpe) { }
 }

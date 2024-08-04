@@ -21,7 +21,8 @@ class WorldExtended extends World
 			name,
 			DateTime.now(),
 			defn,
-			starsystems // places
+			(name) => starsystems.find(x => x.name == name),
+			starsystems[0].name
 		);
 
 		this.starsystems = starsystems;

@@ -4,8 +4,9 @@ class StarDefn {
         return entity.propertyByName(StarDefn.name);
     }
     // EntityPropertyBase.
+    equals(other) { return false; }
     finalize(uwpe) { }
     initialize(uwpe) { }
-    equals(other) { return false; }
+    propertyName() { return StarDefn.name; }
     updateForTimerTick(uwpe) { }
 }

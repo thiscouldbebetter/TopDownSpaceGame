@@ -7,8 +7,9 @@ class ProjectileDefn {
         return entity.propertyByName(ProjectileDefn.name);
     }
     // EntityPropertyBase.
+    equals(other) { return false; }
     finalize(uwpe) { }
     initialize(uwpe) { }
-    equals(other) { return false; }
+    propertyName() { return ProjectileDefn.name; }
     updateForTimerTick(uwpe) { }
 }

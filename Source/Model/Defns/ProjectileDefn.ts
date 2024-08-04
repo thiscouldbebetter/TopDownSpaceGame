@@ -15,8 +15,9 @@ class ProjectileDefn implements EntityPropertyBase
 
 	// EntityPropertyBase.
 
+	equals(other: ProjectileDefn): boolean { return false; }
 	finalize(uwpe: UniverseWorldPlaceEntities): void {}
 	initialize(uwpe: UniverseWorldPlaceEntities): void {}
-	equals(other: ProjectileDefn): boolean { return false; }
+	propertyName(): string { return ProjectileDefn.name; }
 	updateForTimerTick(uwpe: UniverseWorldPlaceEntities): void {}
 }

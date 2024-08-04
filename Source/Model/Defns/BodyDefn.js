@@ -14,5 +14,6 @@ class BodyDefn {
     // EntityPropertyBase.
     finalize(uwpe) { }
     equals(other) { return false; }
+    propertyName() { return BodyDefn.name; }
     updateForTimerTick(uwpe) { }
 }

@@ -8,8 +8,9 @@ class Star {
         return entity.propertyByName(Star.name);
     }
     // EntityPropertyBase.
+    equals(other) { return false; }
     finalize(uwpe) { }
     initialize(uwpe) { }
-    equals(other) { return false; }
+    propertyName() { return Star.name; }
     updateForTimerTick(uwpe) { }
 }

@@ -35,6 +35,36 @@ class Demo
 			}
 		);
 
+		var decelerate = new Action
+		(
+			"Decelerate",
+			(universeWorldPlaceEntities) =>
+			{
+				var actor = universeWorldPlaceEntities.entity;
+
+				var fuelUsedByAcceleration = 1;
+
+				var itemHolder = actor.itemHolder();
+				var itemFuel = itemHolder.itemsByDefnName("Fuel")[0];
+
+				if (itemFuel.quantity >= fuelUsedByAcceleration)
+				{
+					itemFuel.quantity -= fuelUsedByAcceleration;
+
+					var actorLoc = actor.locatable().loc;
+					var actorVel = actorLoc.vel;
+
+					actorVel.multiplyScalar(.95);
+					var actorSpeed = actorVel.magnitude();
+					var actorSpeedMin = 0.1;
+					if (actorSpeed < actorSpeedMin)
+					{
+						actorVel.clear();
+					}
+				}
+			}
+		);
+
 		var fire = new Action
 		(
 			"Fire",
@@ -69,7 +99,7 @@ class Demo
 						);
 
 					var place = universeWorldPlaceEntities.place;
-					place.entitiesToSpawn.push(entityToSpawn);
+					place.entityToSpawnAdd(entityToSpawn);
 				}
 			}
 		);
@@ -127,6 +157,7 @@ class Demo
 		var actions =
 		[
 			accelerate,
+			decelerate,
 			fire,
 			turnLeft,
 			turnRight,
@@ -509,7 +540,7 @@ class Demo
 				if (activity.targetEntity() == null)
 				{
 					var actorStarsystem = actorLoc.place(world);
-					var starsystemSizeInPixels = actorStarsystem.size;
+					var starsystemSizeInPixels = actorStarsystem.size();
 
 					var newTargetPos = Coords.fromXY
 					(
@@ -1132,6 +1163,8 @@ class Demo
 
 		var planetSizeInPixels = new Coords(32, 32, 1);
 
+		var colors = Color.Instances();
+
 		var entityDefnPlanet = new Entity
 		(
 			"Planet",
@@ -1167,6 +1200,7 @@ class Demo
 							),
 							new VisualOffset
 							(
+								Coords.fromXY(0, 20),
 								new VisualText
 								(
 									DataBinding.fromGet
@@ -1175,13 +1209,13 @@ class Demo
 											Planet.fromEntity(uwpee.entity).name
 									),
 									null, // fontHeight
-									Color.byName("White"),
-									Color.byName("Black")
-								),
-								Coords.fromXY(0, 20)
+									colors.White,
+									colors.Black
+								)
 							),
 							new VisualOffset
 							(
+								Coords.fromXY(0, 30),
 								new VisualText
 								(
 									DataBinding.fromGet
@@ -1199,10 +1233,9 @@ class Demo
 										}
 									),
 									null, // fontHeight
-									Color.byName("White"),
-									Color.byName("Black")
-								),
-								Coords.fromXY(0, 30)
+									colors.White,
+									colors.Black
+								)
 							),
 						])
 					)
@@ -1307,6 +1340,7 @@ class Demo
 					([
 						new VisualOffset
 						(
+							new Coords(0, 0, 2), // offset
 							new VisualCameraProjection
 							(
 								camera,
@@ -1319,21 +1353,21 @@ class Demo
 										visualImageBackgroundLayer0,
 										new VisualOffset
 										(
-											visualImageBackgroundLayer0,
 											Coords.fromXY
 											(
 												backgroundCellSize.x / 3,
 												backgroundCellSize.y / 4,
-											)
+											),
+											visualImageBackgroundLayer0
 										),
 									])
 								)
-							),
-							new Coords(0, 0, 2), // offset
+							)
 						),
 
 						new VisualOffset
 						(
+							new Coords(0, 0, 4), // offset
 							new VisualCameraProjection
 							(
 								camera,
@@ -1343,8 +1377,7 @@ class Demo
 									backgroundViewSize,
 									visualImageBackgroundLayer1
 								)
-							),
-							new Coords(0, 0, 4) // offset
+							)
 						),
 					])
 				)
@@ -1379,6 +1412,7 @@ class Demo
 							),
 							new VisualOffset
 							(
+								Coords.fromXY(0, 20),
 								new VisualText
 								(
 									DataBinding.fromGet
@@ -1387,10 +1421,9 @@ class Demo
 											uwpee.entity.propertyByName(Star.name).name
 									),
 									null, // fontHeight
-									Color.byName("White"),
-									Color.byName("Black")
-								),
-								Coords.fromXY(0, 20)
+									colors.White,
+									colors.Black
+								)
 							),
 						])
 					)
@@ -1485,7 +1518,7 @@ class Demo
 			if (entityOther.propertyByName(ItemContainer.name) != null)
 			{
 				var itemCollection = entityOther;
-				starsystem.entitiesToRemove.push(itemCollection);
+				starsystem.entityToRemoveAdd(itemCollection);
 				var itemsToTransfer = itemCollection.itemHolder().items;
 				player.itemHolder().itemsAdd(itemsToTransfer);
 			}
@@ -1498,20 +1531,23 @@ class Demo
 					DataBinding.fromContext("You lose!"),
 					() => // acknowledge
 					{
-						universe.venueNext = VenueFader.fromVenueTo
+						universe.venueNextSet
 						(
-							new VenueControls
+							VenueFader.fromVenueTo
 							(
-								universe.controlBuilder.title(universe, null), // size
-								false // ignoreInputs
+								new VenueControls
+								(
+									universe.controlBuilder.title(universe, null), // size
+									false // ignoreInputs
+								)
 							)
 						);
 					},
-					universe.venueCurrent, // venuePrev
+					universe.venueCurrent(), // venuePrev
 					universe.display.sizeDefault().clone().half(),
 					false // showMessageOnly
 				);
-				universe.venueNext = venueMessage;
+				universe.venueNextSet(venueMessage);
 			}
 			else if (Planet.fromEntity(entityOther) != null)
 			{
@@ -1525,7 +1561,7 @@ class Demo
 			}
 			else if (Portal2.fromEntity(entityOther) != null)
 			{
-				starsystem.entitiesToRemove.push(player);
+				starsystem.entityToRemoveAdd(player);
 
 				var portal = Portal2.fromEntity(entityOther);
 
@@ -1552,6 +1588,7 @@ class Demo
 		var playerSizeInPixels = new Coords(32, 32, 1);
 
 		var fontHeight = 10;
+		var font = FontNameAndHeight.fromHeightInPixels(fontHeight);
 
 		var entityDefnPlayer = new Entity
 		(
@@ -1605,7 +1642,7 @@ class Demo
 							ControlLabel.fromPosHeightAndText
 							(
 								Coords.fromXY(1, 1).multiplyScalar(gridSpacing), // pos
-								fontHeight,
+								font,
 								DataBinding.fromGet
 								(
 									(uwpe2: UniverseWorldPlaceEntities) => uwpe2.entity.name
@@ -1615,7 +1652,7 @@ class Demo
 							ControlLabel.fromPosHeightAndText
 							(
 								Coords.fromXY(1, 2).multiplyScalar(gridSpacing), // pos
-								fontHeight,
+								font,
 								DataBinding.fromGet
 								(
 									(uwpe2: UniverseWorldPlaceEntities) =>
@@ -1635,7 +1672,7 @@ class Demo
 							ControlLabel.fromPosHeightAndText
 							(
 								Coords.fromXY(1, 3).multiplyScalar(gridSpacing), // pos
-								fontHeight,
+								font,
 								DataBinding.fromGet
 								(
 									(uwpe2: UniverseWorldPlaceEntities) =>
@@ -1656,7 +1693,7 @@ class Demo
 								(
 									gridSpacing
 								), // pos
-								fontHeight,
+								font,
 								DataBinding.fromContextAndGet
 								(
 									item,
@@ -1712,6 +1749,7 @@ class Demo
 					new ActionToInputsMapping("Accelerate", ["w"], false),
 					new ActionToInputsMapping("TurnLeft", ["a"], false),
 					new ActionToInputsMapping("TurnRight", ["d"],false),
+					new ActionToInputsMapping("Decelerate", ["s"], false),
 					new ActionToInputsMapping("Fire", ["f"],true),
 				]
 			),

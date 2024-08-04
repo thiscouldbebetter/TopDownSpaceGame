@@ -9,8 +9,9 @@ class Planet {
         return entity.propertyByName(Planet.name);
     }
     // EntityPropertyBase.
+    equals(other) { return false; }
     finalize(uwpe) { }
     initialize(uwpe) { }
-    equals(other) { return false; }
+    propertyName() { return Planet.name; }
     updateForTimerTick(uwpe) { }
 }
